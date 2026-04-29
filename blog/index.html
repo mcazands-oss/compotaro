@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Michael Compotaro — Journal. Thoughts on the craft of acting, on set experiences, and the work behind the work." />
+  <title>Journal — Michael Compotaro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../style.css" />
+  <style>
+    .blog-page-hero {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 10rem 2rem 4.5rem;
+    }
+
+    .blog-page-hero h1 {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: clamp(2.8rem, 7vw, 5rem);
+      font-weight: 400;
+      line-height: 1.05;
+      color: var(--text);
+      margin-top: 0.9rem;
+      letter-spacing: -0.02em;
+    }
+
+    .blog-page-hero p {
+      font-size: 1rem;
+      color: var(--text-muted);
+      font-weight: 300;
+      margin-top: 1.25rem;
+      max-width: 460px;
+      line-height: 1.75;
+    }
+
+    .blog-listing-section {
+      padding: 2rem 2rem 9rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .blog-listing-inner {
+      max-width: 780px;
+      margin: 0 auto;
+    }
+
+    .post-row {
+      display: grid;
+      grid-template-columns: 110px 1fr;
+      gap: 2.5rem;
+      align-items: start;
+      padding: 3rem 0;
+      border-bottom: 1px solid var(--border);
+      transition: background 0.2s ease;
+    }
+
+    .post-row:first-child {
+      border-top: 1px solid var(--border);
+    }
+
+    .post-date-col {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+      padding-top: 0.3rem;
+      line-height: 1.5;
+    }
+
+    .post-body-col h2 {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 1.55rem;
+      font-weight: 400;
+      color: var(--text);
+      line-height: 1.22;
+      margin-bottom: 0.85rem;
+      transition: color 0.25s ease;
+    }
+
+    .post-row:hover .post-body-col h2 {
+      color: var(--accent);
+    }
+
+    .post-body-col p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.78;
+      font-weight: 300;
+      margin-bottom: 1.25rem;
+    }
+
+    .post-read-link {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: gap 0.25s ease;
+    }
+
+    .post-row:hover .post-read-link {
+      gap: 0.9rem;
+    }
+
+    @media (max-width: 600px) {
+      .post-row {
+        grid-template-columns: 1fr;
+        gap: 0.6rem;
+      }
+
+      .blog-page-hero {
+        padding: 8rem 1.25rem 3.5rem;
+      }
+
+      .blog-listing-section {
+        padding: 2rem 1.25rem 6rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ─── NAV ─── -->
+  <nav>
+    <div class="nav-inner">
+      <a href="../index.html" class="nav-logo">Michael <span>Compotaro</span></a>
+      <ul class="nav-links">
+        <li><a href="../index.html#about">About</a></li>
+        <li><a href="../index.html#reel">Reel</a></li>
+        <li><a href="../index.html#credits">Credits</a></li>
+        <li><a href="../index.html#training">Training</a></li>
+        <li><a href="../index.html#blog">Journal</a></li>
+        <li><a href="../index.html#contact" class="nav-cta">Contact</a></li>
+      </ul>
+      <button class="nav-hamburger" aria-label="Open navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <nav class="nav-mobile-overlay" aria-label="Mobile navigation">
+    <a href="../index.html#about">About</a>
+    <a href="../index.html#reel">Reel</a>
+    <a href="../index.html#credits">Credits</a>
+    <a href="../index.html#training">Training</a>
+    <a href="../index.html#blog">Journal</a>
+    <a href="../index.html#contact">Contact</a>
+  </nav>
+
+  <!-- ─── HERO ─── -->
+  <div class="blog-page-hero">
+    <span class="section-label">Journal</span>
+    <h1>From the Set</h1>
+    <p>Thoughts on craft, on-set experiences, and the work behind the work.</p>
+  </div>
+
+  <!-- ─── POST LISTING ─── -->
+  <div class="blog-listing-section">
+    <div class="blog-listing-inner">
+
+      <article class="post-row reveal">
+        <div class="post-date-col">
+          <time datetime="2026-03-28">Mar 28<br>2026</time>
+        </div>
+        <div class="post-body-col">
+          <h2>Finding Wilson: On Set with Oliver Stone</h2>
+          <p>What it means to inhabit a character in a film that changed American cinema. A reflection on truth, memory, and the actor's responsibility to story.</p>
+          <a href="post-1.html" class="post-read-link">Read More &rarr;</a>
+        </div>
+      </article>
+
+      <article class="post-row reveal">
+        <div class="post-date-col">
+          <time datetime="2026-04-10">Apr 10<br>2026</time>
+        </div>
+        <div class="post-body-col">
+          <h2>The Weight of Silence: Why Less Is Always More</h2>
+          <p>The most powerful moment in any scene is often the one before the words arrive. On stillness, presence, and the art of being heard without speaking.</p>
+          <a href="#" class="post-read-link">Read More &rarr;</a>
+        </div>
+      </article>
+
+      <article class="post-row reveal">
+        <div class="post-date-col">
+          <time datetime="2026-04-22">Apr 22<br>2026</time>
+        </div>
+        <div class="post-body-col">
+          <h2>Meisner in Practice: Truth Over Technique</h2>
+          <p>The Meisner Technique doesn't teach you how to act — it teaches you how to stop acting. A year into training with Michele Condrey at R.E.A.C.T.</p>
+          <a href="#" class="post-read-link">Read More &rarr;</a>
+        </div>
+      </article>
+
+    </div>
+  </div>
+
+  <!-- ─── FOOTER ─── -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-logo">Michael <span>Compotaro</span></div>
+      <div class="footer-copy">&copy; 2026 &nbsp;·&nbsp; Dallas, TX</div>
+    </div>
+  </footer>
+
+  <script src="../script.js"></script>
+</body>
+</html>
