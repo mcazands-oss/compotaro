@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Join a Game — Compotaro Play</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="play.css" />
+  <style>
+    /* Extra-large touch targets for phone play */
+    .answer-btn { min-height: 90px; font-size: 1.0625rem; }
+    @media (min-width: 400px) { .answer-btn { min-height: 100px; } }
+  </style>
+</head>
+<body>
+
+  <header class="play-topbar">
+    <a href="index.html" class="back-link">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Play
+    </a>
+    <span class="topbar-logo">Join</span>
+    <span class="topbar-right"></span>
+  </header>
+
+  <main class="play-main">
+
+    <!-- ─── SECTION: JOIN FORM ─── -->
+    <div id="section-join" class="section active">
+      <div class="container" style="padding-top:3rem">
+        <div class="mb-4 text-center">
+          <div style="font-size:2.5rem;margin-bottom:0.75rem">🎬</div>
+          <h1 class="page-title">Join a Game</h1>
+          <p class="page-sub">Enter the room code and pick a nickname.</p>
+        </div>
+
+        <form id="form-join">
+          <div class="form-group mb-3">
+            <label for="input-room-code">Room Code</label>
+            <input
+              type="text"
+              id="input-room-code"
+              placeholder="ABCDEF"
+              maxlength="6"
+              autocomplete="off"
+              autocorrect="off"
+              autocapitalize="characters"
+              spellcheck="false"
+              style="font-size:1.5rem;letter-spacing:0.2em;text-align:center;font-family:'DM Serif Display',serif;text-transform:uppercase"
+            />
+          </div>
+
+          <div class="form-group mb-4">
+            <label for="input-nickname">Nickname</label>
+            <input
+              type="text"
+              id="input-nickname"
+              placeholder="Your name"
+              minlength="2"
+              maxlength="20"
+              autocomplete="off"
+              autocorrect="off"
+              spellcheck="false"
+              required
+            />
+            <div class="form-hint">2–20 characters</div>
+          </div>
+
+          <div id="join-error" class="text-sm mb-2" style="color:#e74c3c;display:none"></div>
+          <button type="submit" class="btn btn-primary btn-block btn-lg" id="btn-join">
+            Join Game &rarr;
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- ─── SECTION: WAITING ─── -->
+    <div id="section-wait" class="section">
+      <div class="container">
+        <div class="wait-center" style="min-height:calc(100vh - 120px)">
+          <div class="pulse-ring">🎬</div>
+          <div>
+            <h2 class="wait-title" id="wait-greeting">Ready, Player!</h2>
+            <p class="wait-sub mt-1">Waiting for the host to start…</p>
+          </div>
+          <div>
+            <div class="text-muted text-sm mb-1" style="text-align:center">Room</div>
+            <div class="wait-room-code" id="wait-room-code"></div>
+          </div>
+          <div class="status-bar" style="margin-bottom:0">
+            <div class="status-dot live"></div>
+            Connected — game will start shortly
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── SECTION: GAME (player view) ─── -->
+    <div id="section-game" class="section">
+      <div class="game-wrap">
+
+        <div class="q-topbar">
+          <span class="q-progress" id="player-q-progress">Question 1</span>
+          <span class="q-category" id="player-q-category">Film</span>
+        </div>
+
+        <div class="timer-wrap">
+          <div class="timer-circle" id="player-timer-circle">
+            <svg viewBox="0 0 68 68">
+              <circle class="timer-track" cx="34" cy="34" r="30" />
+              <circle class="timer-fill" id="player-timer-fill" cx="34" cy="34" r="30" />
+            </svg>
+            <div class="timer-num" id="player-timer-num">20</div>
+          </div>
+        </div>
+
+        <div class="question-text" id="player-question-text">Loading…</div>
+
+        <div class="answer-grid" id="player-answer-grid">
+          <button class="answer-btn" data-idx="0"><span class="ans-shape">A</span><span class="ans-text"></span></button>
+          <button class="answer-btn" data-idx="1"><span class="ans-shape">B</span><span class="ans-text"></span></button>
+          <button class="answer-btn" data-idx="2"><span class="ans-shape">C</span><span class="ans-text"></span></button>
+          <button class="answer-btn" data-idx="3"><span class="ans-shape">D</span><span class="ans-text"></span></button>
+        </div>
+
+        <!-- Score ticker -->
+        <div style="margin-top:1.25rem;text-align:center">
+          <span class="text-muted text-sm">Total score: </span>
+          <span class="text-accent" style="font-weight:700;font-size:1.0625rem" id="player-total-score">0</span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ─── SECTION: DONE ─── -->
+    <div id="section-done" class="section">
+      <div class="container">
+        <div class="text-center mb-4">
+          <div style="font-size:3rem;margin-bottom:0.75rem" id="done-trophy">🏆</div>
+          <h1 class="page-title" id="done-title">Game Over!</h1>
+          <p class="page-sub" id="done-sub">Final leaderboard</p>
+        </div>
+
+        <div class="leaderboard mb-4" id="final-leaderboard-player"></div>
+
+        <a href="join" class="btn btn-primary btn-block">Play Again</a>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Score feedback overlay -->
+  <div class="score-overlay" id="score-overlay">
+    <div class="score-card">
+      <span class="score-result-icon" id="score-icon">✅</span>
+      <div class="score-result-label" id="score-label">Correct!</div>
+      <div class="score-result-points" id="score-points">+850</div>
+      <div class="score-result-total" id="score-total">Total: 850</div>
+    </div>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="play.js"></script>
+  <script src="join.js"></script>
+</body>
+</html>

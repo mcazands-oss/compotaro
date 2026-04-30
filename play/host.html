@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Host a Game — Compotaro Play</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="play.css" />
+</head>
+<body>
+
+  <header class="play-topbar">
+    <a href="index.html" class="back-link">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Play
+    </a>
+    <span class="topbar-logo">Host</span>
+    <button id="btn-sign-out" class="btn btn-ghost" style="display:none">Sign out</button>
+  </header>
+
+  <main class="play-main">
+
+    <!-- ─── SECTION: AUTH ─── -->
+    <div id="section-auth" class="section active">
+      <div class="container auth-wrap">
+        <div class="mb-4">
+          <h1 class="page-title">Host a Game</h1>
+          <p class="page-sub">Sign in to create and manage trivia rooms.</p>
+        </div>
+
+        <div class="card">
+          <div class="auth-tabs">
+            <button class="auth-tab active" data-tab="signin">Sign In</button>
+            <button class="auth-tab" data-tab="signup">Sign Up</button>
+          </div>
+
+          <!-- Sign In -->
+          <form id="form-signin" class="auth-form active">
+            <div class="form-group">
+              <label for="signin-email">Email</label>
+              <input type="email" id="signin-email" placeholder="you@example.com" required />
+            </div>
+            <div class="form-group">
+              <label for="signin-password">Password</label>
+              <input type="password" id="signin-password" placeholder="••••••••" required />
+            </div>
+            <div id="signin-error" class="text-sm" style="color:#e74c3c;margin-bottom:1rem;display:none"></div>
+            <button type="submit" class="btn btn-primary btn-block" id="btn-signin">Sign In</button>
+          </form>
+
+          <!-- Sign Up -->
+          <form id="form-signup" class="auth-form">
+            <div class="form-group">
+              <label for="signup-email">Email</label>
+              <input type="email" id="signup-email" placeholder="you@example.com" required />
+            </div>
+            <div class="form-group">
+              <label for="signup-password">Password</label>
+              <input type="password" id="signup-password" placeholder="Min. 8 characters" required minlength="8" />
+            </div>
+            <div id="signup-error" class="text-sm" style="color:#e74c3c;margin-bottom:1rem;display:none"></div>
+            <button type="submit" class="btn btn-primary btn-block" id="btn-signup">Create Account</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── SECTION: SETUP ─── -->
+    <div id="section-setup" class="section">
+      <div class="container">
+        <div class="mb-4">
+          <h1 class="page-title">New Game</h1>
+          <p class="page-sub">Pick your categories and launch a room.</p>
+        </div>
+
+        <form id="form-setup">
+          <div class="form-group mb-3">
+            <label for="game-name">Game Name <span class="text-muted" style="text-transform:none;letter-spacing:0;font-weight:400">(optional)</span></label>
+            <input type="text" id="game-name" placeholder="Friday Film Night" maxlength="60" />
+          </div>
+
+          <div class="form-group mb-3">
+            <label>Categories <span class="text-muted" style="text-transform:none;letter-spacing:0;font-weight:400">(pick at least one)</span></label>
+            <div class="chips" id="category-chips">
+              <button type="button" class="chip selected" data-cat="Film">Film</button>
+              <button type="button" class="chip" data-cat="TV">TV</button>
+              <button type="button" class="chip" data-cat="Comedy">Comedy</button>
+              <button type="button" class="chip" data-cat="Drama">Drama</button>
+              <button type="button" class="chip" data-cat="Thriller">Thriller</button>
+              <button type="button" class="chip" data-cat="Actors">Actors</button>
+              <button type="button" class="chip" data-cat="Directors">Directors</button>
+              <button type="button" class="chip" data-cat="Classics">Classics</button>
+              <button type="button" class="chip" data-cat="Sci-Fi">Sci-Fi</button>
+              <button type="button" class="chip" data-cat="Animation">Animation</button>
+            </div>
+          </div>
+
+          <div class="form-group mb-4">
+            <label>Questions</label>
+            <div class="count-options">
+              <button type="button" class="count-option selected" data-count="10">10</button>
+              <button type="button" class="count-option" data-count="15">15</button>
+              <button type="button" class="count-option" data-count="20">20</button>
+            </div>
+          </div>
+
+          <div id="setup-error" class="text-sm mb-2" style="color:#e74c3c;display:none"></div>
+          <button type="submit" class="btn btn-primary btn-block btn-lg" id="btn-launch">
+            Launch Game &rarr;
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- ─── SECTION: LOBBY ─── -->
+    <div id="section-lobby" class="section">
+      <div class="container-wide">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start" id="lobby-grid">
+
+          <!-- Left: code + QR -->
+          <div>
+            <div class="room-code-display">
+              <div class="room-code-label">Room Code</div>
+              <div class="room-code" id="display-room-code">------</div>
+              <div class="room-link" id="display-join-link"></div>
+            </div>
+
+            <div class="qr-wrap">
+              <div class="qr-inner">
+                <div id="qr-code"></div>
+                <div class="qr-tag">Scan to join</div>
+              </div>
+            </div>
+
+            <button id="btn-start-game" class="btn btn-primary btn-block btn-lg" disabled>
+              Start Game
+            </button>
+            <p class="text-sm text-muted text-center mt-2" id="start-hint">Waiting for players to join…</p>
+          </div>
+
+          <!-- Right: player list -->
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <h2 class="section-heading" style="margin-bottom:0">Players</h2>
+              <span class="text-accent text-sm" id="player-count-badge">0 joined</span>
+            </div>
+            <div class="status-bar">
+              <div class="status-dot live"></div>
+              Watching for new players…
+            </div>
+            <div class="player-list" id="lobby-player-list">
+              <div class="text-muted text-sm text-center" style="padding:1.5rem 0" id="no-players-msg">
+                Nobody yet — share the QR code!
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── SECTION: GAME (host view) ─── -->
+    <div id="section-game" class="section">
+      <div class="game-wrap">
+
+        <div class="q-topbar">
+          <span class="q-progress" id="host-q-progress">Question 1 of 10</span>
+          <span class="q-category" id="host-q-category">Film</span>
+        </div>
+
+        <div class="timer-wrap">
+          <div class="timer-circle" id="host-timer-circle">
+            <svg viewBox="0 0 68 68">
+              <circle class="timer-track" cx="34" cy="34" r="30" />
+              <circle class="timer-fill" id="host-timer-fill" cx="34" cy="34" r="30" />
+            </svg>
+            <div class="timer-num" id="host-timer-num">20</div>
+          </div>
+        </div>
+
+        <div class="question-text" id="host-question-text">Loading question…</div>
+
+        <div class="answer-grid" id="host-answer-grid">
+          <button class="answer-btn locked" data-idx="0"><span class="ans-shape">A</span><span class="ans-text"></span></button>
+          <button class="answer-btn locked" data-idx="1"><span class="ans-shape">B</span><span class="ans-text"></span></button>
+          <button class="answer-btn locked" data-idx="2"><span class="ans-shape">C</span><span class="ans-text"></span></button>
+          <button class="answer-btn locked" data-idx="3"><span class="ans-shape">D</span><span class="ans-text"></span></button>
+        </div>
+
+        <div class="answer-stats-bar">
+          <span class="text-muted text-sm">Answered</span>
+          <span><span class="answered-count" id="host-answered-count">0</span> <span class="text-muted">/ <span id="host-total-players">0</span></span></span>
+        </div>
+
+        <div style="margin-top:1.25rem;display:flex;gap:0.75rem">
+          <button id="btn-reveal" class="btn btn-secondary" style="flex:1">Reveal Answer</button>
+          <button id="btn-next-q" class="btn btn-primary" style="flex:1" disabled>Next Question &rarr;</button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ─── SECTION: DONE ─── -->
+    <div id="section-done" class="section">
+      <div class="container">
+        <div class="text-center mb-4">
+          <div style="font-size:3rem;margin-bottom:0.75rem">🎬</div>
+          <h1 class="page-title">Game Over!</h1>
+          <p class="page-sub">Final leaderboard</p>
+        </div>
+
+        <div class="leaderboard mb-4" id="final-leaderboard"></div>
+
+        <button id="btn-new-game" class="btn btn-primary btn-block">Play Again</button>
+      </div>
+    </div>
+
+  </main>
+
+  <div id="toast-container" class="toast-container"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="play.js"></script>
+  <script src="host.js"></script>
+</body>
+</html>

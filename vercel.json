@@ -1,13 +1,13 @@
 {
   "version": 2,
   "routes": [
-    {
-      "src": "/blog",
-      "dest": "/blog/index.html"
-    },
-    {
-      "src": "/blog/",
-      "dest": "/blog/index.html"
-    }
+    { "src": "/blog", "dest": "/blog/index.html" },
+    { "src": "/blog/", "dest": "/blog/index.html" },
+    { "src": "/play", "dest": "/play/index.html" },
+    { "src": "/play/", "dest": "/play/index.html" },
+    { "src": "/play/host", "dest": "/play/host.html" },
+    { "src": "/play/host/", "dest": "/play/host.html" },
+    { "src": "/play/join", "dest": "/play/join.html" },
+    { "src": "/play/join/", "dest": "/play/join.html" }
   ]
 }
