@@ -3,8 +3,8 @@
    play.js  (loaded before host.js / join.js)
    ============================================ */
 
-const SUPABASE_URL = 'YOUR_SUPABASE_URL';
-const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+const SUPABASE_URL = 'https://haruuzjsliiczwgplkii.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_xOZHFYJKyxCGIC1B3C_4Mw_CJNsO8wO';
 
 const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
   realtime: { params: { eventsPerSecond: 10 } }
