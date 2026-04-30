@@ -397,19 +397,34 @@ async function loadHostQuestion(position) {
 function startHostTimer(seconds) {
   clearInterval(hostTimerInterval);
   let remaining = seconds;
-  const fillEl = document.getElementById('host-timer-fill');
-  const numEl = document.getElementById('host-timer-num');
-  const circleEl = document.getElementById('host-timer-circle');
+  const fillEl = document.getElementById("host-timer-fill");
+  const numEl = document.getElementById("host-timer-num");
+  const circleEl = document.getElementById("host-timer-circle");
+  const barEl = document.getElementById("host-countdown-bar");
   const circumference = 188.5;
 
   const update = () => {
+    // circular timer
     numEl.textContent = remaining;
     const progress = remaining / seconds;
     fillEl.style.strokeDashoffset = circumference * (1 - progress);
+    circleEl.classList.remove("warning", "danger");
 
-    circleEl.classList.remove('warning', 'danger');
-    if (remaining <= 5) circleEl.classList.add('danger');
-    else if (remaining <= 10) circleEl.classList.add('warning');
+    // bar
+    if (barEl) {
+      barEl.style.width = (progress * 100) + "%";
+      barEl.classList.remove("warning", "danger");
+      if (remaining <= 5) {
+        circleEl.classList.add("danger");
+        barEl.classList.add("danger");
+      } else if (remaining <= 10) {
+        circleEl.classList.add("warning");
+        barEl.classList.add("warning");
+      }
+    } else {
+      if (remaining <= 5) circleEl.classList.add("danger");
+      else if (remaining <= 10) circleEl.classList.add("warning");
+    }
   };
 
   update();
@@ -418,6 +433,8 @@ function startHostTimer(seconds) {
     update();
     if (remaining <= 0) {
       clearInterval(hostTimerInterval);
+      // auto-reveal when timer expires
+      setTimeout(() => revealAnswer(), 400);
     }
   }, 1000);
 }

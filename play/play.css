@@ -631,6 +631,26 @@ input::placeholder { color: var(--text-faint); }
 .timer-circle.warning .timer-fill { stroke: #e67e22; }
 .timer-circle.danger .timer-fill { stroke: #e74c3c; }
 
+/* Countdown bar */
+
+.countdown-bar-wrap {
+  width: 100%;
+  height: 10px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 5px;
+  overflow: hidden;
+  margin: 0.75rem 0 1rem;
+}
+.countdown-bar {
+  height: 100%;
+  width: 100%;
+  background: #c9a84c;
+  border-radius: 5px;
+  transition: width 0.95s linear, background 0.3s ease;
+}
+.countdown-bar.warning { background: #e67e22; }
+.countdown-bar.danger  { background: #e74c3c; }
+
 /* Question text */
 
 .question-text {
