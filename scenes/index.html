@@ -1,0 +1,1759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Scene Library — Michael Compotaro. A curated collection of scenes for acting class study." />
+  <title>Scene Library — Michael Compotaro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --bg-card: #111111;
+      --bg-card-hover: #161616;
+      --text: #e8e4dc;
+      --text-muted: #8a8580;
+      --accent: #c9a84c;
+      --accent-dim: rgba(201, 168, 76, 0.12);
+      --border: rgba(255, 255, 255, 0.06);
+      --nav-bg: rgba(10, 10, 10, 0.92);
+      --radius: 3px;
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; overflow-x: hidden; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: var(--nav-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 1.1rem;
+      letter-spacing: 0.02em;
+      color: var(--text);
+    }
+
+    .nav-logo span { color: var(--accent); }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 2.5rem;
+      align-items: center;
+    }
+
+    .nav-links a {
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+    .nav-links a.active { color: var(--accent); }
+
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    .nav-hamburger span {
+      display: block;
+      width: 22px;
+      height: 1.5px;
+      background: var(--text);
+      transition: transform 0.3s, opacity 0.3s;
+    }
+
+    .nav-mobile-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 99;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2.5rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+
+    .nav-mobile-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .nav-mobile-overlay a {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 2rem;
+      color: var(--text);
+    }
+
+    .nav-mobile-overlay a.active { color: var(--accent); }
+
+    /* ─── HEADER ─── */
+    .scenes-header {
+      padding: 140px 2rem 60px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      display: block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+
+    .scenes-header h1 {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 400;
+      color: var(--text);
+      line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+
+    .scenes-header .subheading {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      margin-bottom: 1.75rem;
+      max-width: 480px;
+    }
+
+    .disclaimer {
+      border-left: 3px solid var(--accent);
+      padding: 1rem 1.25rem;
+      background: var(--accent-dim);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      max-width: 640px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* ─── FILTERS ─── */
+    .filters-bar {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem 2.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.45rem 1.1rem;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
+    }
+
+    .filter-btn:hover {
+      border-color: rgba(201, 168, 76, 0.4);
+      color: var(--text);
+    }
+
+    .filter-btn.active {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-dim);
+    }
+
+    .filters-note {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-left: auto;
+      letter-spacing: 0.03em;
+    }
+
+    /* ─── GRID ─── */
+    .scenes-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem 6rem;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      align-items: start;
+    }
+
+    /* ─── CARD ─── */
+    .scene-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+      transition: border-color 0.25s, background 0.25s;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .scene-card:hover {
+      border-color: rgba(201, 168, 76, 0.2);
+      background: var(--bg-card-hover);
+    }
+
+    .card-body {
+      padding: 1.5rem 1.5rem 1.25rem;
+      flex: 1;
+    }
+
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .card-title {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 1.3rem;
+      font-weight: 400;
+      color: var(--text);
+      line-height: 1.2;
+    }
+
+    .year-badge {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 0.2rem 0.5rem;
+      white-space: nowrap;
+      flex-shrink: 0;
+      margin-top: 0.2rem;
+    }
+
+    .genre-tag {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid rgba(201, 168, 76, 0.35);
+      background: var(--accent-dim);
+      border-radius: 999px;
+      padding: 0.2rem 0.65rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .card-characters {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.04em;
+    }
+
+    .card-desc {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .card-footer {
+      padding: 1rem 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .read-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid rgba(201, 168, 76, 0.4);
+      background: none;
+      border-radius: var(--radius);
+      padding: 0.5rem 1.1rem;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
+      width: 100%;
+      justify-content: center;
+    }
+
+    .read-btn:hover {
+      background: var(--accent-dim);
+      border-color: var(--accent);
+    }
+
+    .read-btn .arrow {
+      display: inline-block;
+      transition: transform 0.3s var(--ease-out);
+    }
+
+    .read-btn.open .arrow {
+      transform: rotate(90deg);
+    }
+
+    /* ─── SCENE EXPAND ─── */
+    .scene-expand {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.55s var(--ease-out);
+    }
+
+    .scene-expand.open {
+      max-height: 9999px;
+    }
+
+    .scene-text {
+      padding: 1.5rem;
+      border-top: 1px solid var(--border);
+      background: rgba(0,0,0,0.3);
+    }
+
+    .scene-text-inner {
+      font-size: 0.875rem;
+      line-height: 1.85;
+      color: var(--text);
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    .scene-text-inner .scene-title-block {
+      text-align: center;
+      margin-bottom: 1.75rem;
+      padding-bottom: 1.25rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .scene-text-inner .scene-title-block h3 {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 1.25rem;
+      font-weight: 400;
+      color: var(--text);
+      margin-bottom: 0.25rem;
+    }
+
+    .scene-text-inner .scene-title-block p {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .scene-text-inner .slug-line {
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .scene-text-inner .direction {
+      font-style: italic;
+      color: var(--text-muted);
+      display: block;
+      margin: 0.4rem 0;
+    }
+
+    .scene-text-inner .character {
+      font-weight: 600;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text);
+      display: block;
+      margin-top: 1rem;
+      margin-bottom: 0.1rem;
+    }
+
+    .scene-text-inner .dialogue {
+      display: block;
+      padding-left: 1.5rem;
+      margin-bottom: 0.25rem;
+      color: var(--text);
+    }
+
+    .scene-text-inner .parenthetical {
+      display: block;
+      padding-left: 1.5rem;
+      font-style: italic;
+      color: var(--text-muted);
+      font-size: 0.825rem;
+    }
+
+    /* ─── HIDDEN CARD ─── */
+    .scene-card.hidden {
+      display: none;
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 900px) {
+      .scenes-grid { grid-template-columns: repeat(2, 1fr); }
+      .filters-note { display: none; }
+    }
+
+    @media (max-width: 600px) {
+      .scenes-grid { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+      .nav-hamburger { display: flex; }
+      .scenes-header { padding: 100px 1.25rem 40px; }
+      .filters-bar { padding: 0 1.25rem 2rem; }
+      .scenes-grid { padding: 0 1.25rem 4rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ─── NAV ─── -->
+  <nav>
+    <div class="nav-inner">
+      <a href="../" class="nav-logo">Michael <span>Compotaro</span></a>
+      <ul class="nav-links">
+        <li><a href="../index.html#about">About</a></li>
+        <li><a href="../index.html#reel">Reel</a></li>
+        <li><a href="../index.html#credits">Credits</a></li>
+        <li><a href="../index.html#training">Training</a></li>
+        <li><a href="index.html" class="active">Scenes</a></li>
+      </ul>
+      <button class="nav-hamburger" aria-label="Open navigation" id="hamburger">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile overlay -->
+  <nav class="nav-mobile-overlay" id="mobileNav" aria-label="Mobile navigation">
+    <a href="../index.html#about">About</a>
+    <a href="../index.html#reel">Reel</a>
+    <a href="../index.html#credits">Credits</a>
+    <a href="../index.html#training">Training</a>
+    <a href="index.html" class="active">Scenes</a>
+  </nav>
+
+  <!-- ─── HEADER ─── -->
+  <header class="scenes-header">
+    <span class="section-label">Scene Library</span>
+    <h1>Scene Library</h1>
+    <p class="subheading">A curated collection of scenes for acting class study.</p>
+    <div class="disclaimer">
+      These scenes are shared for educational and acting study purposes only. All rights belong to their respective copyright holders.
+    </div>
+  </header>
+
+  <!-- ─── FILTERS ─── -->
+  <div class="filters-bar">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="comedy">Comedy</button>
+    <button class="filter-btn" data-filter="drama">Drama</button>
+    <button class="filter-btn" data-filter="thriller">Thriller</button>
+    <span class="filters-note">All scenes are 2 characters</span>
+  </div>
+
+  <!-- ─── GRID ─── -->
+  <main class="scenes-grid" id="scenesGrid"></main>
+
+  <script>
+    const scenes = [
+      {
+        id: 1,
+        title: "See No Evil Hear No Evil",
+        year: 1989,
+        genre: "Comedy",
+        genreKey: "comedy",
+        characters: "Dave · Wally",
+        description: "A blind man and a deaf man interview for the same job — neither realizing the other's disability until chaos ensues.",
+        text: `<span class="slug-line">INT. SHOP — DAY</span>
+
+<span class="character">DAVE LYONS</span>
+<span class="dialogue">Can I help you?</span>
+
+<span class="character">WALLY</span>
+<span class="dialogue">I'm here about the ad in the paper: "Salesman wanted. Must have sense of humour." Are you the owner of the shop?</span>
+
+<span class="character">DAVE LYONS</span>
+<span class="dialogue">Who are you talking to?</span>
+
+<span class="character">WALLY</span>
+<span class="dialogue">There you are! Damn. Look at that. Contacts again. You see that? I'm looking for a Mr. David Lyons.</span>
+
+<span class="character">DAVE LYONS</span>
+<span class="dialogue">I'm David Lyons.</span>
+
+<span class="character">WALLY</span>
+<span class="dialogue">Pleased to meet you, David. I read your ad in the paper about an Ivy League type. Tall, dark, handsome. Three out of four ain't bad. I'm kind of nervous. I really want the job. I am a damned good salesman.</span>
+
+<span class="character">DAVE LYONS</span>
+<span class="dialogue">I'm David. How can I help you?</span>
+
+<span class="character">WALLY</span>
+<span class="dialogue">Are we caught in a time warp here? Twilight Zone? Any Martians here want to speak to Mr. David Lyons? You're a fun guy. I really like that ad you put in the paper. "Must have sense of humour." Not many people would do that. I'm your guy. If you want me, here I am.</span>
+
+<span class="character">DAVE LYONS</span>
+<span class="dialogue">Would you tell me what you want?</span>
+
+<span class="character">WALLY</span>
+<span class="dialogue">$350.</span>
+
+<span class="character">DAVE LYONS</span>
+<span class="dialogue">What are you talking about?</span>
+
+<span class="character">WALLY</span>
+<span class="dialogue">$300 but that's it.</span>
+
+<span class="character">DAVE LYONS</span>
+<span class="dialogue">Are you talking to me?</span>
+
+<span class="character">WALLY</span>
+<span class="dialogue">$225! $225 a week! Okay, $225. I can't live on less than that!</span>
+
+<span class="character">DAVE LYONS</span>
+<span class="dialogue">Who are you talking to?</span>
+
+<span class="character">WALLY</span>
+<span class="dialogue">I'm talking to you, you prick!</span>
+
+<span class="character">DAVE LYONS</span>
+<span class="dialogue">Look me in the eye and say that!</span>
+
+<span class="character">WALLY</span>
+<span class="dialogue">I would if I could, but I can't. I'm blind.</span>
+
+<span class="character">DAVE LYONS</span>
+<span class="dialogue">You're blind?</span>
+
+<span class="character">WALLY</span>
+<span class="dialogue">Yes. Now can I have the job?</span>
+
+<span class="character">DAVE LYONS</span>
+<span class="dialogue">I had no idea. I'm sorry.</span>
+
+<span class="character">WALLY</span>
+<span class="dialogue">Now you know. Can I get the job?</span>
+
+<span class="character">DAVE LYONS</span>
+<span class="dialogue">You're really blind?</span>
+
+<span class="character">WALLY</span>
+<span class="dialogue">I'm really blind. What are you, fucking deaf?</span>
+
+<span class="character">DAVE LYONS</span>
+<span class="dialogue">Yes! I'm fucking deaf!</span>
+
+<span class="character">WALLY</span>
+<span class="dialogue">You're deaf?</span>
+
+<span class="character">DAVE LYONS</span>
+<span class="dialogue">I'm really deaf.</span>
+
+<span class="character">WALLY</span>
+<span class="dialogue">How do you know what I'm saying?</span>
+
+<span class="character">DAVE LYONS</span>
+<span class="dialogue">I'm reading your lips. Now do you want the job or not?</span>
+
+<span class="character">WALLY</span>
+<span class="dialogue">Because I'm blind? Shove it up your ass, pal! I don't want no favours from a deaf asshole!</span>
+
+<span class="character">DAVE LYONS</span>
+<span class="dialogue">Then go home! Get out of here! Give me some peace of mind. To hell with blind people! Just turn around and walk out!</span>
+
+<span class="character">WALLY</span>
+<span class="dialogue">That's better. Now, I believe we agreed on $225.</span>
+
+<span class="character">DAVE LYONS</span>
+<span class="dialogue">What are we talking about? Just a minute. Wait. Stop the music.</span>
+
+<span class="character">WALLY</span>
+<span class="dialogue">Do you like Harvey Wallbangers?</span>
+
+<span class="character">DAVE LYONS</span>
+<span class="dialogue">Harvey who?</span>
+
+<span class="character">WALLY</span>
+<span class="dialogue">Wallbangers, a friend of mine. I'll introduce you later. 'Cause tonight, my friend, we celebrate!</span>`
+      },
+      {
+        id: 2,
+        title: "The Odd Couple",
+        year: 1968,
+        genre: "Comedy",
+        genreKey: "comedy",
+        characters: "Oscar · Felix",
+        description: "Felix pushes Oscar to the edge — and Oscar finally snaps about the linguini.",
+        text: `<span class="slug-line">INT. OSCAR'S APARTMENT — DAY</span>
+<span class="direction">The room is lived-in but recently over-tended. OSCAR sits reading a newspaper. FELIX fusses with a plate of food, pointedly ignoring him. The silence is heavy.</span>
+
+<span class="character">FELIX</span>
+<span class="parenthetical">(pushing his plate away)</span>
+<span class="dialogue">All right, how much longer is this gonna go on?</span>
+
+<span class="character">OSCAR</span>
+<span class="parenthetical">(reading his paper)</span>
+<span class="dialogue">Are you talking to me?</span>
+
+<span class="character">FELIX</span>
+<span class="dialogue">That's right, I'm talking to you.</span>
+
+<span class="character">OSCAR</span>
+<span class="dialogue">What do you want to know?</span>
+
+<span class="character">FELIX</span>
+<span class="dialogue">I want to know if you're ever going to speak to me again.</span>
+
+<span class="character">OSCAR</span>
+<span class="dialogue">I have nothing to say to you. I'm reading my paper.</span>
+
+<span class="character">FELIX</span>
+<span class="parenthetical">(standing)</span>
+<span class="dialogue">You've been reading that same page for twenty minutes! You're not reading — you're just staring at it!</span>
+
+<span class="character">OSCAR</span>
+<span class="dialogue">It's a very interesting page.</span>
+
+<span class="character">FELIX</span>
+<span class="parenthetical">(pacing)</span>
+<span class="dialogue">It's a sports page from three days ago! Oscar, I can't stand it. This silence is worse than the shouting. At least when you shout, I know where I stand.</span>
+
+<span class="direction">OSCAR slowly lowers the paper.</span>
+
+<span class="character">OSCAR</span>
+<span class="dialogue">You want to know where you stand? I'll tell you exactly where you stand. You're standing on my last nerve. For six months I lived alone in this apartment. All alone in eight rooms. I was dejected, despondent, and disgusted.</span>
+<span class="dialogue">Then you moved in. My dearest and closest friend.</span>
+<span class="dialogue">And after three weeks of close, personal contact —</span>
+<span class="parenthetical">(beat)</span>
+<span class="dialogue">— I am about to have a nervous breakdown!</span>
+
+<span class="character">FELIX</span>
+<span class="parenthetical">(hurt)</span>
+<span class="dialogue">I see. So it's all my fault?</span>
+
+<span class="character">OSCAR</span>
+<span class="dialogue">It's not a question of fault! It's a question of survival! I can't breathe in here anymore, Felix. Every time I open my mouth, I'm afraid I'm going to inhale a spray of Lysol!</span>
+<span class="dialogue">I come home from a long day at the track and I can't sit down because the pillows are "resting." I can't eat because the kitchen is "closed for maintenance."</span>
+
+<span class="character">FELIX</span>
+<span class="dialogue">I only try to keep the place decent. I didn't know cleanliness was a crime.</span>
+
+<span class="character">OSCAR</span>
+<span class="dialogue">It's not a crime, it's a hobby! You don't clean — you curate! I looked for my brown loafers today and I found them under "L" for "Leather!"</span>
+
+<span class="character">FELIX</span>
+<span class="dialogue">It's an efficient system!</span>
+
+<span class="direction">OSCAR grabs a plate of food.</span>
+
+<span class="character">OSCAR</span>
+<span class="dialogue">And what is this?</span>
+
+<span class="character">FELIX</span>
+<span class="dialogue">It's linguini!</span>
+
+<span class="direction">OSCAR hurls the plate toward the kitchen.</span>
+
+<span class="character">OSCAR</span>
+<span class="dialogue">Now it's garbage!</span>
+
+<span class="direction">A long beat.</span>
+
+<span class="character">FELIX</span>
+<span class="parenthetical">(high-pitched, wounded)</span>
+<span class="dialogue">It's not garbage… it's linguini.</span>
+
+<span class="character">OSCAR</span>
+<span class="dialogue">I don't care if it's the Shroud of Turin! I am sick of your cleaning, and your cooking, and your honking!</span>
+
+<span class="character">FELIX</span>
+<span class="dialogue">My honking? My allergies are a physical affliction! I don't "honk" for pleasure, Oscar!</span>
+
+<span class="character">OSCAR</span>
+<span class="dialogue">Your allergies are a hobby! You enjoy them!</span>
+<span class="parenthetical">(beat)</span>
+<span class="dialogue">I want you out, Felix. Out of this apartment! I want my life back! I want to be a slob again — in peace!</span>
+
+<span class="character">FELIX</span>
+<span class="parenthetical">(with great dignity)</span>
+<span class="dialogue">You mean that? You're actually throwing me out?</span>
+
+<span class="character">OSCAR</span>
+<span class="dialogue">I'm not throwing you out, I'm "de-alphabetizing" my life! Yes — I want you out. By tomorrow morning!</span>
+
+<span class="character">FELIX</span>
+<span class="dialogue">Fine. I'll go. I'll pack my things. I'll take my air purifier and my allergy medication and I'll vanish. You won't have to worry about "L" for "Leather" ever again.</span>
+
+<span class="direction">FELIX starts to exit, then stops.</span>
+
+<span class="character">FELIX (CONT'D)</span>
+<span class="dialogue">But before I go… I just want you to know one thing.</span>
+
+<span class="character">OSCAR</span>
+<span class="dialogue">What?!</span>
+
+<span class="character">FELIX</span>
+<span class="dialogue">I think I'm getting a sinus headache.</span>
+<span class="parenthetical">(beat)</span>
+<span class="dialogue">And it's your fault.</span>
+
+<span class="direction">OSCAR collapses.</span>
+
+<span class="character">OSCAR</span>
+<span class="dialogue">Out! Just get out!</span>`
+      },
+      {
+        id: 3,
+        title: "Pineapple Express",
+        year: 2008,
+        genre: "Comedy",
+        genreKey: "comedy",
+        characters: "Dale · Saul",
+        description: "Dale witnesses a drug dealer smoking a legendary cross-joint and can't resist staying.",
+        text: `<span class="slug-line">INT. SAUL'S APARTMENT — DAY</span>
+<span class="direction">DALE sits on the couch, staring in awe at a contraption on the coffee table.</span>
+
+<span class="character">DALE</span>
+<span class="dialogue">Holy shit! What the fuck is this thing?</span>
+
+<span class="direction">SAUL enters and sets a small electronic scale down.</span>
+
+<span class="character">SAUL</span>
+<span class="parenthetical">(nonchalantly)</span>
+<span class="dialogue">Ah, the cross-joint. You've never seen one of these? Not surprising. They are, like, the apex of the vortex of joint engineering. NASA built the first one in the eighties.</span>
+
+<span class="direction">Saul chuckles, placing some weed on the scale.</span>
+
+<span class="character">DALE</span>
+<span class="dialogue">You can actually smoke that contraption?</span>
+
+<span class="direction">Saul slides Dale's weed into a baggie.</span>
+
+<span class="character">SAUL</span>
+<span class="dialogue">You light all three ends at the same time, then, you smoke it as it resonates the main section, creating a "trifecta" of smoking power. It's like, three times as powerful as a normal joint.</span>
+
+<span class="direction">Dale hands over some cash. Saul swaps it for the bag. Dale lingers, eyes still fixed on the cross-joint.</span>
+
+<span class="character">DALE</span>
+<span class="dialogue">Well, be careful with that thing.</span>
+
+<span class="direction">Dale stands, heading for the door.</span>
+
+<span class="character">SAUL</span>
+<span class="dialogue">Dude... you wanna smoke this thing with me?</span>
+
+<span class="direction">Dale stops. He tries to look indifferent, but he's failing.</span>
+
+<span class="character">SAUL (CONT'D)</span>
+<span class="dialogue">I can't even light it on my own.</span>
+
+<span class="direction">Dale drops back onto the couch, giddy as a schoolgirl.</span>
+
+<span class="character">DALE</span>
+<span class="parenthetical">(excited)</span>
+<span class="dialogue">Wow. So like, uh... so like, so like what do I do?</span>
+
+<span class="direction">Saul gathers three lighters.</span>
+
+<span class="character">SAUL</span>
+<span class="dialogue">Alright. Firstly you light these two ends. Then I will light the tip, making the trifecta complete. Are you ready?</span>
+
+<span class="direction">Dale nods. They spark it. Saul takes a massive hit, instantly vanishing into a cloud of smoke and a VIOLENT COUGHING FIT.</span>
+
+<span class="character">DALE</span>
+<span class="dialogue">Holy...</span>
+
+<span class="direction">Dale takes the joint and hits it. He immediately explodes into his own coughing fit.</span>
+
+<span class="character">SAUL</span>
+<span class="dialogue">It's... uh, it's good to cough. <em>(COUGH)</em> It opens the — <em>(COUGH)</em> — capillaries... gets you twenty-five percent higher.</span>
+
+<span class="direction">Saul catches his breath, but only for a second.</span>
+
+<span class="character">SAUL (CONT'D)</span>
+<span class="dialogue">And that, combined with the pineapple weed, and the cross-joint — <em>(COUGH)</em> — you're a good thirty to forty times higher. I don't know the exact math, but, pff, you're pretty fucking gong-showed. You know what I mean?</span>
+
+<span class="direction">Saul tokes again. Dale's coughing intensifies. He looks like he might vomit.</span>
+
+<span class="character">SAUL (CONT'D)</span>
+<span class="dialogue">It's crazy. The better the weed, the more I wish I could think of how to explain what's so good about it, but the... uh, the better it is, the less shit I can think of in total, you know?</span>
+
+<span class="direction">Saul passes the joint, obliviously dropping ash all over Dale's suit. Dale brushes it off, annoyed.</span>
+
+<span class="character">SAUL (CONT'D)</span>
+<span class="dialogue">Okay, so, like, you've been buying from me for, like, a few months now and I really gotta ask. What's with the suit?</span>
+
+<span class="character">DALE</span>
+<span class="dialogue">I'm a process server.</span>
+
+<span class="character">SAUL</span>
+<span class="dialogue">You're a servant? Like, a butler?</span>
+
+<span class="character">DALE</span>
+<span class="dialogue">No, process server.</span>
+
+<span class="direction">Saul looks blank.</span>
+
+<span class="character">DALE (CONT'D)</span>
+<span class="dialogue">I'm hired to give people papers they don't want. It's pretty much the easiest job on earth.</span>
+
+<span class="character">SAUL</span>
+<span class="dialogue">Nice, man. Where'd you get that job?</span>
+
+<span class="direction">Dale takes another big hit.</span>
+
+<span class="character">DALE</span>
+<span class="dialogue">Well... uh, I got a totally useless degree two years ago, then I did nothing for a year, then my dad got so fed up he hooked me up.</span>
+
+<span class="direction">They both sit for a moment, reveling in the lack of ambition.</span>
+
+<span class="character">DALE (CONT'D)</span>
+<span class="dialogue">I got it pretty sweet, though. Today? I smoked like five joints, gave out some pieces of paper, and I ate some Burger King —</span>
+
+<span class="character">SAUL</span>
+<span class="dialogue">Hey man, did you get those new chicken fries?</span>
+
+<span class="character">DALE</span>
+<span class="dialogue">Yeah man. I'd get on that shit. They're fucking mind blowing. So, then I hot-boxed my car and then... got some action from my girlfriend.</span>
+
+<span class="direction">Saul laughs.</span>`
+      },
+      {
+        id: 4,
+        title: "Identity Thief",
+        year: 2013,
+        genre: "Drama/Comedy",
+        genreKey: "drama",
+        characters: "Sandy · Dawn",
+        description: "A toast turns into an unexpected confession — Dawn reveals the raw truth about her life.",
+        text: `<span class="slug-line">INT. HOTEL RESTAURANT — NIGHT</span>
+<span class="direction">A dingy motel room. Dim light. A half-empty bottle of whiskey sits on the table. SANDY raises his glass awkwardly toward DAWN. She leans back — skeptical, but listening.</span>
+
+<span class="character">SANDY</span>
+<span class="dialogue">I'd like to make a toast… to you.</span>
+<span class="parenthetical">(beat)</span>
+
+<span class="character">DAWN</span>
+<span class="dialogue">Oh, I thought I was the enemy.</span>
+
+<span class="character">SANDY</span>
+<span class="dialogue">You are. But I gotta admit, you taught me something. Well… a few things. You taught me about getting what you want, and you taught me about confidence. Maybe a little too much confidence. Did you see me with poor Ken Talbot today?</span>
+
+<span class="character">DAWN</span>
+<span class="parenthetical">(chuckling)</span>
+<span class="dialogue">Yeah, you were pretty hard on him.</span>
+
+<span class="character">SANDY</span>
+<span class="dialogue">Yeah, I know. But people have been hard on me my whole life. I just don't want to feel like a chump anymore. And you showed me that.</span>
+
+<span class="character">DAWN</span>
+<span class="dialogue">Did I?</span>
+
+<span class="character">SANDY</span>
+<span class="dialogue">Yeah.</span>
+
+<span class="direction">He pauses. His tone softens.</span>
+
+<span class="character">SANDY (CONT'D)</span>
+<span class="dialogue">You also completely messed up my life. But I guess I needed a little messing up. Needed a little bit more Diana in it.</span>
+
+<span class="character">DAWN</span>
+<span class="dialogue">Well.</span>
+
+<span class="character">SANDY</span>
+<span class="dialogue">Or whatever your real name is.</span>
+
+<span class="character">DAWN</span>
+<span class="parenthetical">(defensive)</span>
+<span class="dialogue">That is my real name.</span>
+
+<span class="character">SANDY</span>
+<span class="dialogue">That's not. Come on.</span>
+
+<span class="character">DAWN</span>
+<span class="dialogue">It is.</span>
+
+<span class="character">SANDY</span>
+<span class="dialogue">We're friends now. Just tell me.</span>
+
+<span class="character">DAWN</span>
+<span class="parenthetical">(evasively)</span>
+<span class="dialogue">What does it matter?</span>
+
+<span class="character">SANDY</span>
+<span class="dialogue">Exactly. What does it matter?</span>
+
+<span class="character">DAWN</span>
+<span class="parenthetical">(snaps)</span>
+<span class="dialogue">Fine. It's Marla.</span>
+
+<span class="character">SANDY</span>
+<span class="parenthetical">(skeptical)</span>
+<span class="dialogue">Why are you lying to me? Just tell me your name.</span>
+
+<span class="character">DAWN</span>
+<span class="parenthetical">(voice rising)</span>
+<span class="dialogue">I don't want to tell you!</span>
+
+<span class="character">SANDY</span>
+<span class="dialogue">Don't get pissed off.</span>
+
+<span class="character">DAWN</span>
+<span class="dialogue">I'm not getting pissed off. Just drop it.</span>
+
+<span class="character">SANDY</span>
+<span class="dialogue">This is weird. Why won't you tell me your name? It can't be worse than Sandy.</span>
+
+<span class="character">DAWN</span>
+<span class="parenthetical">(quiet, breaking)</span>
+<span class="dialogue">Because I don't know it.</span>
+
+<span class="character">SANDY</span>
+<span class="dialogue">Come on.</span>
+
+<span class="character">DAWN</span>
+<span class="dialogue">I don't know it!</span>
+
+<span class="character">SANDY</span>
+<span class="dialogue">You don't know it.</span>
+
+<span class="character">DAWN</span>
+<span class="dialogue">I don't know it.</span>
+
+<span class="character">SANDY</span>
+<span class="dialogue">Really?</span>
+
+<span class="direction">Sandy stares at her, stunned.</span>
+
+<span class="character">SANDY</span>
+<span class="dialogue">What about your family? What about Morganville, Wisconsin? Are you telling me that was all bullshit?</span>
+
+<span class="character">DAWN</span>
+<span class="parenthetical">(bitter, raw)</span>
+<span class="dialogue">No. There's a great little town. It's Morganville, it's in Wisconsin. And there's a really nice little police station in the center of town where people who don't want their babies can leave them.</span>
+<span class="parenthetical">(beat)</span>
+<span class="dialogue">So, what name is that you want? Because I had six of them by the time I was through foster care.</span>
+
+<span class="character">SANDY</span>
+<span class="parenthetical">(sympathetic)</span>
+<span class="dialogue">That's a… that's a tough life road to go. No one could've helped you out, maybe early on? Put you down a different path?</span>
+
+<span class="character">DAWN</span>
+<span class="parenthetical">(shaking, angry)</span>
+<span class="dialogue">No. No, there's been no one, ever, to put me down a different path. To do anything for me. There's never been anybody. It's just been me. So I don't give a shit about people, and people don't give a shit about me. And that's just how it is.</span>
+
+<span class="character">SANDY</span>
+<span class="dialogue">I give a shit about you.</span>
+
+<span class="character">DAWN</span>
+<span class="dialogue">You don't give a shit about me. You just want me to clean up my mess. You don't give a shit about me — and I know it. I've been on my own all my life. Nobody even knows I'm here. Nobody ever knows where I am. Because there is nobody. I got sick, I took care of myself. I needed shit for school, I got it.</span>
+
+<span class="direction">Tears well up. She lashes out through them.</span>
+
+<span class="character">DAWN (CONT'D)</span>
+<span class="dialogue">You're so stupid you think a fancy suit and acting like an asshole is gonna make your daughters happy? You think that's what they want? They want some big man treating people like shit? I would've done anything to have somebody like you — just to actually be there and care about me. Just to fucking be there. You're such an asshole you're trying to be more like me. Nice choice, Sandy.</span>
+
+<span class="direction">A heavy silence. She wipes her face, covering her emotion with mockery.</span>
+
+<span class="character">DAWN (CONT'D)</span>
+<span class="parenthetical">(mocking, trembling)</span>
+<span class="dialogue">Nice, I'm never gonna be able to duplicate this makeup.</span>
+
+<span class="character">SANDY</span>
+<span class="dialogue">Here.</span>
+<span class="direction">hands her a handkerchief</span>
+
+<span class="character">DAWN</span>
+<span class="dialogue">I don't want it. I don't want it.</span>
+<span class="direction">pushes it away</span>
+
+<span class="character">SANDY</span>
+<span class="dialogue">Sorry.</span>
+
+<span class="character">DAWN</span>
+<span class="dialogue">I'm sorry. I gave you some lame dumpster-baby story. I was just lying.</span>
+<span class="parenthetical">(beat)</span>
+<span class="dialogue">That's what I do. I lie.</span>`
+      },
+      {
+        id: 5,
+        title: "Anchorman",
+        year: 2004,
+        genre: "Comedy",
+        genreKey: "comedy",
+        characters: "Ron · Veronica",
+        description: "Ron Burgundy attempts to pick up Veronica at a party with all the subtlety of a man who owns many leather-bound books.",
+        text: `<span class="slug-line">INT. PARTY — NIGHT</span>
+<span class="direction">A crowded newsroom party buzzes with laughter and music. RON BURGUNDY, confident and slightly tipsy, spots VERONICA CORNINGSTONE across the room. He straightens his tie, smooths his hair, and saunters over.</span>
+
+<span class="character">RON</span>
+<span class="dialogue">Hello.</span>
+
+<span class="character">VERONICA</span>
+<span class="dialogue">Hello.</span>
+
+<span class="character">RON</span>
+<span class="dialogue">Hope I'm not disturbing you, but, uh… I saw you from across the party, and, uh… I don't usually do this, but I felt compelled to tell you something. You have… an absolutely breathtaking… heinie. I mean, that thing is good. I want to be friends with it.</span>
+
+<span class="character">VERONICA</span>
+<span class="dialogue">Well, you certainly know how to compliment a woman. Now, if you'll excuse me…</span>
+
+<span class="direction">She turns slightly to go. Ron blocks her path, smiling.</span>
+
+<span class="character">RON</span>
+<span class="dialogue">Do you know who I am?</span>
+
+<span class="character">VERONICA</span>
+<span class="dialogue">No, I can't say that I do.</span>
+
+<span class="character">RON</span>
+<span class="dialogue">I don't know how to put this, but… I'm kind of a big deal.</span>
+
+<span class="character">VERONICA</span>
+<span class="dialogue">Really?</span>
+
+<span class="character">RON</span>
+<span class="dialogue">People know me.</span>
+
+<span class="character">VERONICA</span>
+<span class="dialogue">I'm very happy for you.</span>
+
+<span class="character">RON</span>
+<span class="dialogue">I'm very important. I have… many leather-bound books, and my apartment smells of rich mahogany. I… I'm friends with Merlin Olsen, too. He comes over on occasion.</span>
+<span class="parenthetical">(beat)</span>
+<span class="dialogue">That's stupid.</span>
+
+<span class="character">VERONICA</span>
+<span class="dialogue">No, no, that's… very exciting.</span>
+
+<span class="character">RON</span>
+<span class="dialogue">Listen, can I… can I start over again?</span>
+
+<span class="character">VERONICA</span>
+<span class="dialogue">Sure.</span>
+
+<span class="character">RON</span>
+<span class="dialogue">I wanna say something. I'm gonna put it out there. If you like it, you can take it. If you don't, send it right back.</span>
+
+<span class="character">VERONICA</span>
+<span class="dialogue">Mm-hmm.</span>
+
+<span class="character">RON</span>
+<span class="dialogue">I wanna be on you.</span>
+<span class="parenthetical">(beat)</span>
+
+<span class="direction">Silence. Veronica stares at him, unimpressed. Ron tries to smile through the awkwardness and walks off.</span>
+
+<span class="character">RON (CONT'D)</span>
+<span class="dialogue">Wait — wait, wait, wait, wait. I… I wanna be on you.</span>`
+      },
+      {
+        id: 6,
+        title: "Only the Lonely",
+        year: 1991,
+        genre: "Drama/Comedy",
+        genreKey: "drama",
+        characters: "Danny · Teresa",
+        description: "Danny slips into the funeral home back room and makes an awkward first move on Teresa.",
+        text: `<span class="slug-line">INT. FUNERAL HOME — PREP ROOM — NIGHT</span>
+<span class="direction">TERESA works quietly at her station. DANNY slips in. She notices him immediately.</span>
+
+<span class="character">DANNY</span>
+<span class="dialogue">You missed a spot.</span>
+
+<span class="character">TERESA</span>
+<span class="dialogue">No one's allowed back here.</span>
+
+<span class="character">DANNY</span>
+<span class="parenthetical">(beat)</span>
+<span class="dialogue">That was just a joke. I didn't mean to scare you.</span>
+
+<span class="character">TERESA</span>
+<span class="dialogue">Is there a problem?</span>
+
+<span class="character">DANNY</span>
+<span class="dialogue">No. No problem at all. Actually... I saw you at O'Neal's the other night.</span>
+<span class="parenthetical">(beat)</span>
+<span class="dialogue">And, well, I'll save us both the awkward dance of a first date.</span>
+
+<span class="direction">Danny gathers himself, awkward but sincere.</span>
+
+<span class="character">DANNY (CONT'D)</span>
+<span class="dialogue">Here's a list of excuses. Things I've heard a million times before. You just say "yes" or "no." Takes the pressure off both of us.</span>
+
+<span class="character">TERESA</span>
+<span class="parenthetical">(skeptical, but curious)</span>
+<span class="dialogue">Alright.</span>
+
+<span class="character">DANNY</span>
+<span class="dialogue">You're seeing somebody else.</span>
+
+<span class="character">TERESA</span>
+<span class="dialogue">No.</span>
+
+<span class="character">DANNY</span>
+<span class="dialogue">Having your wisdom teeth pulled.</span>
+
+<span class="character">TERESA</span>
+<span class="dialogue">No.</span>
+
+<span class="character">DANNY</span>
+<span class="dialogue">Washing your hair.</span>
+
+<span class="character">TERESA</span>
+<span class="dialogue">No.</span>
+
+<span class="character">DANNY</span>
+<span class="dialogue">Shopping? Babysitting? Laundry? Legs waxed?</span>
+
+<span class="character">TERESA</span>
+<span class="parenthetical">(shaking her head, amused)</span>
+<span class="dialogue">No.</span>
+
+<span class="character">DANNY</span>
+<span class="dialogue">Well... that about covers everything.</span>
+
+<span class="character">TERESA</span>
+<span class="dialogue">Not quite.</span>
+
+<span class="character">DANNY</span>
+<span class="dialogue">What'd I miss?</span>
+
+<span class="character">TERESA</span>
+<span class="dialogue">If somebody dies, I'm stuck here.</span>
+
+<span class="character">DANNY</span>
+<span class="parenthetical">(chuckles)</span>
+<span class="dialogue">Yeah, of course. That one.</span>
+
+<span class="character">TERESA</span>
+<span class="dialogue">But nobody's died yet.</span>
+
+<span class="character">DANNY</span>
+<span class="dialogue">So... you're free?</span>
+
+<span class="direction">Teresa smiles faintly. Danny lights up, nervous but excited.</span>
+
+<span class="character">DANNY</span>
+<span class="dialogue">That's great! Wonderful. How about seven o'clock? I'll pick you up. Where do you live?</span>
+
+<span class="character">TERESA</span>
+<span class="dialogue">Here.</span>
+
+<span class="character">DANNY</span>
+<span class="dialogue">With the stiffs?</span>
+
+<span class="character">TERESA</span>
+<span class="dialogue">My father and I have an apartment upstairs.</span>
+
+<span class="character">DANNY</span>
+<span class="dialogue">Oh, right. Convenient. So... seven, then?</span>
+
+<span class="character">TERESA</span>
+<span class="dialogue">If nobody dies.</span>
+
+<span class="character">DANNY</span>
+<span class="dialogue">If nobody dies. Seven.</span>
+
+<span class="direction">Danny notices a sculpture nearby — a bust of CLARK GABLE.</span>
+
+<span class="character">DANNY</span>
+<span class="dialogue">Did you mean him to look like Clark Gable?</span>
+
+<span class="character">TERESA</span>
+<span class="dialogue">Yeah.</span>
+
+<span class="character">DANNY</span>
+<span class="dialogue">You did that?</span>
+
+<span class="character">TERESA</span>
+<span class="dialogue">Mmhmm.</span>
+
+<span class="character">DANNY</span>
+<span class="dialogue">Wow. That's a real talent. He's a dead ringer.</span>
+<span class="parenthetical">(beat, wincing)</span>
+<span class="dialogue">I didn't mean "dead" like that. I mean — never mind.</span>
+
+<span class="direction">Danny starts to back out of the room.</span>
+
+<span class="character">DANNY (CONT'D)</span>
+<span class="dialogue">I'll see you at seven. I'll close up for you.</span>
+
+<span class="character">TERESA</span>
+<span class="parenthetical">(to herself)</span>
+<span class="dialogue">Don't screw this one up, Teresa.</span>`
+      },
+      {
+        id: 7,
+        title: "The Shining",
+        year: 1980,
+        genre: "Thriller",
+        genreKey: "thriller",
+        characters: "Jack · Wendy",
+        description: "Wendy checks in on Jack's writing — and sets off a terrifying response about concentration and interruption.",
+        text: `<span class="slug-line">INT. OVERLOOK HOTEL — LOUNGE — DAY</span>
+<span class="direction">JACK sits at a table, back to camera, typing. WENDY enters from background and walks forward to JACK.</span>
+
+<span class="character">WENDY</span>
+<span class="dialogue">Hi, hon. How's it going?</span>
+
+<span class="direction">WENDY stops beside him. JACK pulls a page from the typewriter.</span>
+
+<span class="character">JACK</span>
+<span class="dialogue">Fine.</span>
+
+<span class="direction">WENDY kisses him.</span>
+
+<span class="character">WENDY</span>
+<span class="dialogue">Get a lot written today?</span>
+
+<span class="character">JACK</span>
+<span class="dialogue">Yes.</span>
+
+<span class="character">WENDY</span>
+<span class="dialogue">Hey, the weather forecast said it's going to snow tonight.</span>
+
+<span class="character">JACK</span>
+<span class="dialogue">What do you want me to do about it?</span>
+
+<span class="character">WENDY</span>
+<span class="dialogue">Ah, come on hon. Don't be so grouchy.</span>
+
+<span class="character">JACK</span>
+<span class="dialogue">I'm not being grouchy. I just want to finish my work.</span>
+
+<span class="character">WENDY</span>
+<span class="dialogue">Okay. I understand. I'll come back later on with a couple of sandwiches for you and... maybe you'll let me read something then.</span>
+
+<span class="character">JACK</span>
+<span class="dialogue">Wendy,</span>
+<span class="parenthetical">(clears throat)</span>
+<span class="dialogue">let me explain something to you. Whenever you come in here and interrupt me, you're breaking my concentration.</span>
+
+<span class="direction">JACK hits his forehead with his hand.</span>
+
+<span class="character">JACK (CONT'D)</span>
+<span class="dialogue">You're distracting me,</span>
+
+<span class="direction">He picks up the sheet of paper and tears it up. Then throws the pieces down.</span>
+
+<span class="character">JACK (CONT'D)</span>
+<span class="dialogue">and it will then take me time to get back to where I was, understand?</span>
+
+<span class="character">WENDY</span>
+<span class="dialogue">Yes.</span>
+
+<span class="character">JACK</span>
+<span class="dialogue">Fine. Now we're going to make a new rule. Whenever I am in here and you hear me typing,</span>
+
+<span class="direction">JACK taps typewriter keys.</span>
+
+<span class="character">JACK (CONT'D)</span>
+<span class="dialogue">or whether you don't hear me typing, whatever the fuck you hear me doing in here, when I am in here that means that I am working — that means don't come in. Now do you think you can handle that?</span>
+
+<span class="character">WENDY</span>
+<span class="dialogue">Yes.</span>
+
+<span class="character">JACK</span>
+<span class="dialogue">Fine. Why don't you start right now and get the fuck out of here, hmm?</span>
+
+<span class="character">WENDY</span>
+<span class="dialogue">Okay.</span>
+
+<span class="direction">WENDY turns and walks away. JACK starts to type.</span>`
+      },
+      {
+        id: 8,
+        title: "No Country for Old Men",
+        year: 2007,
+        genre: "Thriller",
+        genreKey: "thriller",
+        characters: "Chigurh · Proprietor",
+        description: "Anton Chigurh makes a gas station owner call a coin flip for his life.",
+        text: `<span class="slug-line">EXT. GAS STATION/GROCERY — SHEFFIELD — DAY</span>
+<span class="direction">An isolated, dusty crossroad. Twilight. The FORD SEDAN that Chigurh stopped earlier sits parked by the pump.</span>
+
+<span class="slug-line">INT. GAS STATION/GROCERY — DAY</span>
+<span class="direction">CHIGURH stands at the counter across from the ELDERLY PROPRIETOR. He holds up a bag of cashews.</span>
+
+<span class="character">CHIGURH</span>
+<span class="dialogue">How much?</span>
+
+<span class="character">PROPRIETOR</span>
+<span class="dialogue">Sixty-nine cent.</span>
+
+<span class="character">CHIGURH</span>
+<span class="dialogue">This. And the gas.</span>
+
+<span class="character">PROPRIETOR</span>
+<span class="dialogue">Y'all getting any rain up your way?</span>
+
+<span class="character">CHIGURH</span>
+<span class="dialogue">What way would that be?</span>
+
+<span class="character">PROPRIETOR</span>
+<span class="dialogue">I seen you was from Dallas.</span>
+
+<span class="direction">Chigurh tears open the bag of cashews, pours a few into his hand.</span>
+
+<span class="character">CHIGURH</span>
+<span class="dialogue">What business is it of yours where I'm from, friendo?</span>
+
+<span class="character">PROPRIETOR</span>
+<span class="dialogue">I didn't mean nothin' by it.</span>
+
+<span class="character">CHIGURH</span>
+<span class="dialogue">Didn't mean nothin'.</span>
+
+<span class="character">PROPRIETOR</span>
+<span class="dialogue">I was just passin' the time.</span>
+
+<span class="character">CHIGURH</span>
+<span class="dialogue">I guess that passes for manners in your cracker view of things.</span>
+
+<span class="direction">A beat.</span>
+
+<span class="character">PROPRIETOR</span>
+<span class="dialogue">Well sir, I apologize. If you don't wanna accept that I don't know what else I can do for you.</span>
+
+<span class="direction">Chigurh chews cashews, staring. The PROPRIETOR rings up the sale and places change on the counter.</span>
+
+<span class="character">PROPRIETOR (CONT'D)</span>
+<span class="dialogue">Will there be somethin' else?</span>
+
+<span class="character">CHIGURH</span>
+<span class="dialogue">I don't know. Will there?</span>
+
+<span class="direction">A beat. The PROPRIETOR coughs. Chigurh stares.</span>
+
+<span class="character">PROPRIETOR</span>
+<span class="dialogue">Is somethin' wrong?</span>
+
+<span class="character">CHIGURH</span>
+<span class="dialogue">With what?</span>
+
+<span class="character">PROPRIETOR</span>
+<span class="dialogue">With anything?</span>
+
+<span class="character">CHIGURH</span>
+<span class="dialogue">Is that what you're asking me? Is there something wrong with anything?</span>
+
+<span class="direction">The PROPRIETOR looks at him, uncomfortable, looks away.</span>
+
+<span class="character">PROPRIETOR</span>
+<span class="dialogue">Will there be anything else?</span>
+
+<span class="character">CHIGURH</span>
+<span class="dialogue">You already asked me that.</span>
+
+<span class="character">PROPRIETOR</span>
+<span class="dialogue">Well… I need to see about closin'.</span>
+
+<span class="character">CHIGURH</span>
+<span class="dialogue">See about closing.</span>
+
+<span class="character">PROPRIETOR</span>
+<span class="dialogue">Yes sir.</span>
+
+<span class="character">CHIGURH</span>
+<span class="dialogue">What time do you close?</span>
+
+<span class="character">PROPRIETOR</span>
+<span class="dialogue">Now. We close now.</span>
+
+<span class="character">CHIGURH</span>
+<span class="dialogue">"Now" is not a time. What time do you close?</span>
+
+<span class="character">PROPRIETOR</span>
+<span class="dialogue">Generally around dark. At dark.</span>
+
+<span class="direction">Chigurh stares, chewing slowly.</span>
+
+<span class="character">CHIGURH</span>
+<span class="dialogue">You don't know what you're talking about, do you?</span>
+
+<span class="character">PROPRIETOR</span>
+<span class="dialogue">Sir?</span>
+
+<span class="character">CHIGURH</span>
+<span class="dialogue">I said you don't know what you're talking about.</span>
+
+<span class="direction">Chigurh chews.</span>
+
+<span class="character">CHIGURH (CONT'D)</span>
+<span class="dialogue">What time do you go to bed?</span>
+
+<span class="character">PROPRIETOR</span>
+<span class="dialogue">Sir?</span>
+
+<span class="character">CHIGURH</span>
+<span class="dialogue">You're a bit deaf, aren't you? I said, what time do you go to bed?</span>
+
+<span class="character">PROPRIETOR</span>
+<span class="dialogue">Well… I'd say around nine-thirty. Somewhere around nine-thirty.</span>
+
+<span class="character">CHIGURH</span>
+<span class="dialogue">I could come back then.</span>
+
+<span class="character">PROPRIETOR</span>
+<span class="dialogue">Why would you be comin' back? We'll be closed.</span>
+
+<span class="character">CHIGURH</span>
+<span class="dialogue">You said that.</span>
+
+<span class="direction">He stares, still chewing.</span>
+
+<span class="character">PROPRIETOR</span>
+<span class="dialogue">Well… I need to close now —</span>
+
+<span class="character">CHIGURH</span>
+<span class="dialogue">You live in that house behind the store?</span>
+
+<span class="character">PROPRIETOR</span>
+<span class="dialogue">Yes I do.</span>
+
+<span class="character">CHIGURH</span>
+<span class="dialogue">You've lived here all your life?</span>
+
+<span class="direction">A beat.</span>
+
+<span class="character">PROPRIETOR</span>
+<span class="dialogue">This was my wife's father's place. Originally.</span>
+
+<span class="character">CHIGURH</span>
+<span class="dialogue">You married into it.</span>
+
+<span class="character">PROPRIETOR</span>
+<span class="dialogue">We lived in Temple, Texas for many years. Raised a family there. Came out here about four years ago.</span>
+
+<span class="character">CHIGURH</span>
+<span class="dialogue">You married into it.</span>
+
+<span class="character">PROPRIETOR</span>
+<span class="dialogue">If that's the way you wanna put it.</span>
+
+<span class="character">CHIGURH</span>
+<span class="dialogue">I don't have some way to put it. That's the way it is.</span>
+
+<span class="direction">Chigurh finishes the cashews, wads up the packet, and sets it on the counter. The PROPRIETOR watches it slowly unkink. Chigurh's eyes stay fixed on him.</span>
+
+<span class="character">CHIGURH (CONT'D)</span>
+<span class="dialogue">What's the most you've ever lost on a coin toss?</span>
+
+<span class="character">PROPRIETOR</span>
+<span class="dialogue">Sir?</span>
+
+<span class="character">CHIGURH</span>
+<span class="dialogue">The most. You ever lost. On a coin toss.</span>
+
+<span class="direction">Chigurh digs into his pocket. Produces a quarter. He flips it, slaps it onto his forearm, keeps it covered.</span>
+
+<span class="character">PROPRIETOR</span>
+<span class="dialogue">I don't know. I couldn't say.</span>
+
+<span class="character">CHIGURH</span>
+<span class="dialogue">Call it.</span>
+
+<span class="character">PROPRIETOR</span>
+<span class="dialogue">Call it?</span>
+
+<span class="character">CHIGURH</span>
+<span class="dialogue">Yes.</span>
+
+<span class="character">PROPRIETOR</span>
+<span class="dialogue">For what?</span>
+
+<span class="character">CHIGURH</span>
+<span class="dialogue">Just call it.</span>
+
+<span class="character">PROPRIETOR</span>
+<span class="dialogue">Well — we need to know what it is we're callin' for here.</span>
+
+<span class="character">CHIGURH</span>
+<span class="dialogue">You need to call it. I can't call it for you. It wouldn't be fair. Wouldn't even be right.</span>
+
+<span class="character">PROPRIETOR</span>
+<span class="dialogue">I didn't put nothin' up.</span>
+
+<span class="character">CHIGURH</span>
+<span class="dialogue">Yes you did. You've been putting it up your whole life. You just didn't know it.</span>
+
+<span class="character">CHIGURH (CONT'D)</span>
+<span class="dialogue">You know what date is on this coin?</span>
+
+<span class="character">PROPRIETOR</span>
+<span class="dialogue">No.</span>
+
+<span class="character">CHIGURH</span>
+<span class="dialogue">Nineteen fifty-eight. It's been traveling twenty-two years to get here. And now it's here. And it's either heads or tails, and you have to say. Call it.</span>
+
+<span class="direction">A long beat.</span>
+
+<span class="character">PROPRIETOR</span>
+<span class="dialogue">Look… I got to know what I stand to win.</span>
+
+<span class="character">CHIGURH</span>
+<span class="dialogue">Everything.</span>
+
+<span class="character">PROPRIETOR</span>
+<span class="dialogue">How's that?</span>
+
+<span class="character">CHIGURH</span>
+<span class="dialogue">You stand to win everything. Call it.</span>
+
+<span class="character">PROPRIETOR</span>
+<span class="dialogue">All right. Heads then.</span>
+
+<span class="direction">Chigurh lifts his hand. Looks at the coin.</span>
+
+<span class="character">CHIGURH</span>
+<span class="dialogue">Well done.</span>
+
+<span class="direction">He hands it across.</span>
+
+<span class="character">CHIGURH (CONT'D)</span>
+<span class="dialogue">Don't put it in your pocket.</span>
+
+<span class="character">PROPRIETOR</span>
+<span class="dialogue">Sir?</span>
+
+<span class="character">CHIGURH</span>
+<span class="dialogue">Don't put it in your pocket. It's your lucky quarter.</span>
+
+<span class="character">PROPRIETOR</span>
+<span class="dialogue">Where you want me to put it?</span>
+
+<span class="character">CHIGURH</span>
+<span class="dialogue">Anywhere not in your pocket. Or it'll get mixed in with the others and become just a coin. Which it is.</span>
+
+<span class="direction">Chigurh turns and walks out. The PROPRIETOR watches him go.</span>`
+      },
+      {
+        id: 9,
+        title: "Little Fockers",
+        year: 2010,
+        genre: "Comedy",
+        genreKey: "comedy",
+        characters: "Jack · Greg",
+        description: "Greg discovers Jack took an erectile dysfunction pill — and now has to give him a very uncomfortable injection.",
+        text: `<span class="character">JACK</span>
+<span class="dialogue">Hello, Greg.</span>
+
+<span class="character">GREG</span>
+<span class="dialogue">Hey... Hey, Jack.</span>
+
+<span class="character">JACK</span>
+<span class="dialogue">You mind explaining this?</span>
+
+<span class="character">GREG</span>
+<span class="dialogue">What is that? Oh... Sustengo. Yeah, that's... you know. These drug companies give me all these free samples.</span>
+
+<span class="character">JACK</span>
+<span class="dialogue">Is that it? Or do you need to use this because you're no longer sexually attracted to Pam?</span>
+
+<span class="character">GREG</span>
+<span class="dialogue">You know what, Jack? That's ridiculous. Really. You know what? I'm not even gonna go there with you. This is — have a good night, all right? I'm gonna go sleep.</span>
+
+<span class="character">JACK</span>
+<span class="dialogue">Don't walk away from me, Focker.</span>
+
+<span class="character">GREG</span>
+<span class="dialogue">Jack, is everything okay down there?</span>
+
+<span class="character">JACK</span>
+<span class="dialogue">Everything's fine.</span>
+
+<span class="character">GREG</span>
+<span class="dialogue">Okay. All right. 'Cause you seem to have a little, I mean...</span>
+
+<span class="character">JACK</span>
+<span class="dialogue">I know what I have, Greg, and I'm not concerned about that right now. Right now, what I want from you is the truth.</span>
+
+<span class="character">GREG</span>
+<span class="dialogue">Jack, did you take one of those pills?</span>
+
+<span class="character">JACK</span>
+<span class="dialogue">Well... I was highly preoccupied, and Dina wanted to make love, and the label clearly states that it's safe for heart patients.</span>
+
+<span class="character">GREG</span>
+<span class="dialogue">Yes, but you need a prescription after you've had a thorough examination.</span>
+
+<span class="character">JACK</span>
+<span class="dialogue">Stop avoiding the question.</span>
+
+<span class="character">GREG</span>
+<span class="dialogue">I'm not avoiding the question. How long have you had that situation for?</span>
+
+<span class="character">JACK</span>
+<span class="dialogue">A little longer than four hours.</span>
+
+<span class="character">GREG</span>
+<span class="dialogue">How long?</span>
+
+<span class="character">JACK</span>
+<span class="dialogue">Maybe... about five and a half.</span>
+
+<span class="character">GREG</span>
+<span class="dialogue">Jack, you gotta get to an ER right now and get a shot of adrenaline to counteract that drug.</span>
+
+<span class="character">JACK</span>
+<span class="dialogue">You're a nurse. Don't you have that kind of stuff in the house?</span>
+
+<span class="character">GREG</span>
+<span class="dialogue">Yeah, I have an Epi kit, but I'm not gonna give you a shot <em>there</em>, okay?</span>
+
+<span class="character">JACK</span>
+<span class="dialogue">Focker, there is no way I'm going to an ER room with this thing. Now, you need to stick me, and you need to stick me now. I'm having a <em>dick attack</em>! Stick me!</span>
+
+<span class="character">GREG</span>
+<span class="dialogue">Shh. Just relax, okay? I'll get the needle. All right, I need you to drop your pants.</span>
+
+<span class="character">JACK</span>
+<span class="dialogue">What kind of sick drug are you dealing to your patients?</span>
+
+<span class="character">GREG</span>
+<span class="dialogue">Jack, I told you, I took home some samples, all right? Maybe read the label before you just pick up a drug and eat it.</span>
+
+<span class="character">JACK</span>
+<span class="dialogue">Let's just do it.</span>
+
+<span class="character">GREG</span>
+<span class="dialogue">I'm gonna administer the shot on the count of three, all right? Okay... Just —</span>
+
+<span class="character">JACK</span>
+<span class="dialogue">Your hands are cold.</span>
+
+<span class="character">GREG</span>
+<span class="dialogue">I'm sorry.</span>
+
+<span class="character">JACK</span>
+<span class="dialogue">It's a bit... okay.</span>
+
+<span class="character">GREG</span>
+<span class="dialogue">One... two... three.</span>
+
+<span class="character">JACK</span>
+<span class="dialogue"><em>Focker!</em></span>`
+      }
+    ];
+
+    function buildCard(scene) {
+      return `
+        <article class="scene-card" data-genre="${scene.genreKey}" data-id="${scene.id}">
+          <div class="card-body">
+            <div class="card-top">
+              <h2 class="card-title">${scene.title}</h2>
+              <span class="year-badge">${scene.year}</span>
+            </div>
+            <span class="genre-tag">${scene.genre}</span>
+            <p class="card-characters">${scene.characters}</p>
+            <p class="card-desc">${scene.description}</p>
+          </div>
+          <div class="card-footer">
+            <button class="read-btn" onclick="toggleScene(this, ${scene.id})">
+              <span class="arrow">&#9654;</span> Read Scene
+            </button>
+          </div>
+          <div class="scene-expand" id="expand-${scene.id}">
+            <div class="scene-text">
+              <div class="scene-text-inner">
+                <div class="scene-title-block">
+                  <h3>${scene.title}</h3>
+                  <p>${scene.characters} &nbsp;·&nbsp; ${scene.year}</p>
+                </div>
+                ${scene.text}
+              </div>
+            </div>
+          </div>
+        </article>
+      `;
+    }
+
+    const grid = document.getElementById('scenesGrid');
+    grid.innerHTML = scenes.map(buildCard).join('');
+
+    function toggleScene(btn, id) {
+      const expand = document.getElementById('expand-' + id);
+      const isOpen = expand.classList.contains('open');
+      expand.classList.toggle('open', !isOpen);
+      btn.classList.toggle('open', !isOpen);
+      btn.querySelector('.arrow').textContent = isOpen ? '▶' : '▼';
+    }
+
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const filter = btn.dataset.filter;
+        document.querySelectorAll('.scene-card').forEach(card => {
+          if (filter === 'all' || card.dataset.genre === filter) {
+            card.classList.remove('hidden');
+          } else {
+            card.classList.add('hidden');
+          }
+        });
+      });
+    });
+
+    const hamburger = document.getElementById('hamburger');
+    const mobileNav = document.getElementById('mobileNav');
+    hamburger.addEventListener('click', () => {
+      mobileNav.classList.toggle('open');
+    });
+    mobileNav.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => mobileNav.classList.remove('open'));
+    });
+  </script>
+</body>
+</html>
