@@ -1014,6 +1014,23 @@ footer {
   letter-spacing: 0.04em;
 }
 
+.footer-links {
+  display: flex;
+  gap: 28px;
+  justify-content: center;
+  margin: 16px 0 8px;
+  flex-wrap: wrap;
+}
+.footer-links a {
+  font-size: 13px;
+  color: #666;
+  text-decoration: none;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+.footer-links a:hover { color: #c9a84c; }
+
 /* ─── SCROLL REVEAL ANIMATIONS ─── */
 
 .reveal {
