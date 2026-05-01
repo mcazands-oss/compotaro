@@ -8,6 +8,10 @@
     { "src": "/play/host", "dest": "/play/host.html" },
     { "src": "/play/host/", "dest": "/play/host.html" },
     { "src": "/play/join", "dest": "/play/join.html" },
-    { "src": "/play/join/", "dest": "/play/join.html" }
+    { "src": "/play/join/", "dest": "/play/join.html" },
+    { "src": "/greenroom", "dest": "/greenroom/index.html" },
+    { "src": "/greenroom/", "dest": "/greenroom/index.html" },
+    { "src": "/greenroom/daniel-day-lewis", "dest": "/greenroom/daniel-day-lewis/index.html" },
+    { "src": "/greenroom/daniel-day-lewis/", "dest": "/greenroom/daniel-day-lewis/index.html" }
   ]
 }
