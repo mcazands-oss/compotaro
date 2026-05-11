@@ -685,12 +685,17 @@ h2.section-heading {
 .vimeo-wrapper {
   position: relative;
   width: 100%;
-  padding-top: 56.25%;
   border-radius: var(--radius);
   overflow: hidden;
   border: 1px solid var(--border);
   background: #000;
   transition: border-color 0.35s ease, box-shadow 0.35s ease;
+}
+
+.vimeo-wrapper video {
+  width: 100%;
+  height: auto;
+  display: block;
 }
 
 .vimeo-wrapper:hover {
