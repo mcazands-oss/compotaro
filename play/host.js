@@ -171,7 +171,6 @@ async function launchGame(e) {
     const roomCode = await generateRoomCode();
 
     // Insert game
-    console.log('currentUser at insert:', JSON.stringify(currentUser));
     const { data: game, error: gameErr } = await db
       .from('games')
       .insert({
