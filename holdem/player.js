@@ -74,7 +74,7 @@
     const seatParam = params.get('seat');
 
     if (!gameCode) {
-      window.location.href = 'index.html';
+      window.location.href = '/holdem';
       return;
     }
 
@@ -127,7 +127,7 @@
     const session = await G.supabaseGetSession();
     if (!session) {
       G.LS.set('pendingGame', gameCode);
-      window.location.href = 'index.html';
+      window.location.href = '/holdem';
       return;
     }
 
@@ -137,7 +137,7 @@
     gameState = await G.supabaseGetGame(gameCode);
     if (!gameState) {
       showToast('Game not found', 'red');
-      setTimeout(() => { window.location.href = 'index.html'; }, 2000);
+      setTimeout(() => { window.location.href = '/holdem'; }, 2000);
       return;
     }
 

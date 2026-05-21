@@ -212,7 +212,7 @@
       G.LS.set('username', username);
       const code = G.generateGameCode();
       G.LS.set('playerId', 'local_' + Date.now());
-      window.location.href = `player.html?code=${code}&seat=0&local=1`;
+      window.location.href = `/holdem/player.html?code=${code}&seat=0&local=1`;
     });
 
     // ── Join Game ──────────────────────────────────────────
@@ -227,7 +227,7 @@
 
       if (G.SUPABASE_URL === 'YOUR_SUPABASE_URL') {
         // Local mode
-        window.location.href = `player.html?code=${code}&seat=0&local=1`;
+        window.location.href = `/holdem/player.html?code=${code}&seat=0&local=1`;
         return;
       }
 
@@ -246,7 +246,7 @@
 
       if (myExisting) {
         G.LS.set('playerId', myExisting.player_id);
-        window.location.href = `player.html?code=${code}&pid=${myExisting.player_id}`;
+        window.location.href = `/holdem/player.html?code=${code}&pid=${myExisting.player_id}`;
         return;
       }
 
@@ -262,7 +262,7 @@
       if (!created) { showError(errEl, 'Failed to join game. Try again.'); return; }
 
       G.LS.set('playerId', currentUser.id);
-      window.location.href = `player.html?code=${code}&pid=${currentUser.id}`;
+      window.location.href = `/holdem/player.html?code=${code}&pid=${currentUser.id}`;
     });
 
     // ── Create Game ────────────────────────────────────────
@@ -277,7 +277,7 @@
       if (G.SUPABASE_URL === 'YOUR_SUPABASE_URL') {
         // Local mode
         G.LS.set('username', currentUser.username || 'Host');
-        window.location.href = `player.html?code=${code}&seat=0&local=1`;
+        window.location.href = `/holdem/player.html?code=${code}&seat=0&local=1`;
         return;
       }
 
@@ -326,7 +326,7 @@
       if (!currentGameCode) return;
       const startTime = new Date().toISOString();
       await G.supabaseUpdateGame(currentGameCode, { blind_timer_start: startTime });
-      window.location.href = `player.html?code=${currentGameCode}&pid=${currentUser?.id}`;
+      window.location.href = `/holdem/player.html?code=${currentGameCode}&pid=${currentUser?.id}`;
     });
 
     // ── Lobby Display ──────────────────────────────────────
