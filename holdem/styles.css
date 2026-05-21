@@ -1533,3 +1533,21 @@ body {
   letter-spacing: 1px;
 }
 .tap-btn:active { opacity: 0.8; }
+
+/* Mobile viewport fix — account for browser chrome (address bar, nav bar) */
+@media (max-width: 600px) {
+  .game-page {
+    height: 100dvh;
+    height: -webkit-fill-available;
+  }
+  .action-panel {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding-bottom: max(0.85rem, env(safe-area-inset-bottom));
+  }
+  .table-container {
+    padding-bottom: 160px !important;
+  }
+}
