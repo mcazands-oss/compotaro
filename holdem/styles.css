@@ -1406,3 +1406,37 @@ body {
 }
 .sb-dot { background: #3b82f6; }
 .bb-dot { background: #ef4444; }
+
+/* Tap to Enter */
+.tap-to-enter {
+  position: fixed;
+  inset: 0;
+  background: #0a0a0a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+.tap-to-enter.hidden { display: none; }
+.tap-to-enter-inner {
+  text-align: center;
+}
+.tap-logo {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #c9a84c;
+  margin-bottom: 2rem;
+  letter-spacing: 2px;
+}
+.tap-btn {
+  background: #c9a84c;
+  color: #0a0a0a;
+  border: none;
+  padding: 1.2rem 3rem;
+  font-size: 1.3rem;
+  font-weight: bold;
+  border-radius: 50px;
+  cursor: pointer;
+  letter-spacing: 1px;
+}
+.tap-btn:active { opacity: 0.8; }

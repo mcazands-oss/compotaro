@@ -224,6 +224,21 @@
 
   // ── Intro ─────────────────────────────────────────────────
   function showIntro() {
+    // Show tap-to-enter first to unlock audio on mobile
+    const tapScreen = document.getElementById('tap-to-enter');
+    const tapBtn = document.getElementById('tap-btn');
+    if (tapScreen && tapBtn) {
+      tapScreen.classList.remove('hidden');
+      tapBtn.addEventListener('click', () => {
+        tapScreen.classList.add('hidden');
+        startIntroVideo();
+      }, { once: true });
+    } else {
+      startIntroVideo();
+    }
+  }
+
+  function startIntroVideo() {
     const overlay = el.introOverlay();
     if (!overlay) return;
     overlay.classList.remove('hidden');
@@ -232,7 +247,6 @@
     if (video && video.querySelector('source')) {
       video.muted = false;
       video.play().catch(() => {
-        // Autoplay with sound blocked — try muted
         video.muted = true;
         video.play().catch(() => {});
       });

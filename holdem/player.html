@@ -16,9 +16,17 @@
     </div>
 
     <!-- Intro Overlay -->
-    <div class="intro-overlay" id="intro-overlay">
+    <!-- Tap to Enter screen (mobile sound unlock) -->
+    <div class="tap-to-enter" id="tap-to-enter">
+      <div class="tap-to-enter-inner">
+        <div class="tap-logo">♠ Compotaro Poker ♥</div>
+        <button class="tap-btn" id="tap-btn">🃏 Tap to Enter</button>
+      </div>
+    </div>
+
+    <div class="intro-overlay hidden" id="intro-overlay">
       <div class="intro-video-wrap">
-        <video id="intro-video" playsinline autoplay>
+        <video id="intro-video" playsinline>
           <source src="/holdem/dealer-intro.mp4" type="video/mp4">
         </video>
         <div class="intro-video-placeholder">
