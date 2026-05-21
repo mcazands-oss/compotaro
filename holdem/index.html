@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Texas Hold'em — Compotaro</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body { overflow: auto; }
+    .lobby-page { min-height: 100vh; height: auto; padding: 2rem 1rem; }
+  </style>
+</head>
+<body>
+  <div class="lobby-page">
+    <h1 class="lobby-logo">♠ Compotaro Poker ♥</h1>
+    <p class="lobby-subtitle">Texas Hold'em — Play Money</p>
+
+    <div class="lobby-suits">
+      <span>♥</span><span>♠</span><span>♣</span><span>♦</span>
+    </div>
+
+    <div class="lobby-card" id="auth-card">
+      <div class="lobby-tabs">
+        <button class="lobby-tab active" data-tab="login">Sign In</button>
+        <button class="lobby-tab" data-tab="signup">Create Account</button>
+        <button class="lobby-tab" data-tab="join">Join Game</button>
+      </div>
+
+      <!-- LOGIN TAB -->
+      <div class="tab-pane active" id="tab-login">
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="login-email" placeholder="your@email.com" autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password">
+        </div>
+        <div class="form-error" id="login-error"></div>
+        <button class="btn-primary" id="login-btn">Sign In</button>
+        <div class="form-divider">or</div>
+        <button class="btn-secondary" id="play-local-btn">Play Locally (No Account)</button>
+      </div>
+
+      <!-- SIGNUP TAB -->
+      <div class="tab-pane" id="tab-signup">
+        <div class="form-group">
+          <label>Username</label>
+          <input type="text" id="signup-username" placeholder="PokerPro42" autocomplete="username" maxlength="20">
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="signup-email" placeholder="your@email.com" autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="signup-password" placeholder="••••••••" autocomplete="new-password" minlength="6">
+        </div>
+        <div class="form-error" id="signup-error"></div>
+        <button class="btn-primary" id="signup-btn">Create Account</button>
+      </div>
+
+      <!-- JOIN TAB -->
+      <div class="tab-pane" id="tab-join">
+        <div id="join-logged-out" style="text-align:center; color: var(--text-muted); padding: 1rem 0;">
+          <p style="margin-bottom:1rem;">Sign in first to join a game.</p>
+          <button class="btn-secondary" onclick="switchTab('login')">Sign In</button>
+        </div>
+        <div id="join-logged-in" style="display:none;">
+          <div class="form-group">
+            <label>Game Code</label>
+            <input type="text" id="join-code" placeholder="ABC123" maxlength="6"
+              style="text-transform:uppercase; letter-spacing:0.2em; font-size:1.3rem; text-align:center; font-family: var(--font-serif);">
+          </div>
+          <div class="form-error" id="join-error"></div>
+          <button class="btn-primary" id="join-btn">Join Game</button>
+          <div class="form-divider">or</div>
+          <button class="btn-secondary" id="create-btn">Create New Game</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- GAME LOBBY (after creating) -->
+    <div class="lobby-card" id="lobby-card" style="display:none; margin-top:1.5rem;">
+      <div class="game-code-display">
+        <div class="game-code-value" id="display-code">------</div>
+        <div class="game-code-label">Share this code with friends</div>
+      </div>
+
+      <div class="waiting-players" id="player-list">
+        <h4>Players at the table</h4>
+        <!-- Populated by JS -->
+      </div>
+
+      <div style="text-align:center; margin-top:1rem; color:var(--text-muted); font-size:0.8rem;">
+        AI will fill empty seats when the game starts.
+      </div>
+
+      <button class="btn-primary" id="start-game-btn" style="margin-top:1.25rem;">
+        Start Game
+      </button>
+    </div>
+
+  </div>
+
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="game.js"></script>
+  <script>
+  (function () {
+    const G = window.GameEngine;
+    let currentUser = null;
+    let currentGameCode = null;
+    let lobbyInterval = null;
+
+    // ── Tab switching ──────────────────────────────────────
+    function switchTab(name) {
+      document.querySelectorAll('.lobby-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+      const tab = document.querySelector(`.lobby-tab[data-tab="${name}"]`);
+      const pane = document.getElementById('tab-' + name);
+      if (tab) tab.classList.add('active');
+      if (pane) pane.classList.add('active');
+    }
+    window.switchTab = switchTab;
+
+    document.querySelectorAll('.lobby-tab').forEach(btn => {
+      btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+    });
+
+    // ── Auth state ─────────────────────────────────────────
+    async function checkAuth() {
+      G.initSupabase();
+      if (!window.supabase || G.SUPABASE_URL === 'YOUR_SUPABASE_URL') {
+        // No Supabase — allow local play
+        const saved = G.LS.get('username');
+        if (saved) onLoggedIn({ id: 'local', email: '', username: saved });
+        return;
+      }
+      const session = await G.supabaseGetSession();
+      if (session) {
+        const userData = await G.supabaseGetUser(session.user.id);
+        onLoggedIn({ ...session.user, username: userData?.username || session.user.email });
+      }
+    }
+
+    function onLoggedIn(user) {
+      currentUser = user;
+      // Show join logged-in view
+      const out = document.getElementById('join-logged-out');
+      const inn = document.getElementById('join-logged-in');
+      if (out) out.style.display = 'none';
+      if (inn) inn.style.display = 'block';
+
+      // Switch to join tab if pending game
+      const pending = G.LS.get('pendingGame');
+      if (pending) {
+        G.LS.remove('pendingGame');
+        switchTab('join');
+        const codeInput = document.getElementById('join-code');
+        if (codeInput) codeInput.value = pending;
+      } else {
+        switchTab('join');
+      }
+    }
+
+    // ── Login ──────────────────────────────────────────────
+    document.getElementById('login-btn').addEventListener('click', async () => {
+      const email = document.getElementById('login-email').value.trim();
+      const pw = document.getElementById('login-password').value;
+      const errEl = document.getElementById('login-error');
+      errEl.classList.remove('visible');
+
+      if (!email || !pw) { showError(errEl, 'Please fill in all fields'); return; }
+
+      const btn = document.getElementById('login-btn');
+      btn.disabled = true; btn.textContent = 'Signing in…';
+
+      const result = await G.supabaseSignIn(email, pw);
+      btn.disabled = false; btn.textContent = 'Sign In';
+
+      if (result.error) { showError(errEl, result.error); return; }
+      const userData = await G.supabaseGetUser(result.user.id);
+      onLoggedIn({ ...result.user, username: userData?.username || email.split('@')[0] });
+    });
+
+    // ── Sign Up ────────────────────────────────────────────
+    document.getElementById('signup-btn').addEventListener('click', async () => {
+      const username = document.getElementById('signup-username').value.trim();
+      const email = document.getElementById('signup-email').value.trim();
+      const pw = document.getElementById('signup-password').value;
+      const errEl = document.getElementById('signup-error');
+      errEl.classList.remove('visible');
+
+      if (!username || !email || !pw) { showError(errEl, 'Please fill in all fields'); return; }
+      if (pw.length < 6) { showError(errEl, 'Password must be at least 6 characters'); return; }
+
+      const btn = document.getElementById('signup-btn');
+      btn.disabled = true; btn.textContent = 'Creating…';
+
+      const result = await G.supabaseSignUp(email, pw, username);
+      btn.disabled = false; btn.textContent = 'Create Account';
+
+      if (result.error) { showError(errEl, result.error); return; }
+      G.LS.set('username', username);
+      onLoggedIn({ ...result.user, username });
+    });
+
+    // ── Play Local ─────────────────────────────────────────
+    document.getElementById('play-local-btn').addEventListener('click', () => {
+      const username = prompt('Enter your name (or leave blank for "You"):') || 'You';
+      G.LS.set('username', username);
+      const code = G.generateGameCode();
+      G.LS.set('playerId', 'local_' + Date.now());
+      window.location.href = `player.html?code=${code}&seat=0&local=1`;
+    });
+
+    // ── Join Game ──────────────────────────────────────────
+    document.getElementById('join-btn').addEventListener('click', async () => {
+      const code = document.getElementById('join-code').value.trim().toUpperCase();
+      const errEl = document.getElementById('join-error');
+      errEl.classList.remove('visible');
+
+      if (!code || code.length < 4) { showError(errEl, 'Enter a valid game code'); return; }
+
+      if (!currentUser) { showError(errEl, 'Please sign in first'); return; }
+
+      if (G.SUPABASE_URL === 'YOUR_SUPABASE_URL') {
+        // Local mode
+        window.location.href = `player.html?code=${code}&seat=0&local=1`;
+        return;
+      }
+
+      const btn = document.getElementById('join-btn');
+      btn.disabled = true; btn.textContent = 'Joining…';
+
+      const game = await G.supabaseGetGame(code);
+      btn.disabled = false; btn.textContent = 'Join Game';
+
+      if (!game) { showError(errEl, 'Game not found. Check the code and try again.'); return; }
+      if (game.status === 'complete') { showError(errEl, 'This game has ended.'); return; }
+
+      const existingPlayers = await G.supabaseGetPlayers(code);
+      const takenSeats = existingPlayers.map(p => p.seat_position);
+      const myExisting = existingPlayers.find(p => p.user_id === currentUser.id);
+
+      if (myExisting) {
+        G.LS.set('playerId', myExisting.player_id);
+        window.location.href = `player.html?code=${code}&pid=${myExisting.player_id}`;
+        return;
+      }
+
+      // Find open seat
+      const openSeat = Array.from({length: G.NUM_SEATS}, (_, i) => i).find(s => !takenSeats.includes(s));
+      if (openSeat === undefined) { showError(errEl, 'Table is full.'); return; }
+
+      const eng = new G.HoldemGame();
+      const playerData = eng.createPlayerState(currentUser.id, currentUser.username || 'Player', openSeat, '');
+      playerData.game_id = code;
+
+      const created = await G.supabaseInsertPlayer(playerData);
+      if (!created) { showError(errEl, 'Failed to join game. Try again.'); return; }
+
+      G.LS.set('playerId', currentUser.id);
+      window.location.href = `player.html?code=${code}&pid=${currentUser.id}`;
+    });
+
+    // ── Create Game ────────────────────────────────────────
+    document.getElementById('create-btn').addEventListener('click', async () => {
+      if (!currentUser) {
+        showError(document.getElementById('join-error'), 'Please sign in first');
+        return;
+      }
+
+      const code = G.generateGameCode();
+
+      if (G.SUPABASE_URL === 'YOUR_SUPABASE_URL') {
+        // Local mode
+        G.LS.set('username', currentUser.username || 'Host');
+        window.location.href = `player.html?code=${code}&seat=0&local=1`;
+        return;
+      }
+
+      const btn = document.getElementById('create-btn');
+      btn.disabled = true; btn.textContent = 'Creating…';
+
+      const eng = new G.HoldemGame();
+      const gameData = eng.createGameState(code);
+      gameData.blind_timer_start = null; // start when game begins
+
+      const created = await G.supabaseInsertGame({
+        game_code: code,
+        status: 'waiting',
+        created_at: gameData.created_at,
+        small_blind: gameData.small_blind,
+        big_blind: gameData.big_blind,
+        pot: 0,
+        community_cards: [],
+        current_bet: 0,
+        current_player_index: -1,
+        blind_level: 1,
+        blind_timer_start: null,
+      });
+
+      btn.disabled = false; btn.textContent = 'Create New Game';
+
+      if (!created) {
+        showError(document.getElementById('join-error'), 'Failed to create game. Try again.');
+        return;
+      }
+
+      // Add self as player
+      const playerData = eng.createPlayerState(currentUser.id, currentUser.username || 'Host', 0, '');
+      playerData.game_id = created.game_id;
+      playerData.game_code = code;
+      await G.supabaseInsertPlayer(playerData);
+
+      currentGameCode = code;
+      G.LS.set('playerId', currentUser.id);
+      showLobby(code);
+      pollLobby(code);
+    });
+
+    // ── Start Game ─────────────────────────────────────────
+    document.getElementById('start-game-btn').addEventListener('click', async () => {
+      if (!currentGameCode) return;
+      const startTime = new Date().toISOString();
+      await G.supabaseUpdateGame(currentGameCode, { blind_timer_start: startTime });
+      window.location.href = `player.html?code=${currentGameCode}&pid=${currentUser?.id}`;
+    });
+
+    // ── Lobby Display ──────────────────────────────────────
+    function showLobby(code) {
+      document.getElementById('lobby-card').style.display = 'block';
+      document.getElementById('display-code').textContent = code;
+    }
+
+    async function pollLobby(code) {
+      if (lobbyInterval) clearInterval(lobbyInterval);
+      lobbyInterval = setInterval(async () => {
+        const players = await G.supabaseGetPlayers(code);
+        renderLobbyPlayers(players);
+      }, 3000);
+      const players = await G.supabaseGetPlayers(code);
+      renderLobbyPlayers(players);
+    }
+
+    function renderLobbyPlayers(players) {
+      const list = document.getElementById('player-list');
+      if (!list) return;
+      list.innerHTML = '<h4>Players at the table</h4>';
+      for (let i = 0; i < G.NUM_SEATS; i++) {
+        const p = players.find(p => p.seat_position === i);
+        const div = document.createElement('div');
+        div.className = 'player-slot' + (p ? '' : ' empty');
+        div.innerHTML = `
+          <div class="player-slot-avatar">${p ? (p.username || 'P').slice(0,2).toUpperCase() : i+1}</div>
+          <span class="player-slot-name">${p ? (p.username || 'Player') : 'Waiting...'}</span>
+          <span class="player-slot-status">${p ? '✓ Ready' : 'Open'}</span>`;
+        list.appendChild(div);
+      }
+    }
+
+    // ── Input formatting ───────────────────────────────────
+    document.getElementById('join-code').addEventListener('input', function() {
+      this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+    });
+
+    // ── Helpers ────────────────────────────────────────────
+    function showError(el, msg) {
+      el.textContent = msg;
+      el.classList.add('visible');
+    }
+
+    // ── Init ───────────────────────────────────────────────
+    checkAuth();
+  })();
+  </script>
+</body>
+</html>

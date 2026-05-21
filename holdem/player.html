@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Texas Hold'em — Compotaro</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="game-page">
+
+    <!-- Loading -->
+    <div class="loading-overlay" id="loading-overlay">
+      <div class="loading-spinner"></div>
+      <div class="loading-text">Loading table…</div>
+    </div>
+
+    <!-- Intro Overlay -->
+    <div class="intro-overlay" id="intro-overlay">
+      <div class="intro-video-wrap">
+        <video id="intro-video" playsinline autoplay>
+          <source src="dealer-intro.mp4" type="video/mp4">
+        </video>
+        <div class="intro-video-placeholder">
+          <div class="dealer-animation">
+            <div class="dealer-circle">🃏</div>
+          </div>
+          <div class="intro-title">♠ Compotaro Poker ♥</div>
+          <div class="intro-message">
+            Welcome to the table. Good luck and may the cards be in your favor.
+          </div>
+          <div class="intro-cards-anim">
+            <div class="intro-card"></div>
+            <div class="intro-card"></div>
+            <div class="intro-card"></div>
+            <div class="intro-card"></div>
+            <div class="intro-card"></div>
+          </div>
+        </div>
+      </div>
+      <button class="deal-btn" id="deal-btn">Deal Cards</button>
+    </div>
+
+    <!-- HUD -->
+    <div class="game-hud">
+      <div class="hud-left">
+        <div class="hud-level" id="hud-level">Level 1</div>
+        <div class="hud-blinds">
+          <span class="blind-dot sb-dot"></span>
+          <span id="hud-blinds">$100 / $200</span>
+          <span class="blind-dot bb-dot"></span>
+        </div>
+      </div>
+      <div class="hud-center">
+        <div class="hud-logo">♠ Compotaro ♥</div>
+        <div class="hud-timer-wrap">
+          Next level: <span class="hud-timer" id="hud-timer">15:00</span>
+          <div class="hud-blind-progress">
+            <div class="hud-blind-bar" id="hud-blind-bar" style="width:0%"></div>
+          </div>
+        </div>
+      </div>
+      <div class="hud-right">
+        <div class="hud-players" id="hud-players">8 players</div>
+        <div class="hud-hand" id="hud-hand">Hand #1</div>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-container">
+      <div class="table" id="poker-table">
+        <div class="table-felt"></div>
+
+        <!-- Dealer button -->
+        <div class="dealer-btn" id="dealer-button" data-near="0">D</div>
+
+        <!-- Seats 0–7 -->
+        <!-- Seat 0: hero (bottom center) -->
+        <div class="seat" data-seat="0">
+          <div class="action-indicator"></div>
+          <div class="seat-hole-cards"></div>
+          <div class="seat-info">
+            <div class="seat-avatar"></div>
+            <div class="seat-name">You</div>
+            <div class="seat-stack">$3,500</div>
+            <div class="seat-status"></div>
+          </div>
+          <div class="seat-bet" style="display:none"></div>
+          <div class="action-timer"><div class="action-timer-bar" style="width:100%"></div></div>
+        </div>
+
+        <!-- Seat 1 -->
+        <div class="seat" data-seat="1">
+          <div class="action-indicator"></div>
+          <div class="seat-hole-cards"></div>
+          <div class="seat-info">
+            <div class="seat-avatar"></div>
+            <div class="seat-name">Viktor</div>
+            <div class="seat-stack">$3,500</div>
+            <div class="seat-status"></div>
+          </div>
+          <div class="seat-bet" style="display:none"></div>
+          <div class="action-timer"><div class="action-timer-bar" style="width:100%"></div></div>
+        </div>
+
+        <!-- Seat 2 -->
+        <div class="seat" data-seat="2">
+          <div class="action-indicator"></div>
+          <div class="seat-hole-cards"></div>
+          <div class="seat-info">
+            <div class="seat-avatar"></div>
+            <div class="seat-name">Magnus</div>
+            <div class="seat-stack">$3,500</div>
+            <div class="seat-status"></div>
+          </div>
+          <div class="seat-bet" style="display:none"></div>
+          <div class="action-timer"><div class="action-timer-bar" style="width:100%"></div></div>
+        </div>
+
+        <!-- Seat 3 -->
+        <div class="seat" data-seat="3">
+          <div class="action-indicator"></div>
+          <div class="seat-hole-cards"></div>
+          <div class="seat-info">
+            <div class="seat-avatar"></div>
+            <div class="seat-name">Sofia</div>
+            <div class="seat-stack">$3,500</div>
+            <div class="seat-status"></div>
+          </div>
+          <div class="seat-bet" style="display:none"></div>
+          <div class="action-timer"><div class="action-timer-bar" style="width:100%"></div></div>
+        </div>
+
+        <!-- Seat 4 -->
+        <div class="seat" data-seat="4">
+          <div class="action-indicator"></div>
+          <div class="seat-hole-cards"></div>
+          <div class="seat-info">
+            <div class="seat-avatar"></div>
+            <div class="seat-name">Chen</div>
+            <div class="seat-stack">$3,500</div>
+            <div class="seat-status"></div>
+          </div>
+          <div class="seat-bet" style="display:none"></div>
+          <div class="action-timer"><div class="action-timer-bar" style="width:100%"></div></div>
+        </div>
+
+        <!-- Seat 5 -->
+        <div class="seat" data-seat="5">
+          <div class="action-indicator"></div>
+          <div class="seat-hole-cards"></div>
+          <div class="seat-info">
+            <div class="seat-avatar"></div>
+            <div class="seat-name">Dmitri</div>
+            <div class="seat-stack">$3,500</div>
+            <div class="seat-status"></div>
+          </div>
+          <div class="seat-bet" style="display:none"></div>
+          <div class="action-timer"><div class="action-timer-bar" style="width:100%"></div></div>
+        </div>
+
+        <!-- Seat 6 -->
+        <div class="seat" data-seat="6">
+          <div class="action-indicator"></div>
+          <div class="seat-hole-cards"></div>
+          <div class="seat-info">
+            <div class="seat-avatar"></div>
+            <div class="seat-name">Isabella</div>
+            <div class="seat-stack">$3,500</div>
+            <div class="seat-status"></div>
+          </div>
+          <div class="seat-bet" style="display:none"></div>
+          <div class="action-timer"><div class="action-timer-bar" style="width:100%"></div></div>
+        </div>
+
+        <!-- Seat 7 -->
+        <div class="seat" data-seat="7">
+          <div class="action-indicator"></div>
+          <div class="seat-hole-cards"></div>
+          <div class="seat-info">
+            <div class="seat-avatar"></div>
+            <div class="seat-name">Marcus</div>
+            <div class="seat-stack">$3,500</div>
+            <div class="seat-status"></div>
+          </div>
+          <div class="seat-bet" style="display:none"></div>
+          <div class="action-timer"><div class="action-timer-bar" style="width:100%"></div></div>
+        </div>
+
+        <!-- Table center -->
+        <div class="table-center">
+          <div class="community-cards" id="community-cards">
+            <div class="community-card-slot"></div>
+            <div class="community-card-slot"></div>
+            <div class="community-card-slot"></div>
+            <div class="community-card-slot"></div>
+            <div class="community-card-slot"></div>
+          </div>
+          <div class="pot-display">
+            <span class="pot-label">Pot</span>
+            <span class="pot-amount" id="pot-amount">$0</span>
+          </div>
+          <div class="side-pots" id="side-pots"></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Hand Strength Indicator -->
+    <div class="hand-strength" id="hand-strength" style="opacity:0">
+      <span class="name"></span>
+    </div>
+
+    <!-- Action Panel -->
+    <div class="action-panel hidden" id="action-panel">
+      <div class="action-info" id="action-info"></div>
+      <div class="raise-controls" id="raise-controls">
+        <div class="raise-presets">
+          <button class="raise-preset" data-preset="min">Min</button>
+          <button class="raise-preset" data-preset="half">½ Pot</button>
+          <button class="raise-preset" data-preset="pot">Pot</button>
+          <button class="raise-preset" data-preset="2x">2×</button>
+          <button class="raise-preset" data-preset="3x">3×</button>
+        </div>
+        <input type="range" class="raise-slider" id="raise-slider" min="200" max="3500" step="100" value="600">
+        <div class="raise-amount" id="raise-amount">$600</div>
+      </div>
+      <div class="action-buttons">
+        <button class="action-btn btn-fold" id="btn-fold">Fold</button>
+        <button class="action-btn btn-check" id="btn-check">Check</button>
+        <button class="action-btn btn-call" id="btn-call" style="display:none">Call $0</button>
+        <button class="action-btn btn-raise" id="btn-raise">Bet</button>
+        <button class="action-btn btn-allin" id="btn-allin">All-In</button>
+      </div>
+    </div>
+
+    <!-- Winner Overlay -->
+    <div class="winner-overlay" id="winner-overlay">
+      <div class="winner-confetti"></div>
+      <div class="winner-title" id="winner-title">Winner!</div>
+      <div class="winner-name" id="winner-name"></div>
+      <div class="winner-amount" id="winner-amount"></div>
+      <div class="winner-hand" id="winner-hand"></div>
+      <div class="winner-cards" id="winner-cards"></div>
+      <div class="winner-actions">
+        <button class="btn-primary" id="next-hand-btn" style="width:auto; padding: 0.75rem 2rem;">Next Hand</button>
+      </div>
+    </div>
+
+    <!-- Split Offer Overlay -->
+    <div class="split-overlay" id="split-overlay">
+      <div class="split-card">
+        <h2>Deal?</h2>
+        <p>You're heads up! Would you like to split the remaining chips evenly?</p>
+        <div class="split-amounts">
+          <div class="split-amount">
+            <div class="name">Player 1</div>
+            <div class="chips">$0</div>
+          </div>
+          <div class="split-amount">
+            <div class="name">Player 2</div>
+            <div class="chips">$0</div>
+          </div>
+        </div>
+        <div class="split-btns">
+          <button class="btn-primary" id="split-accept" style="width:auto; padding:0.7rem 1.5rem;">Accept Split</button>
+          <button class="btn-secondary" id="split-decline" style="width:auto; padding:0.7rem 1.5rem;">Keep Playing</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- Game Log (hidden by default, toggle with keyboard shortcut) -->
+    <div class="game-log" id="game-log" style="display:none"></div>
+
+  </div>
+
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="game.js"></script>
+  <script src="player.js"></script>
+  <script>
+    // Toggle game log with L key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'l' || e.key === 'L') {
+        const log = document.getElementById('game-log');
+        if (log) log.style.display = log.style.display === 'none' ? 'block' : 'none';
+      }
+    });
+  </script>
+</body>
+</html>
