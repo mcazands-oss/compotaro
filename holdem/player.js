@@ -293,6 +293,9 @@
   // ── Game Flow ─────────────────────────────────────────────
   function startNewHand() {
     const eng = new G.HoldemGame();
+    // Clear hand results before dealing new hand so cards go face down
+    gameState.hand_results = null;
+    gameState.stage = 'preflop';
     const result = eng.dealHand(gameState, players);
     if (result.error) {
       showToast(result.error, 'red');
@@ -300,6 +303,7 @@
     }
 
     gameState = result.gameState;
+    gameState.hand_results = null; // ensure cleared after deal too
     players = result.players;
 
     // Update my hole cards
