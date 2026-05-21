@@ -517,23 +517,29 @@ async function advanceQuestion() {
 }
 
 async function finishGame() {
-  const { error } = await db
-    .from('games')
-    .update({ status: 'finished' })
-    .eq('id', currentGame.id);
+  try {
+    const { error } = await db
+      .from('games')
+      .update({ status: 'finished' })
+      .eq('id', currentGame.id);
 
-  if (error) {
-    showToast('Failed to finish game: ' + error.message, 'error');
-    return;
+    if (error) {
+      console.error('Finish game error:', error);
+      showToast('Failed to finish game: ' + error.message, 'error');
+      return;
+    }
+
+    clearInterval(hostTimerInterval);
+    if (answersSubscription) {
+      db.removeChannel(answersSubscription);
+      answersSubscription = null;
+    }
+
+    await showFinalLeaderboard();
+  } catch (err) {
+    console.error('finishGame exception:', err);
+    showToast('Error finishing game: ' + err.message, 'error');
   }
-
-  clearInterval(hostTimerInterval);
-  if (answersSubscription) {
-    db.removeChannel(answersSubscription);
-    answersSubscription = null;
-  }
-
-  await showFinalLeaderboard();
 }
 
 async function showFinalLeaderboard() {
