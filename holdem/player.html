@@ -3,6 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="screen-orientation" content="portrait">
+  <style>
+    @media screen and (orientation: landscape) and (max-height: 500px) {
+      body::before {
+        content: '🔄 Please rotate your phone to portrait mode for the best experience';
+        position: fixed; inset: 0; background: #0a0a0a; color: #c9a84c;
+        display: flex; align-items: center; justify-content: center;
+        text-align: center; font-size: 1.2rem; padding: 2rem;
+        z-index: 99999; font-family: sans-serif; line-height: 1.5;
+      }
+    }
+  </style>
   <title>Texas Hold'em — Compotaro</title>
   <link rel="stylesheet" href="/holdem/styles.css">
 </head>
