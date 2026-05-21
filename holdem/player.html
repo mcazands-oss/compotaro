@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
   <title>Texas Hold'em — Compotaro</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="/holdem/styles.css">
 </head>
 <body>
   <div class="game-page">
@@ -19,7 +19,7 @@
     <div class="intro-overlay" id="intro-overlay">
       <div class="intro-video-wrap">
         <video id="intro-video" playsinline autoplay>
-          <source src="dealer-intro.mp4" type="video/mp4">
+          <source src="/holdem/dealer-intro.mp4" type="video/mp4">
         </video>
         <div class="intro-video-placeholder">
           <div class="dealer-animation">
@@ -279,8 +279,8 @@
 
   <!-- Supabase CDN -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-  <script src="game.js"></script>
-  <script src="player.js"></script>
+  <script src="/holdem/game.js"></script>
+  <script src="/holdem/player.js"></script>
   <script>
     // Toggle game log with L key
     document.addEventListener('keydown', function(e) {
