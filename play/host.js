@@ -545,9 +545,15 @@ async function showFinalLeaderboard() {
     .eq('game_id', currentGame.id)
     .order('score', { ascending: false });
 
-  if (error || !players) {
+  if (error) {
     document.getElementById('final-leaderboard').innerHTML =
       '<p class="text-muted text-center">Could not load scores.</p>';
+    return;
+  }
+
+  if (!players || players.length === 0) {
+    document.getElementById('final-leaderboard').innerHTML =
+      '<p class="text-muted text-center">No players found.</p>';
     return;
   }
 
