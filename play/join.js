@@ -305,11 +305,13 @@ async function handleAnswer(selectedIdx, correctIdx, position) {
   grid.querySelectorAll('.answer-btn').forEach((btn, i) => {
     btn.disabled = true;
     btn.classList.add('locked');
-    if (i === correctIdx) btn.classList.add('correct-ans');
-    else if (i === selectedIdx) btn.classList.add('wrong-ans');
-    else btn.classList.add('wrong-ans');
+    if (i === correctIdx) {
+      btn.classList.add('correct-ans');
+    } else if (i === selectedIdx) {
+      btn.classList.add('wrong-ans');
+      btn.classList.add('selected-ans');
+    }
   });
-  grid.querySelectorAll('.answer-btn')[selectedIdx].classList.add('selected-ans');
 
   // Update score
   if (isCorrect) {
