@@ -613,6 +613,15 @@ class HoldemGame {
     // Collect bets into pot
     const betTotal = players.reduce((s, p) => s + p.current_bet, 0);
     const newPot = (gameState.pot || 0) + betTotal;
+    
+    // Save original bet amounts before resetting for side pot calculation
+    const playerHandBets = players.map(p => ({
+      seat_position: p.seat_position,
+      player_id: p.player_id,
+      hand_bet: p.current_bet,
+      status: p.status,
+    }));
+    
     const resetPlayers = players.map(p => ({
       ...p,
       current_bet: 0,
@@ -627,7 +636,7 @@ class HoldemGame {
     const nonFolded = activePlayers.length;
     if (nonFolded <= 1) {
       return this.resolveHand(
-        { ...gameState, pot: newPot, stage: 'showdown' },
+        { ...gameState, pot: newPot, stage: 'showdown', player_hand_bets: playerHandBets },
         resetPlayers
       );
     }
@@ -648,7 +657,7 @@ class HoldemGame {
       communityCards = [...communityCards, deck.shift()];
     } else if (nextStage === 'showdown') {
       return this.resolveHand(
-        { ...gameState, pot: newPot, community_cards: communityCards, stage: 'showdown' },
+        { ...gameState, pot: newPot, community_cards: communityCards, stage: 'showdown', player_hand_bets: playerHandBets },
         resetPlayers
       );
     }
@@ -676,6 +685,7 @@ class HoldemGame {
       status: nextStage,
       pot: newPot,
       community_cards: communityCards,
+      player_hand_bets: playerHandBets,
       current_bet: 0,
       deck,
       current_player_index: activeOnly.length === 0 ? -1 : firstToActIdx,
@@ -708,6 +718,18 @@ class HoldemGame {
   resolveHand(gameState, players) {
     const nonFolded = players.filter(p => p.status !== 'folded' && p.status !== 'eliminated');
     const pot = gameState.pot || 0;
+    
+    // Restore original bet amounts for side pot calculation
+    let playersForSidePots = nonFolded;
+    if (gameState.player_hand_bets && gameState.player_hand_bets.length > 0) {
+      playersForSidePots = nonFolded.map(p => {
+        const handBet = gameState.player_hand_bets.find(pb => pb.seat_position === p.seat_position);
+        if (handBet) {
+          return { ...p, current_bet: handBet.hand_bet };
+        }
+        return p;
+      });
+    }
 
     if (nonFolded.length === 1) {
       // Uncontested win
@@ -739,7 +761,7 @@ class HoldemGame {
 
     // Calculate side pots using the ORIGINAL player bets (before they're cleared)
     // Only use non-folded players for side pot calculation since they're the only ones who can win
-    const sidePots = calculateSidePots(nonFolded);
+    const sidePots = calculateSidePots(playersForSidePots);
     let updatedPlayers = players.map(p => ({ ...p, current_bet: 0 }));
     const winners = [];
 
