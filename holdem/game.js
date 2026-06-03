@@ -737,8 +737,9 @@ class HoldemGame {
     // Sort by hand strength desc
     handResults.sort((a, b) => compareHands(b.hand, a.hand));
 
-    // Simple pot distribution (no side pots for now, full implementation below)
-    const sidePots = calculateSidePots([...nonFolded, ...players.filter(p => p.status === 'folded')]);
+    // Calculate side pots using the ORIGINAL player bets (before they're cleared)
+    // Only use non-folded players for side pot calculation since they're the only ones who can win
+    const sidePots = calculateSidePots(nonFolded);
     let updatedPlayers = players.map(p => ({ ...p, current_bet: 0 }));
     const winners = [];
 
