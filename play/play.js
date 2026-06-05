@@ -66,3 +66,24 @@ function formatScore(n) {
 function buildJoinUrl(roomCode) {
   return `https://compotaro.com/play/join?room=${roomCode}`;
 }
+
+// Fisher-Yates shuffle — true randomization
+function shuffleArray(arr) {
+  const copy = arr.slice();
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+}
+
+// Shuffle answer options and return mapping of shuffled index → original correct index
+function shuffleAnswerOptions(options, correctIndex) {
+  const indexed = options.map((text, i) => ({ text, originalIdx: i }));
+  const shuffled = shuffleArray(indexed);
+  const newCorrectIdx = shuffled.findIndex(item => item.originalIdx === correctIndex);
+  return {
+    shuffledOptions: shuffled.map(item => item.text),
+    newCorrectIdx: newCorrectIdx
+  };
+}

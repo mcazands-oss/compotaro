@@ -207,21 +207,24 @@ async function loadPlayerQuestion(position) {
 
   const q = gq.questions;
   const options = q.options;
+  
+  // Shuffle answer options for this question
+  const { shuffledOptions, newCorrectIdx } = shuffleAnswerOptions(options, q.correct_index);
 
   document.getElementById('player-q-category').textContent = q.category;
   document.getElementById('player-question-text').textContent = q.question;
 
   // Store correct index for reveal
-  document.getElementById('player-answer-grid').dataset.correctIdx = q.correct_index;
+  document.getElementById('player-answer-grid').dataset.correctIdx = newCorrectIdx;
 
   const ansButtons = document.querySelectorAll('#player-answer-grid .answer-btn');
   const labels = ['A', 'B', 'C', 'D'];
   ansButtons.forEach((btn, i) => {
     btn.querySelector('.ans-shape').textContent = labels[i];
-    btn.querySelector('.ans-text').textContent = options[i] || '';
+    btn.querySelector('.ans-text').textContent = shuffledOptions[i] || '';
     btn.className = 'answer-btn';
     btn.disabled = false;
-    btn.onclick = () => handleAnswer(i, q.correct_index, gq.position);
+    btn.onclick = () => handleAnswer(i, newCorrectIdx, gq.position);
   });
 
   // Calculate elapsed time since question started

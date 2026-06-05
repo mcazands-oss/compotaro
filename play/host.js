@@ -196,7 +196,13 @@ async function launchGame(e) {
     if (poolErr) throw poolErr;
     if (!pool || pool.length === 0) throw new Error('No questions found for selected categories. Run seed_questions.sql first.');
 
-    const shuffled = pool.sort(() => Math.random() - 0.5).slice(0, questionCount);
+    // Fisher-Yates shuffle for true randomization
+    const shuffled = pool.slice();
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    shuffled.splice(questionCount);
 
     const gameQuestions = shuffled.map((q, i) => ({
       game_id: game.id,
@@ -373,6 +379,9 @@ async function loadHostQuestion(position) {
 
   const q = gq.questions;
   const options = q.options;
+  
+  // Shuffle answer options for this question
+  const { shuffledOptions, newCorrectIdx } = shuffleAnswerOptions(options, q.correct_index);
 
   document.getElementById('host-q-progress').textContent =
     `Question ${position + 1} of ${totalQuestions}`;
@@ -383,13 +392,13 @@ async function loadHostQuestion(position) {
   const labels = ['A', 'B', 'C', 'D'];
   ansButtons.forEach((btn, i) => {
     btn.querySelector('.ans-shape').textContent = labels[i];
-    btn.querySelector('.ans-text').textContent = options[i] || '';
+    btn.querySelector('.ans-text').textContent = shuffledOptions[i] || '';
     btn.className = 'answer-btn locked';
-    btn.dataset.correct = (i === q.correct_index) ? 'true' : 'false';
+    btn.dataset.correct = (i === newCorrectIdx) ? 'true' : 'false';
   });
 
   // Store correct index for reveal
-  document.getElementById('host-answer-grid').dataset.correctIdx = q.correct_index;
+  document.getElementById('host-answer-grid').dataset.correctIdx = newCorrectIdx;
 
   startHostTimer(20);
 }
