@@ -146,10 +146,9 @@
     if (myPlayerData) {
       mySeat = myPlayerData.seat_position;
       myHoleCards = myPlayerData.hole_cards || [];
-      console.log('mySeat set to:', mySeat, 'myPlayerId:', myPlayerId);
     } else {
-      console.warn('Could not find my player data. myPlayerId:', myPlayerId, 'players:', players.map(p => p.user_id));
-      mySeat = 0; // fallback to seat 0
+      // Could not find my player data - fallback to seat 0
+      mySeat = 0;
     }
 
     // Determine if this client is the leader (lowest seat human)
