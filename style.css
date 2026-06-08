@@ -71,10 +71,13 @@ nav.scrolled {
   max-width: 1140px;
   margin: 0 auto;
   padding: 0 2rem;
-  height: 68px;
+  min-height: 68px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  gap: 1.5rem;
 }
 
 .nav-logo {
@@ -85,6 +88,8 @@ nav.scrolled {
   opacity: 0.9;
   white-space: nowrap;
   transition: opacity 0.2s ease;
+  flex-shrink: 0;
+  padding-top: 0.15rem;
 }
 .nav-logo:hover { opacity: 1; }
 .nav-logo span { color: var(--accent); }
@@ -93,17 +98,21 @@ nav.scrolled {
   display: flex;
   align-items: center;
   gap: 2.25rem;
+  flex-wrap: wrap;
   list-style: none;
+  flex-grow: 1;
+  padding-top: 0.15rem;
 }
 
 .nav-links a {
   color: var(--text-muted);
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   font-weight: 500;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   transition: color 0.2s ease;
   position: relative;
+  white-space: nowrap;
 }
 
 .nav-links a::after {
@@ -1133,6 +1142,28 @@ footer {
 
   .blog-grid {
     grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 1000px) {
+  .nav-links {
+    gap: 1.75rem;
+  }
+
+  .nav-links a {
+    font-size: 0.7rem;
+    letter-spacing: 0.07em;
+  }
+}
+
+@media (max-width: 850px) {
+  .nav-links {
+    gap: 1.5rem;
+  }
+
+  .nav-links a {
+    font-size: 0.68rem;
+    letter-spacing: 0.05em;
   }
 }
 
