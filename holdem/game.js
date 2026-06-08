@@ -95,13 +95,16 @@ function getCombinations(arr, k) {
 function checkStraight(sortedVals) {
   // sortedVals: descending, already unique or not
   const unique = [...new Set(sortedVals)];
-  // Check for ace-low straight (A-2-3-4-5)
-  if (unique.includes(14)) unique.push(1);
+  // Check for regular straights first (from highest to lowest)
   for (let i = 0; i <= unique.length - 5; i++) {
     const slice = unique.slice(i, i + 5);
     if (slice[0] - slice[4] === 4 && new Set(slice).size === 5) {
       return slice[0]; // return high card
     }
+  }
+  // Check for ace-low straight (A-2-3-4-5) only if no regular straight found
+  if (unique.includes(14) && unique.includes(5) && unique.includes(4) && unique.includes(3) && unique.includes(2)) {
+    return 5; // wheel is 5-high
   }
   return 0;
 }
