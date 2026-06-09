@@ -166,6 +166,47 @@ test('dealHand() resets folded players to active', () => {
   assert(aliceNextHand.status === 'active', 'Alice reset to active for next hand');
 });
 
+// Test 6: Hand resolves immediately when all but one fold (the "hung game" bug)
+test('Hand resolves when all others fold', () => {
+  const game = new HoldemGame();
+  let gameState = game.createGameState('TEST006');
+  gameState.blind_timer_start = new Date().toISOString();
+  
+  let players = [
+    game.createPlayerState('p1', 'Alice', 0),
+    game.createPlayerState('p2', 'Bob', 1),
+    game.createPlayerState('p3', 'Charlie', 2),
+  ];
+
+  // Deal hand
+  let result = game.dealHand(gameState, players);
+  gameState = result.gameState;
+  players = result.players;
+  
+  const startIdx = gameState.current_player_index;
+  const startPlayer = players[startIdx];
+  
+  // First player folds
+  result = game.processAction(gameState, players, startPlayer.seat_position, 'fold');
+  gameState = result.gameState;
+  players = result.players;
+  
+  assert(gameState.stage === 'preflop', 'Still in preflop after first fold');
+  
+  // Second player folds
+  const secondIdx = gameState.current_player_index;
+  const secondPlayer = players[secondIdx];
+  result = game.processAction(gameState, players, secondPlayer.seat_position, 'fold');
+  gameState = result.gameState;
+  players = result.players;
+  
+  // NOW the hand should be resolved
+  assert(gameState.stage === 'hand_complete', 'Hand should be complete after two folds');
+  assert(gameState.status === 'hand_complete', 'Status should be hand_complete');
+  assert(gameState.winners && gameState.winners.length === 1, 'Should have one winner');
+  assert(gameState.winners[0].seat === players[2].seat_position, 'Remaining player should win');
+});
+
 console.log('\n==========================================');
 console.log(`Results: ${passCount} passed, ${failCount} failed`);
 console.log('==========================================\n');

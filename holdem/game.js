@@ -601,6 +601,13 @@ class HoldemGame {
 
     updatedGame.last_action = { seat: seatPosition, action, amount };
 
+    // Check if only one player remains (all others folded)
+    const nonFolded = updatedPlayers.filter(p => p.status !== 'folded' && p.status !== 'eliminated');
+    if (nonFolded.length <= 1) {
+      // Hand is over — resolve immediately
+      return this.resolveHand(updatedGame, updatedPlayers);
+    }
+
     // Advance to next player
     const next = this.getNextPlayer(updatedGame, updatedPlayers, playerIdx);
     if (next === null) {
@@ -617,6 +624,8 @@ class HoldemGame {
     for (let i = 1; i < total; i++) {
       const idx = (currentIdx + i) % total;
       const p = players[idx];
+      // Only active players can be asked to act
+      // all_in players cannot act, folded players cannot act
       if (p.status === 'active') {
         // Check if this player needs to act
         if (!p.has_acted || p.current_bet < gameState.current_bet) return idx;
