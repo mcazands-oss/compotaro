@@ -665,7 +665,9 @@
       syncGameToSupabase();
     }
 
+    console.log('[AI ACTION]', { action: aiAction.action, isHandComplete: result.isHandComplete, resultKeys: Object.keys(result) });
     if (result.isHandComplete) {
+      console.log('[AI ACTION] Hand complete detected, calling handleHandComplete');
       handleHandComplete();
     } else {
       renderAll();

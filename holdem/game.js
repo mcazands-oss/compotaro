@@ -605,6 +605,7 @@ class HoldemGame {
     const nonFolded = updatedPlayers.filter(p => p.status !== 'folded' && p.status !== 'eliminated');
     if (nonFolded.length <= 1) {
       // Hand is over — resolve immediately
+      console.log(`[FOLD RESOLUTION] Only ${nonFolded.length} player(s) remain. Resolving hand immediately.`, { nonFolded: nonFolded.map(p => p.seat_position) });
       return this.resolveHand(updatedGame, updatedPlayers);
     }
 
