@@ -737,7 +737,8 @@
         if (cards.length > 0 && player.status !== 'eliminated') {
           for (let i = 0; i < 2; i++) {
             const code = cards[i];
-            if (code && !faceDown) {
+            // Show cards only if: not face-down AND player didn't fold
+            if (code && !faceDown && player.status !== 'folded') {
               cardsEl.appendChild(buildCardElement(code, false));
             } else if (player.status !== 'folded' && player.status !== 'eliminated' && gameState.stage && gameState.stage !== 'waiting' && gameState.stage !== 'hand_complete') {
               cardsEl.appendChild(buildCardElement(null, true));

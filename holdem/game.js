@@ -790,9 +790,11 @@ class HoldemGame {
     }
 
     // Check if any player is eliminated
+    // Note: Don't reset folded/all_in players here — let dealHand() reset them for the next hand
+    // This preserves fold status for showdown display
     updatedPlayers = updatedPlayers.map(p => ({
       ...p,
-      status: p.stack <= 0 ? 'eliminated' : (p.status === 'all_in' || p.status === 'folded' ? 'active' : p.status),
+      status: p.stack <= 0 ? 'eliminated' : p.status,
     }));
 
     const newGameState = {
