@@ -836,6 +836,8 @@ body {
   gap: 3px;
   justify-content: center;
   margin-top: 2px;
+  position: relative;
+  z-index: 7;
 }
 .seat-hole-cards .card {
   --card-w: 38px;
@@ -897,7 +899,7 @@ body {
 }
 
 /* Dealer button positions per seat */
-.dealer-btn[data-near="0"] { left: calc(50% - 40px); top: calc(92% - 55px); transform: translate(-50%, -50%); }
+.dealer-btn[data-near="0"] { left: calc(50% + 35px); top: calc(92% - 18px); transform: translate(-50%, -50%); }
 .dealer-btn[data-near="1"] { left: calc(79% - 50px); top: calc(80% - 45px); transform: translate(-50%, -50%); }
 .dealer-btn[data-near="2"] { left: calc(96% - 65px); top: calc(50% - 20px); transform: translate(-50%, -50%); }
 .dealer-btn[data-near="3"] { left: calc(79% - 50px); top: calc(20% + 45px); transform: translate(-50%, -50%); }
@@ -1412,7 +1414,7 @@ body {
   .seat[data-seat="7"] { left: 20%; top: 81%; }
 
   /* Dealer button positions updated to match new seat layout */
-  .dealer-btn[data-near="0"] { left: calc(50% - 40px); top: calc(94% - 55px); transform: translate(-50%,-50%); }
+  .dealer-btn[data-near="0"] { left: calc(50% + 35px); top: calc(94% - 18px); transform: translate(-50%,-50%); }
   .dealer-btn[data-near="1"] { left: calc(80% - 50px); top: calc(81% - 45px); transform: translate(-50%,-50%); }
   .dealer-btn[data-near="2"] { left: calc(86% - 65px); top: calc(50% - 20px); transform: translate(-50%,-50%); }
   .dealer-btn[data-near="3"] { left: calc(80% - 50px); top: calc(19% + 45px); transform: translate(-50%,-50%); }
