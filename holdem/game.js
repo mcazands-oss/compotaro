@@ -605,8 +605,25 @@ class HoldemGame {
     const nonFolded = updatedPlayers.filter(p => p.status !== 'folded' && p.status !== 'eliminated');
     if (nonFolded.length <= 1) {
       // Hand is over — resolve immediately
-      console.log(`[FOLD RESOLUTION] Only ${nonFolded.length} player(s) remain. Resolving hand immediately.`, { nonFolded: nonFolded.map(p => p.seat_position) });
-      return this.resolveHand(updatedGame, updatedPlayers);
+      // Collect bets into pot first
+      const betTotal = updatedPlayers.reduce((s, p) => s + p.current_bet, 0);
+      const newPot = (updatedGame.pot || 0) + betTotal;
+      const playerHandBets = updatedPlayers.map(p => ({
+        seat_position: p.seat_position,
+        player_id: p.player_id,
+        hand_bet: p.current_bet,
+        status: p.status,
+      }));
+      const resetPlayers = updatedPlayers.map(p => ({
+        ...p,
+        current_bet: 0,
+        has_acted: false,
+      }));
+      console.log(`[FOLD RESOLUTION] Only ${nonFolded.length} player(s) remain. Resolving hand immediately.`, { nonFolded: nonFolded.map(p => p.seat_position), pot: newPot });
+      return this.resolveHand(
+        { ...updatedGame, pot: newPot, stage: 'showdown', player_hand_bets: playerHandBets },
+        resetPlayers
+      );
     }
 
     // Advance to next player
