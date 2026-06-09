@@ -239,18 +239,20 @@ function estimateEquity(holeCards, communityCards) {
 // ── AI Logic ──────────────────────────────────────────────
 function getAIAction(player, gameState) {
   const { hole_cards = [], stack = 0, current_bet: playerBet = 0 } = player;
-  const { communityCards = [], pot = 0, currentBet = 0, stage, small_blind, big_blind } = gameState;
+  const { communityCards = [], pot = 0, current_bet = 0, stage, small_blind, big_blind } = gameState;
 
-  const callAmount = currentBet - playerBet;
+  const callAmount = current_bet - playerBet;
   const canCheck = callAmount <= 0;
-  const minRaise = currentBet + (currentBet || big_blind);
+  // Minimum raise: if no bet yet, BB; otherwise double the current bet or current + BB, whichever is higher
+  const minRaise = current_bet === 0 ? (big_blind || 200) : Math.max(current_bet * 2, current_bet + (big_blind || 200));
 
   // Random delay to simulate thinking (handled by caller)
   const equity = stage === 'preflop'
     ? preflopStrength(hole_cards)
     : estimateEquity(hole_cards, communityCards);
 
-  const potOdds = pot > 0 ? callAmount / (pot + callAmount) : 0;
+  const totalPot = pot || 0;
+  const potOdds = (totalPot + callAmount) > 0 ? callAmount / (totalPot + callAmount) : 0;
   const rand = Math.random();
 
   // Aggression factor (0 = passive, 1 = aggressive)
@@ -261,7 +263,7 @@ function getAIAction(player, gameState) {
 
   if (equity > 0.85) {
     // Premium hand — always raise/bet
-    const raiseSize = Math.min(stack, Math.floor(pot * (1 + rand * 0.5) + minRaise));
+    const raiseSize = Math.min(playerBet + stack, Math.floor(totalPot * (1 + rand * 0.5) + minRaise));
     if (raiseSize >= minRaise && stack >= minRaise) return { action: 'raise', amount: raiseSize };
     if (!canCheck) return { action: 'call' };
     return { action: 'check' };
@@ -270,7 +272,7 @@ function getAIAction(player, gameState) {
   if (equity > 0.65) {
     // Strong hand — mostly bet/call
     if (rand < aggression) {
-      const raiseSize = Math.min(stack, Math.floor(pot * 0.6 + minRaise));
+      const raiseSize = Math.min(playerBet + stack, Math.floor(totalPot * 0.6 + minRaise));
       if (raiseSize >= minRaise && stack >= minRaise && !canCheck) return { action: 'raise', amount: raiseSize };
     }
     if (!canCheck) {
@@ -284,8 +286,8 @@ function getAIAction(player, gameState) {
     // Marginal hand — check/fold or small bet
     if (canCheck) {
       if (rand < 0.2) {
-        const betSize = Math.min(stack, Math.floor(pot * 0.4));
-        if (betSize >= (currentBet || big_blind)) return { action: 'bet', amount: betSize };
+        const betSize = Math.min(stack, Math.floor(totalPot * 0.4));
+        if (betSize >= (big_blind || 200)) return { action: 'bet', amount: betSize };
       }
       return { action: 'check' };
     }
@@ -296,13 +298,13 @@ function getAIAction(player, gameState) {
   // Weak hand — mostly fold
   if (canCheck) {
     if (rand < bluffChance) {
-      const bluffBet = Math.min(stack, Math.floor(pot * 0.7));
+      const bluffBet = Math.min(stack, Math.floor(totalPot * 0.7));
       if (bluffBet > 0) return { action: 'bet', amount: bluffBet };
     }
     return { action: 'check' };
   }
 
-  if (rand < bluffChance && !canCheck) return { action: 'raise', amount: Math.min(stack, Math.floor(pot * 0.8)) };
+  if (rand < bluffChance && !canCheck) return { action: 'raise', amount: Math.min(playerBet + stack, Math.floor(totalPot * 0.8)) };
   return { action: 'fold' };
 }
 
@@ -548,7 +550,18 @@ class HoldemGame {
 
       case 'bet':
       case 'raise': {
-        const raiseAmount = Math.max(amount, gameState.big_blind);
+        // amount is the total bet size the player wants to reach
+        const bb = gameState.big_blind || 200;
+        const minBet = gameState.current_bet === 0 ? bb : gameState.current_bet;
+        const raiseAmount = Math.max(amount, minBet);
+        
+        // Validate that raise amount is at least minimum raise
+        const minRaiseAmount = gameState.current_bet === 0 ? bb : gameState.current_bet * 2;
+        if (raiseAmount < minRaiseAmount && player.current_bet + player.stack > raiseAmount) {
+          // Not a valid raise unless it's all-in
+          return { error: `Minimum raise is ${raiseAmount}` };
+        }
+        
         const toAdd = Math.min(raiseAmount - player.current_bet, player.stack);
         const newBet = player.current_bet + toAdd;
         const newStatus = toAdd >= player.stack ? 'all_in' : player.status;

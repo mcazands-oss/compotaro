@@ -239,6 +239,7 @@
     <div class="action-panel hidden" id="action-panel">
       <div class="action-info" id="action-info"></div>
       <div class="raise-controls" id="raise-controls">
+        <div class="raise-info" id="raise-info" style="font-size:0.85rem; color:var(--text-muted); margin-bottom:0.75rem; text-align:center;"></div>
         <div class="raise-presets">
           <button class="raise-preset" data-preset="min">Min</button>
           <button class="raise-preset" data-preset="half">½ Pot</button>
@@ -247,14 +248,15 @@
           <button class="raise-preset" data-preset="3x">3×</button>
         </div>
         <div class="raise-input-group">
-          <label for="raise-custom">Custom:</label>
-          <input type="number" class="raise-custom" id="raise-custom" min="0" placeholder="Amount">
+          <label for="raise-custom">Custom Amount:</label>
+          <input type="number" class="raise-custom" id="raise-custom" min="0" step="1" placeholder="Enter amount" inputmode="numeric">
+          <div class="raise-input-hint" id="raise-input-hint" style="font-size:0.75rem; color:var(--text-muted); margin-top:0.25rem;"></div>
         </div>
         <div class="raise-slider-container">
           <input type="range" class="raise-slider" id="raise-slider" min="200" max="3500" step="100" value="600">
           <div class="raise-amount" id="raise-amount">$600</div>
         </div>
-        <button class="action-btn btn-confirm-raise" id="btn-confirm-raise">Confirm Raise</button>
+        <button class="action-btn btn-confirm-raise" id="btn-confirm-raise" style="margin-top:0.75rem;">Confirm Raise</button>
       </div>
       <div class="action-buttons">
         <button class="action-btn btn-fold" id="btn-fold">Fold</button>

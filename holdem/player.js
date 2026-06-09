@@ -351,6 +351,58 @@
   }
 
   // ── Action Handlers ────────────────────────────────────────
+  function calculateMinRaise() {
+    const me = getMyPlayer();
+    if (!me) return gameState.big_blind || 200;
+    
+    const currentBet = gameState.current_bet || 0;
+    const myBet = me.current_bet || 0;
+    const bb = gameState.big_blind || 200;
+    
+    // If no bet yet, minimum is big blind
+    if (currentBet === 0) return bb;
+    
+    // If there's already a bet, minimum raise is current_bet + (previous aggression)
+    // For simplicity: double the current bet or current_bet + BB, whichever is greater
+    return Math.max(currentBet * 2, currentBet + bb);
+  }
+  
+  function updateRaiseControlsState() {
+    const slider = el.raiseSlider();
+    const custom = $('raise-custom');
+    const me = getMyPlayer();
+    
+    if (!me) return;
+    
+    const currentBet = gameState.current_bet || 0;
+    const myBet = me.current_bet || 0;
+    const minRaise = calculateMinRaise();
+    const maxRaise = currentBet + myBet + me.stack;
+    
+    if (slider) {
+      slider.min = minRaise;
+      slider.max = maxRaise;
+      slider.step = gameState.big_blind || 100;
+      slider.value = minRaise;
+    }
+    
+    if (custom) {
+      custom.min = minRaise;
+      custom.max = maxRaise;
+      custom.value = '';
+      custom.placeholder = `Min: ${G.formatMoney(minRaise)}`;
+    }
+    
+    const ra = el.raiseAmount();
+    if (ra) ra.textContent = G.formatMoney(minRaise);
+    
+    // Show raise info
+    const raiseInfo = $('raise-info');
+    if (raiseInfo) {
+      raiseInfo.innerHTML = `Min: <strong>${G.formatMoney(minRaise)}</strong> &nbsp;|&nbsp; Max: <strong>${G.formatMoney(maxRaise)}</strong>`;
+    }
+  }
+
   function setupActionHandlers() {
     const btn = el.dealBtn();
     if (btn) btn.addEventListener('click', onDealClick);
@@ -368,6 +420,10 @@
     if (raise) raise.addEventListener('click', () => {
       const rc = el.raiseControls();
       if (rc) rc.classList.toggle('visible');
+      // Reinitialize slider and inputs when opening
+      if (rc && rc.classList.contains('visible')) {
+        updateRaiseControlsState();
+      }
     });
 
     const allin = el.btnAllIn();
@@ -376,6 +432,17 @@
     const slider = el.raiseSlider();
     if (slider) {
       slider.addEventListener('input', () => {
+        const value = parseInt(slider.value) || 0;
+        const me = getMyPlayer();
+        const currentBet = gameState.current_bet || 0;
+        const myBet = me?.current_bet || 0;
+        const maxRaise = me?.stack || 0;
+        
+        // Validate slider value is within bounds
+        const minRaise = calculateMinRaise();
+        if (value < minRaise) slider.value = minRaise;
+        if (value > currentBet + myBet + maxRaise) slider.value = currentBet + myBet + maxRaise;
+        
         const ra = el.raiseAmount();
         if (ra) ra.textContent = G.formatMoney(parseInt(slider.value));
         // Clear custom input when user moves slider
@@ -389,13 +456,30 @@
     if (customInput) {
       customInput.addEventListener('input', () => {
         const amount = parseInt(customInput.value) || 0;
+        const me = getMyPlayer();
+        const currentBet = gameState.current_bet || 0;
+        const myBet = me?.current_bet || 0;
+        const maxRaise = me?.stack || 0;
+        const minRaise = calculateMinRaise();
+        
         if (amount > 0) {
           const ra = el.raiseAmount();
-          if (ra) ra.textContent = G.formatMoney(amount);
+          if (ra) {
+            // Show clamped amount
+            const clampedAmount = Math.max(minRaise, Math.min(amount, currentBet + myBet + maxRaise));
+            ra.textContent = G.formatMoney(clampedAmount);
+          }
           // Clear slider to indicate custom value
           if (slider) slider.value = 0;
         }
       });
+      // Set max attribute on custom input
+      const me = getMyPlayer();
+      if (me) {
+        const currentBet = gameState.current_bet || 0;
+        const myBet = me.current_bet || 0;
+        customInput.max = currentBet + myBet + me.stack;
+      }
     }
 
     // Confirm raise button
@@ -405,12 +489,27 @@
         const custom = $('raise-custom');
         const customAmount = custom && custom.value ? parseInt(custom.value) : 0;
         const amount = customAmount > 0 ? customAmount : parseInt(slider.value);
-        if (amount > 0) {
-          doAction('raise', amount);
-          const rc = el.raiseControls();
-          if (rc) rc.classList.remove('visible');
-          if (custom) custom.value = '';
+        const minRaise = calculateMinRaise();
+        const me = getMyPlayer();
+        const currentBet = gameState.current_bet || 0;
+        const myBet = me?.current_bet || 0;
+        const maxAmount = currentBet + myBet + (me?.stack || 0);
+        
+        // Validate raise amount
+        if (amount < minRaise) {
+          showToast(`Minimum raise is ${G.formatMoney(minRaise)}`, 'orange');
+          return;
         }
+        if (amount > maxAmount) {
+          showToast(`Maximum raise is ${G.formatMoney(maxAmount)}`, 'orange');
+          return;
+        }
+        
+        doAction('raise', amount);
+        const rc = el.raiseControls();
+        if (rc) rc.classList.remove('visible');
+        if (custom) custom.value = '';
+        if (slider) slider.value = minRaise;
       });
     }
 
@@ -424,14 +523,30 @@
         const myBet = me?.current_bet || 0;
         const callAmt = currentBet - myBet;
         const bb = gameState.big_blind || 200;
-        let amount = bb;
-        if (preset === 'min') amount = currentBet + (currentBet || bb);
-        else if (preset === 'half') amount = Math.floor(callAmt + pot / 2);
-        else if (preset === 'pot') amount = callAmt + pot;
-        else if (preset === '2x') amount = currentBet * 2 || bb * 2;
-        else if (preset === '3x') amount = currentBet * 3 || bb * 3;
-        amount = Math.max(amount, currentBet + bb);
-        if (me) amount = Math.min(amount, me.stack + myBet);
+        const maxStack = me?.stack || 0;
+        const minRaise = calculateMinRaise();
+        let amount = minRaise;
+        
+        if (preset === 'min') {
+          amount = minRaise;
+        } else if (preset === 'half') {
+          // Half pot: call amount + half of pot
+          amount = Math.floor(callAmt + pot / 2);
+        } else if (preset === 'pot') {
+          // Pot-sized raise: call amount + pot
+          amount = callAmt + pot;
+        } else if (preset === '2x') {
+          // 2x the current bet
+          amount = (currentBet || bb) * 2;
+        } else if (preset === '3x') {
+          // 3x the current bet
+          amount = (currentBet || bb) * 3;
+        }
+        
+        // Clamp to valid range
+        amount = Math.max(amount, minRaise);
+        amount = Math.min(amount, currentBet + myBet + maxStack);
+        
         // Update slider and amount display, clear custom input
         const slider = el.raiseSlider();
         const custom = $('raise-custom');
@@ -853,7 +968,7 @@
     const myBet = me.current_bet || 0;
     const callAmount = Math.max(0, currentBet - myBet);
     const canCheck = callAmount === 0;
-    const minRaise = currentBet + Math.max(gameState.big_blind || 200, currentBet);
+    const minRaise = calculateMinRaise();
     const canRaise = me.stack > callAmount;
 
     // Check/Call button
@@ -868,14 +983,14 @@
     // Raise button
     const raiseBtn = el.btnRaise();
     if (raiseBtn) {
-      raiseBtn.disabled = !canRaise;
+      raiseBtn.disabled = !canRaise || me.stack === 0;
       raiseBtn.textContent = canCheck ? 'Bet' : 'Raise';
     }
 
     // Raise slider
     const slider = el.raiseSlider();
-    if (slider && canRaise) {
-      const maxRaise = me.stack + myBet;
+    if (slider && canRaise && me.stack > 0) {
+      const maxRaise = me.stack + myBet + currentBet;
       slider.min = minRaise;
       slider.max = maxRaise;
       slider.step = gameState.big_blind || 100;
