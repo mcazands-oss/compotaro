@@ -246,8 +246,15 @@
           <button class="raise-preset" data-preset="2x">2×</button>
           <button class="raise-preset" data-preset="3x">3×</button>
         </div>
-        <input type="range" class="raise-slider" id="raise-slider" min="200" max="3500" step="100" value="600">
-        <div class="raise-amount" id="raise-amount">$600</div>
+        <div class="raise-input-group">
+          <label for="raise-custom">Custom:</label>
+          <input type="number" class="raise-custom" id="raise-custom" min="0" placeholder="Amount">
+        </div>
+        <div class="raise-slider-container">
+          <input type="range" class="raise-slider" id="raise-slider" min="200" max="3500" step="100" value="600">
+          <div class="raise-amount" id="raise-amount">$600</div>
+        </div>
+        <button class="action-btn btn-confirm-raise" id="btn-confirm-raise">Confirm Raise</button>
       </div>
       <div class="action-buttons">
         <button class="action-btn btn-fold" id="btn-fold">Fold</button>

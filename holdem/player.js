@@ -378,19 +378,38 @@
       slider.addEventListener('input', () => {
         const ra = el.raiseAmount();
         if (ra) ra.textContent = G.formatMoney(parseInt(slider.value));
+        // Clear custom input when user moves slider
+        const custom = $('raise-custom');
+        if (custom) custom.value = '';
       });
     }
 
-    // Raise confirm when user clicks "Raise" button while controls are open
-    if (raise) {
-      raise.addEventListener('click', (e) => {
-        const rc = el.raiseControls();
-        if (rc && rc.classList.contains('visible')) {
-          const slider = el.raiseSlider();
-          if (slider) {
-            doAction('raise', parseInt(slider.value));
-            rc.classList.remove('visible');
-          }
+    // Custom raise amount input
+    const customInput = $('raise-custom');
+    if (customInput) {
+      customInput.addEventListener('input', () => {
+        const amount = parseInt(customInput.value) || 0;
+        if (amount > 0) {
+          const ra = el.raiseAmount();
+          if (ra) ra.textContent = G.formatMoney(amount);
+          // Clear slider to indicate custom value
+          if (slider) slider.value = 0;
+        }
+      });
+    }
+
+    // Confirm raise button
+    const confirmRaise = $('btn-confirm-raise');
+    if (confirmRaise) {
+      confirmRaise.addEventListener('click', () => {
+        const custom = $('raise-custom');
+        const customAmount = custom && custom.value ? parseInt(custom.value) : 0;
+        const amount = customAmount > 0 ? customAmount : parseInt(slider.value);
+        if (amount > 0) {
+          doAction('raise', amount);
+          const rc = el.raiseControls();
+          if (rc) rc.classList.remove('visible');
+          if (custom) custom.value = '';
         }
       });
     }
@@ -413,9 +432,13 @@
         else if (preset === '3x') amount = currentBet * 3 || bb * 3;
         amount = Math.max(amount, currentBet + bb);
         if (me) amount = Math.min(amount, me.stack + myBet);
-        doAction('raise', amount);
-        const rc = el.raiseControls();
-        if (rc) rc.classList.remove('visible');
+        // Update slider and amount display, clear custom input
+        const slider = el.raiseSlider();
+        const custom = $('raise-custom');
+        if (slider) slider.value = amount;
+        if (custom) custom.value = '';
+        const ra = el.raiseAmount();
+        if (ra) ra.textContent = G.formatMoney(amount);
       });
     });
 
