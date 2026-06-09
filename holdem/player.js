@@ -826,7 +826,7 @@
       if (player.status === 'folded') seatEl.classList.add('folded');
       if (player.status === 'eliminated') seatEl.classList.add('eliminated');
       if (player.status === 'all_in') seatEl.classList.add('all-in');
-      if (players[gameState.current_player_index]?.seat_position === seat) seatEl.classList.add('active');
+      if (gameState.stage !== 'hand_complete' && players[gameState.current_player_index]?.seat_position === seat) seatEl.classList.add('active');
 
       // Avatar
       const avatarEl = seatEl.querySelector('.seat-avatar');
@@ -900,10 +900,10 @@
         }
       }
 
-      // Action indicator
+      // Action indicator (don't show during hand_complete)
       const actionEl = seatEl.querySelector('.action-indicator');
       if (actionEl) {
-        const isActive = players[gameState.current_player_index]?.seat_position === seat;
+        const isActive = gameState.stage !== 'hand_complete' && players[gameState.current_player_index]?.seat_position === seat;
         actionEl.textContent = isActive ? (seat === mySeat ? 'YOUR TURN' : 'THINKING...') : '';
       }
     }

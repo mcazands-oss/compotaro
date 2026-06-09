@@ -768,6 +768,7 @@ class HoldemGame {
         pot: 0,
         status: 'hand_complete',
         stage: 'hand_complete',
+        current_player_index: -1,
         winners: [{ seat: winner.seat_position, amount: pot, handName: '' }],
       };
       return { gameState: newGameState, players: updatedPlayers, isHandComplete: true };
@@ -824,6 +825,7 @@ class HoldemGame {
       pot: 0,
       status: 'hand_complete',
       stage: 'hand_complete',
+      current_player_index: -1,
       winners,
       hand_results: handResults.map(r => ({
         seat: r.seat,
