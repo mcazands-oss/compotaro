@@ -1047,6 +1047,7 @@ const GameEngine = {
   getBlindProgress,
   formatTime,
   // Supabase
+  SUPABASE_URL,
   initSupabase,
   supabaseGetGame,
   supabaseGetPlayers,
