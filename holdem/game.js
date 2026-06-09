@@ -620,6 +620,12 @@ class HoldemGame {
   }
 
   getNextPlayer(gameState, players, currentIdx) {
+    // Check if only one player remains (others folded)
+    const activePlayers = players.filter(p => p.status === 'active');
+    if (activePlayers.length <= 1) {
+      return null; // End the round — hand is over
+    }
+
     const total = players.length;
     for (let i = 1; i < total; i++) {
       const idx = (currentIdx + i) % total;
