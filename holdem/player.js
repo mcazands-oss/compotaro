@@ -646,14 +646,19 @@
 
     clearActionTimer();
     const eng = new G.HoldemGame();
-    const result = eng.processAction(gameState, players, aiPlayer.seat_position, aiAction.action, aiAction.amount || 0);
+    let result = eng.processAction(gameState, players, aiPlayer.seat_position, aiAction.action, aiAction.amount || 0);
 
     if (result.error) {
-      console.warn('AI action error:', result.error);
+      console.warn('AI action error:', result.error, 'Attempting fallback to fold...');
       const fallback = eng.processAction(gameState, players, aiPlayer.seat_position, 'fold');
       if (!fallback.error) {
+        console.warn('Fallback fold successful');
+        result = fallback;  // Use fallback result
         gameState = fallback.gameState;
         players = fallback.players;
+      } else {
+        console.error('Fallback fold also failed:', fallback.error);
+        return;  // Skip this turn if even fallback fails
       }
     } else {
       gameState = result.gameState;
