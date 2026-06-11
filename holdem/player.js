@@ -80,7 +80,8 @@
 
     // Check if Supabase is configured
     const sbInstance = G.initSupabase();
-    isLocalMode = !sbInstance || window.GameEngine.SUPABASE_URL === 'YOUR_SUPABASE_URL';
+    const localParam = params.get('local');
+    isLocalMode = localParam === '1' || !sbInstance || window.GameEngine.SUPABASE_URL === 'YOUR_SUPABASE_URL';
 
     if (isLocalMode) {
       initLocalMode(gameCode, playerId, seatParam ? parseInt(seatParam) : 0);
