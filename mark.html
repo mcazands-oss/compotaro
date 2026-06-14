@@ -170,12 +170,50 @@
             font-family: 'Luckiest Guy', cursive;
             color: #555;
         }
+    
+        /* Mobile Adjustments */
+        @media (max-width: 500px) {
+            .front h1 { font-size: 2.8em !important; }
+            .front .subtitle { font-size: 1em !important; }
+            .inside-right h2 { font-size: 2.2em !important; }
+            .inside-right p { font-size: 1em !important; }
+        }
+        
+        .close-btn {
+            position: absolute;
+            bottom: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 1.1em;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.5s;
+            pointer-events: none;
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+        
+        .scene.is-open .close-btn {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        .scene.is-open .instruction {
+            opacity: 0;
+        }
+
     </style>
 </head>
 <body>
 
     <div class="scene">
+        
         <div class="instruction" id="hint">Tap the card to open!</div>
+        <div class="close-btn" id="close-btn">Tap here to close</div>
+
         
         <!-- The message panel sitting underneath -->
         <div class="inside-right">
@@ -203,17 +241,21 @@
         </div>
     </div>
 
+    
     <script>
         const cover = document.getElementById('card-cover');
+        const scene = document.querySelector('.scene');
+        const closeBtn = document.getElementById('close-btn');
         const hint = document.getElementById('hint');
-        cover.addEventListener('click', () => {
+        
+        function toggleCard() {
             cover.classList.toggle('open');
-            if(cover.classList.contains('open')) {
-                hint.style.opacity = '0';
-            } else {
-                hint.style.opacity = '1';
-            }
-        });
+            scene.classList.toggle('is-open');
+        }
+        
+        cover.addEventListener('click', toggleCard);
+        closeBtn.addEventListener('click', toggleCard);
     </script>
+
 </body>
 </html>
