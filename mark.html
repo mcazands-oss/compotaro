@@ -92,6 +92,8 @@
         body.is-open .card-cover {
             transform: rotateY(-180deg);
             pointer-events: none;
+            opacity: 0;
+            transition: transform 1.1s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0s 1.1s;
         }
 
         .face {
