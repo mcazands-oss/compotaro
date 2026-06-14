@@ -1620,3 +1620,17 @@ body {
     padding-bottom: 160px !important;
   }
 }
+
+/* Home button */
+.home-btn {
+  position: fixed;
+  top: 14px;
+  left: 16px;
+  color: rgba(255,255,255,0.7);
+  text-decoration: none;
+  font-size: 0.9em;
+  letter-spacing: 0.03em;
+  z-index: 9999;
+  transition: color 0.2s;
+}
+.home-btn:hover { color: #fff; }
