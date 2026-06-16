@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Katelyn's Interior Design — Dallas, TX</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --cream: #f8f5f0;
+            --charcoal: #2c2c2c;
+            --gold: #c9a84c;
+            --white: #ffffff;
+            --light-gray: #e8e8e8;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--charcoal);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ============ NAV ============ */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--white);
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            color: var(--charcoal);
+        }
+
+        .nav-center {
+            display: flex;
+            gap: 3rem;
+            font-size: 0.9rem;
+            letter-spacing: 0.05em;
+        }
+
+        .nav-center a {
+            color: var(--charcoal);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .nav-center a:hover {
+            color: var(--gold);
+        }
+
+        .nav-cta {
+            background-color: var(--charcoal);
+            color: var(--white);
+            padding: 0.75rem 1.5rem;
+            border: none;
+            cursor: pointer;
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+            transition: background-color 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-cta:hover {
+            background-color: var(--gold);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 0.4rem;
+        }
+
+        .hamburger span {
+            width: 1.5rem;
+            height: 2px;
+            background-color: var(--charcoal);
+        }
+
+        /* ============ HERO ============ */
+        .hero {
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+            margin-top: 60px;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.9;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(44, 44, 44, 0.25);
+        }
+
+        .hero-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: var(--white);
+            animation: fadeIn 1.2s ease-out;
+        }
+
+        .hero-label {
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            opacity: 0.95;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+            line-height: 1.2;
+            max-width: 900px;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+            max-width: 600px;
+        }
+
+        .hero-btn {
+            background-color: transparent;
+            color: var(--white);
+            border: 2px solid var(--white);
+            padding: 0.875rem 2.5rem;
+            cursor: pointer;
+            font-size: 0.9rem;
+            letter-spacing: 0.05em;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .hero-btn:hover {
+            background-color: var(--white);
+            color: var(--charcoal);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -45%);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        /* ============ STATS BAR ============ */
+        .stats {
+            background-color: var(--cream);
+            padding: 3rem 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .stat-item {
+            opacity: 0;
+            animation: slideUp 0.6s ease-out forwards;
+        }
+
+        .stat-item:nth-child(1) { animation-delay: 0.1s; }
+        .stat-item:nth-child(2) { animation-delay: 0.2s; }
+        .stat-item:nth-child(3) { animation-delay: 0.3s; }
+        .stat-item:nth-child(4) { animation-delay: 0.4s; }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .stat-item h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--charcoal);
+        }
+
+        .stat-item p {
+            font-size: 0.9rem;
+            color: #666;
+            letter-spacing: 0.05em;
+        }
+
+        /* ============ ABOUT SECTION ============ */
+        .about {
+            padding: 4rem 2rem;
+            background-color: var(--white);
+        }
+
+        .about-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-content {
+            opacity: 0;
+            animation: slideInLeft 0.8s ease-out forwards;
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .section-label {
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .section-label-dark {
+            color: var(--charcoal);
+        }
+
+        h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--charcoal);
+        }
+
+        .about-text {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 1.5rem;
+        }
+
+        .about-link {
+            color: var(--gold);
+            text-decoration: none;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            transition: color 0.3s ease;
+        }
+
+        .about-link:hover {
+            color: var(--charcoal);
+        }
+
+        .about-image {
+            opacity: 0;
+            animation: slideInRight 0.8s ease-out forwards;
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* ============ SERVICES SECTION ============ */
+        .services {
+            background-color: var(--cream);
+            padding: 4rem 2rem;
+        }
+
+        .services-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .service-card {
+            background-color: var(--white);
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        .service-card:nth-child(1) { animation-delay: 0.1s; }
+        .service-card:nth-child(2) { animation-delay: 0.2s; }
+        .service-card:nth-child(3) { animation-delay: 0.3s; }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .service-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--charcoal);
+        }
+
+        .service-card p {
+            font-size: 0.95rem;
+            color: #666;
+            line-height: 1.7;
+        }
+
+        .service-card .more-link {
+            display: inline-block;
+            margin-top: 1rem;
+            color: var(--gold);
+            text-decoration: none;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            transition: color 0.3s ease;
+        }
+
+        .service-card .more-link:hover {
+            color: var(--charcoal);
+        }
+
+        /* ============ PORTFOLIO SECTION ============ */
+        .portfolio {
+            background-color: var(--white);
+            padding: 4rem 2rem;
+        }
+
+        .portfolio-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .portfolio-item {
+            position: relative;
+            overflow: hidden;
+            height: 400px;
+            cursor: pointer;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        .portfolio-item:nth-child(1) { animation-delay: 0.1s; }
+        .portfolio-item:nth-child(2) { animation-delay: 0.2s; }
+        .portfolio-item:nth-child(3) { animation-delay: 0.3s; }
+
+        .portfolio-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .portfolio-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .portfolio-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(44, 44, 44, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .portfolio-item:hover .portfolio-overlay {
+            opacity: 1;
+        }
+
+        .portfolio-title {
+            color: var(--white);
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            text-align: center;
+            letter-spacing: 0.05em;
+        }
+
+        .portfolio-footer {
+            text-align: center;
+        }
+
+        .portfolio-footer p {
+            font-size: 0.95rem;
+            color: #666;
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+
+        .portfolio-link {
+            color: var(--gold);
+            text-decoration: none;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            transition: color 0.3s ease;
+        }
+
+        .portfolio-link:hover {
+            color: var(--charcoal);
+        }
+
+        /* ============ CONSULTATION SECTION ============ */
+        .consultation {
+            background-color: #3a3a3a;
+            color: var(--white);
+            padding: 4rem 2rem;
+        }
+
+        .consultation-container {
+            max-width: 700px;
+            margin: 0 auto;
+            text-align: center;
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        .consultation h2 {
+            color: var(--white);
+            margin-bottom: 0.5rem;
+        }
+
+        .consultation-subtext {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+            line-height: 1.7;
+        }
+
+        .form-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            text-align: left;
+        }
+
+        .form-group.full {
+            grid-template-columns: 1fr;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #555;
+            background-color: transparent;
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: #999;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-submit {
+            background-color: var(--gold);
+            color: var(--charcoal);
+            padding: 0.875rem 2.5rem;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .form-submit:hover {
+            background-color: #b8952f;
+        }
+
+        /* ============ FOOTER ============ */
+        footer {
+            background-color: var(--charcoal);
+            color: var(--white);
+            padding: 3rem 2rem 1rem;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+        }
+
+        .footer-section h4 {
+            font-size: 0.85rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            color: var(--gold);
+        }
+
+        .footer-section a {
+            display: block;
+            color: #ccc;
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-bottom: 0.7rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: var(--gold);
+        }
+
+        .footer-section p {
+            font-size: 0.9rem;
+            color: #ccc;
+            margin-bottom: 0.7rem;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #555;
+            padding-top: 2rem;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #999;
+            letter-spacing: 0.05em;
+        }
+
+        /* ============ RESPONSIVE ============ */
+        @media (max-width: 768px) {
+            .nav-center {
+                display: none;
+            }
+
+            .nav-cta {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 0.95rem;
+            }
+
+            h2 {
+                font-size: 1.8rem;
+            }
+
+            .about-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .about-image {
+                height: 350px;
+            }
+
+            .form-group {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-container {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .portfolio-item {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ============ NAV ============ -->
+    <nav>
+        <div class="nav-logo">KATELYN'S</div>
+        <div class="nav-center">
+            <a href="#portfolio">PORTFOLIO</a>
+            <a href="#about">ABOUT</a>
+            <a href="#services">SERVICES</a>
+            <a href="#contact">CONTACT</a>
+        </div>
+        <button class="nav-cta">BOOK A CONSULTATION</button>
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <!-- ============ HERO ============ -->
+    <section class="hero">
+        <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1920&q=80" alt="Luxury living room interior design" class="hero-bg">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <p class="hero-label">INTERIOR DESIGN · DALLAS, TX</p>
+            <h1>Spaces That Feel Like You</h1>
+            <p>Residential & commercial interiors, designed with intention.</p>
+            <button class="hero-btn">Schedule a Consultation</button>
+        </div>
+    </section>
+
+    <!-- ============ STATS BAR ============ -->
+    <section class="stats">
+        <div class="stat-item">
+            <h3>10+ Years</h3>
+            <p>Experience</p>
+        </div>
+        <div class="stat-item">
+            <h3>150+</h3>
+            <p>Projects Completed</p>
+        </div>
+        <div class="stat-item">
+            <h3>DFW</h3>
+            <p>Dallas · Fort Worth</p>
+        </div>
+        <div class="stat-item">
+            <h3>100%</h3>
+            <p>Client Satisfaction</p>
+        </div>
+    </section>
+
+    <!-- ============ ABOUT SECTION ============ -->
+    <section class="about" id="about">
+        <div class="about-container">
+            <div class="about-content">
+                <p class="section-label">ABOUT KATELYN</p>
+                <h2>Design That Starts With Listening.</h2>
+                <p class="about-text">Every space has a story waiting to be told. Katelyn brings a thoughtful, personal approach to every project — from initial concept to final installation. Based in Dallas, she works with clients across the DFW metroplex to create interiors that are beautiful, functional, and deeply personal.</p>
+                <a href="#" class="about-link">LEARN MORE →</a>
+            </div>
+            <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&q=80" alt="Katelyn's design aesthetic" class="about-image">
+        </div>
+    </section>
+
+    <!-- ============ SERVICES SECTION ============ -->
+    <section class="services" id="services">
+        <div class="services-container">
+            <div class="section-header">
+                <p class="section-label section-label-dark">SERVICES</p>
+                <h2>Design. Style. Transform.</h2>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <h3>Residential Design</h3>
+                    <p>Full-service interior design for homes of all sizes. From concept to installation.</p>
+                    <a href="#" class="more-link">LEARN MORE →</a>
+                </div>
+                <div class="service-card">
+                    <h3>Commercial Spaces</h3>
+                    <p>Offices, retail, and hospitality spaces designed to reflect your brand.</p>
+                    <a href="#" class="more-link">LEARN MORE →</a>
+                </div>
+                <div class="service-card">
+                    <h3>E-Design</h3>
+                    <p>Remote design services with curated mood boards, shopping lists, and detailed floor plans.</p>
+                    <a href="#" class="more-link">LEARN MORE →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ PORTFOLIO SECTION ============ -->
+    <section class="portfolio" id="portfolio">
+        <div class="portfolio-container">
+            <div class="section-header">
+                <p class="section-label">PORTFOLIO</p>
+                <h2>Featured Work.</h2>
+            </div>
+            <div class="portfolio-grid">
+                <div class="portfolio-item">
+                    <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&q=80" alt="Modern Living Room in Dallas">
+                    <div class="portfolio-overlay">
+                        <p class="portfolio-title">Modern Living Room · Dallas</p>
+                    </div>
+                </div>
+                <div class="portfolio-item">
+                    <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&q=80" alt="Kitchen Renovation in Plano">
+                    <div class="portfolio-overlay">
+                        <p class="portfolio-title">Kitchen Renovation · Plano</p>
+                    </div>
+                </div>
+                <div class="portfolio-item">
+                    <img src="https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=800&q=80" alt="Master Bedroom in Frisco">
+                    <div class="portfolio-overlay">
+                        <p class="portfolio-title">Master Bedroom · Frisco</p>
+                    </div>
+                </div>
+            </div>
+            <div class="portfolio-footer">
+                <p>Explore our complete collection of residential and commercial projects crafted with intention and attention to detail.</p>
+                <a href="#" class="portfolio-link">VIEW ALL PROJECTS →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ CONSULTATION SECTION ============ -->
+    <section class="consultation" id="contact">
+        <div class="consultation-container">
+            <p class="section-label" style="color: var(--gold);">GET STARTED</p>
+            <h2>Let's Build Something Beautiful.</h2>
+            <p class="consultation-subtext">A quick conversation about your space and your vision. No pressure, no pitch.</p>
+            <form id="contact-form">
+                <div class="form-group">
+                    <div>
+                        <label for="first-name">First Name</label>
+                        <input type="text" id="first-name" name="first_name" required>
+                    </div>
+                    <div>
+                        <label for="last-name">Last Name</label>
+                        <input type="text" id="last-name" name="last_name" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div>
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div>
+                        <label for="phone">Phone</label>
+                        <input type="tel" id="phone" name="phone">
+                    </div>
+                </div>
+                <div class="form-group full">
+                    <label for="project-type">Project Type</label>
+                    <select id="project-type" name="project_type" required>
+                        <option value="">Select a project type</option>
+                        <option value="residential">Residential</option>
+                        <option value="commercial">Commercial</option>
+                        <option value="edesign">E-Design</option>
+                        <option value="consultation">Consultation</option>
+                    </select>
+                </div>
+                <div class="form-group full">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" placeholder="Tell us about your vision..."></textarea>
+                </div>
+                <button type="submit" class="form-submit">SEND MESSAGE</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- ============ FOOTER ============ -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <div class="footer-logo">KATELYN'S</div>
+                <p>Interior Design · Dallas, TX</p>
+            </div>
+            <div class="footer-section">
+                <h4>Explore</h4>
+                <a href="#portfolio">Portfolio</a>
+                <a href="#services">Services</a>
+                <a href="#about">About</a>
+                <a href="#contact">Contact</a>
+            </div>
+            <div class="footer-section">
+                <h4>Connect</h4>
+                <p>hello@katelyndesign.com</p>
+                <p>(972) 555-0123</p>
+                <p style="margin-top: 1rem; font-size: 0.8rem;"><a href="#" style="color: #999; margin-right: 0.5rem;">Instagram</a> · <a href="#" style="color: #999; margin: 0 0.5rem;">Pinterest</a> · <a href="#" style="color: #999; margin-left: 0.5rem;">Houzz</a></p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            © 2026 Katelyn's Interior Design. All rights reserved.
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.service-card, .portfolio-item, .stat-item').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Form submission
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you for reaching out! We'll be in touch shortly.');
+            this.reset();
+        });
+
+        // Hamburger menu
+        document.querySelector('.hamburger').addEventListener('click', function() {
+            const navCenter = document.querySelector('.nav-center');
+            const navCta = document.querySelector('.nav-cta');
+            navCenter.style.display = navCenter.style.display === 'flex' ? 'none' : 'flex';
+            navCta.style.display = navCta.style.display === 'block' ? 'none' : 'block';
+        });
+
+        // Sticky nav on scroll
+        window.addEventListener('scroll', function() {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 10) {
+                nav.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+            } else {
+                nav.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.05)';
+            }
+        });
+    </script>
+</body>
+</html>
