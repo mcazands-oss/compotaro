@@ -130,7 +130,6 @@
             transform: translate(-50%, -50%);
             text-align: center;
             color: var(--white);
-            animation: fadeIn 1.2s ease-out;
         }
 
         .hero-label {
@@ -174,16 +173,7 @@
             color: var(--charcoal);
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translate(-50%, -45%);
-            }
-            to {
-                opacity: 1;
-                transform: translate(-50%, -50%);
-            }
-        }
+
 
         /* ============ STATS BAR ============ */
         .stats {
@@ -199,16 +189,7 @@
             opacity: 1;
         }
 
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+
 
         .stat-item h3 {
             font-family: 'Playfair Display', serif;
@@ -239,19 +220,7 @@
         }
 
         .about-content {
-            opacity: 0;
-            animation: slideInLeft 0.8s ease-out forwards;
-        }
-
-        @keyframes slideInLeft {
-            from {
-                opacity: 0;
-                transform: translateX(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+            opacity: 1;
         }
 
         .section-label {
@@ -294,22 +263,10 @@
         }
 
         .about-image {
-            opacity: 0;
-            animation: slideInRight 0.8s ease-out forwards;
+            opacity: 1;
             width: 100%;
             height: 500px;
             object-fit: cover;
-        }
-
-        @keyframes slideInRight {
-            from {
-                opacity: 0;
-                transform: translateX(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
         }
 
         /* ============ SERVICES SECTION ============ */
@@ -343,16 +300,7 @@
             opacity: 1;
         }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+
 
         .service-card h3 {
             font-family: 'Playfair Display', serif;
@@ -698,7 +646,7 @@
 
     <!-- ============ HERO ============ -->
     <section class="hero">
-        <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1920&q=80" alt="Luxury living room interior design" class="hero-bg">
+        <img src="https://picsum.photos/seed/hero/1920/1080" alt="Luxury living room interior design" class="hero-bg">
         <div class="hero-overlay"></div>
         <div class="hero-content">
             <p class="hero-label">INTERIOR DESIGN · DALLAS, TX</p>
@@ -737,7 +685,7 @@
                 <p class="about-text">Every space has a story waiting to be told. Katelyn brings a thoughtful, personal approach to every project — from initial concept to final installation. Based in Dallas, she works with clients across the DFW metroplex to create interiors that are beautiful, functional, and deeply personal.</p>
                 <a href="#" class="about-link">LEARN MORE →</a>
             </div>
-            <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=800&q=80" alt="Katelyn's design aesthetic" class="about-image">
+            <img src="https://picsum.photos/seed/about/800/600" alt="Katelyn's design aesthetic" class="about-image">
         </div>
     </section>
 
@@ -777,19 +725,19 @@
             </div>
             <div class="portfolio-grid">
                 <div class="portfolio-item">
-                    <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=800&q=80" alt="Modern Living Room in Dallas">
+                    <img src="https://picsum.photos/seed/port1/800/600" alt="Modern Living Room in Dallas">
                     <div class="portfolio-overlay">
                         <p class="portfolio-title">Modern Living Room · Dallas</p>
                     </div>
                 </div>
                 <div class="portfolio-item">
-                    <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=800&q=80" alt="Kitchen Renovation in Plano">
+                    <img src="https://picsum.photos/seed/port2/800/600" alt="Kitchen Renovation in Plano">
                     <div class="portfolio-overlay">
                         <p class="portfolio-title">Kitchen Renovation · Plano</p>
                     </div>
                 </div>
                 <div class="portfolio-item">
-                    <img src="https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=800&q=80" alt="Master Bedroom in Frisco">
+                    <img src="https://picsum.photos/seed/port3/800/600" alt="Master Bedroom in Frisco">
                     <div class="portfolio-overlay">
                         <p class="portfolio-title">Master Bedroom · Frisco</p>
                     </div>
