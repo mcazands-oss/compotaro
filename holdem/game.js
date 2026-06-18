@@ -36,7 +36,7 @@ const BLIND_SCHEDULE = [
   { level: 7, sb: 6400,  bb: 12800 },
   { level: 8, sb: 12800, bb: 25600 },
 ];
-const BLIND_LEVEL_DURATION_MS = 15 * 60 * 1000; // 15 minutes
+const BLIND_LEVEL_DURATION_MS = 5 * 60 * 1000; // 5 minutes
 
 // AI avatar options
 const AI_NAMES = ['Viktor','Magnus','Sofia','Chen','Dmitri','Isabella','Marcus','Yuki'];
@@ -313,7 +313,7 @@ function calculateSidePots(players) {
   const active = players.filter(p => p.status !== 'eliminated' && p.current_bet > 0);
   if (!active.length) return [];
 
-  const bets = active.map(p => ({ id: p.player_id || p.seat_position, bet: p.current_bet, status: p.status }));
+  const bets = active.map(p => ({ id: p.seat_position, bet: p.current_bet, status: p.status }));
   const sortedBets = [...bets].sort((a, b) => a.bet - b.bet);
 
   const pots = [];
@@ -824,7 +824,7 @@ class HoldemGame {
     } else {
       for (const sidePot of sidePots) {
         // Find best hand among eligible players
-        const eligible = handResults.filter(r => sidePot.eligible.includes(r.player.player_id || r.player.seat_position));
+        const eligible = handResults.filter(r => sidePot.eligible.includes(r.seat));
         if (!eligible.length) continue;
         eligible.sort((a, b) => compareHands(b.hand, a.hand));
         const winner = eligible[0];
