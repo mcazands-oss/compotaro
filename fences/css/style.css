@@ -311,7 +311,7 @@ ul { list-style: none; }
   align-items: center;
   background:
     linear-gradient(135deg, rgba(13,27,42,0.45) 0%, rgba(30,45,66,0.30) 100%),
-    url('../images/hero.jpg') center/cover no-repeat;
+    url('/fences/images/hero.jpg') center/cover no-repeat;
 }
 
 .hero-overlay {
