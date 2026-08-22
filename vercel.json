@@ -12,6 +12,8 @@
     { "src": "/greenroom", "dest": "/greenroom/index.html" },
     { "src": "/greenroom/", "dest": "/greenroom/index.html" },
     { "src": "/greenroom/daniel-day-lewis", "dest": "/greenroom/daniel-day-lewis/index.html" },
-    { "src": "/greenroom/daniel-day-lewis/", "dest": "/greenroom/daniel-day-lewis/index.html" }
+    { "src": "/greenroom/daniel-day-lewis/", "dest": "/greenroom/daniel-day-lewis/index.html" },
+    { "src": "/fences", "dest": "/fences/index.html" },
+    { "src": "/fences/", "dest": "/fences/index.html" }
   ]
 }
