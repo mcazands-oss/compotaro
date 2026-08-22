@@ -14,6 +14,8 @@
     { "src": "/greenroom/daniel-day-lewis", "dest": "/greenroom/daniel-day-lewis/index.html" },
     { "src": "/greenroom/daniel-day-lewis/", "dest": "/greenroom/daniel-day-lewis/index.html" },
     { "src": "/fences", "dest": "/fences/index.html" },
-    { "src": "/fences/", "dest": "/fences/index.html" }
+    { "src": "/fences/", "dest": "/fences/index.html" },
+    { "src": "/fences/configurator", "dest": "/fences/configurator/index.html" },
+    { "src": "/fences/configurator/", "dest": "/fences/configurator/index.html" }
   ]
 }
