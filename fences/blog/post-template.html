@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!--
+  ════════════════════════════════════════════════
+  BLOG POST TEMPLATE — Landscape Investments, LLC
+  ════════════════════════════════════════════════
+  INSTRUCTIONS FOR AI-GENERATED POSTS:
+  1. Duplicate this file into blog/posts/your-post-slug.html
+  2. Replace all [[PLACEHOLDER]] tokens below with real content
+  3. Update the image URLs, meta tags, and slug in the footer
+  4. Add the post card to blog/index.html
+  ════════════════════════════════════════════════
+  -->
+
+  <title>[[POST TITLE]] | Landscape Investments, LLC Blog</title>
+  <meta name="description" content="[[META DESCRIPTION — 140-160 chars]]" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="[[POST TITLE]] | Landscape Investments, LLC" />
+  <meta property="og:description" content="[[META DESCRIPTION]]" />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://fenceinvestments.com/blog/posts/[[POST-SLUG]].html" />
+  <meta property="og:image" content="[[HERO IMAGE URL]]" />
+
+  <!-- Article schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "[[POST TITLE]]",
+    "datePublished": "[[YYYY-MM-DD]]",
+    "dateModified": "[[YYYY-MM-DD]]",
+    "author": {
+      "@type": "Person",
+      "name": "Greg Davis"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Landscape Investments, LLC",
+      "url": "https://fenceinvestments.com"
+    },
+    "description": "[[META DESCRIPTION]]",
+    "url": "https://fenceinvestments.com/blog/posts/[[POST-SLUG]].html"
+  }
+  </script>
+
+  <link rel="stylesheet" href="../../css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── Post-specific styles ── */
+
+    /* Hero */
+    .post-hero {
+      position: relative;
+      height: 420px;
+      display: flex;
+      align-items: flex-end;
+      background-size: cover;
+      background-position: center;
+    }
+    .post-hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(13,27,42,0.92) 30%, rgba(13,27,42,0.3) 100%);
+    }
+    .post-hero-content {
+      position: relative;
+      padding: 40px 0;
+      width: 100%;
+    }
+
+    /* Breadcrumb */
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 16px;
+    }
+    .breadcrumb a { color: rgba(255,255,255,0.5); transition: color var(--transition); }
+    .breadcrumb a:hover { color: var(--gold); }
+    .breadcrumb span { color: rgba(255,255,255,0.3); }
+
+    .post-hero h1 {
+      color: var(--white);
+      font-size: clamp(1.6rem, 3.5vw, 2.5rem);
+      max-width: 780px;
+      line-height: 1.2;
+      margin-bottom: 14px;
+    }
+
+    .post-hero-meta {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+    .post-category-badge {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold);
+      background: rgba(201,168,76,0.18);
+      border: 1px solid rgba(201,168,76,0.35);
+      padding: 3px 12px;
+      border-radius: 100px;
+    }
+    .post-date-author {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.55);
+    }
+    .post-date-author strong { color: rgba(255,255,255,0.8); }
+
+    /* Article body */
+    .post-layout {
+      background: var(--bg-light);
+      padding: 72px 0 100px;
+    }
+    .post-inner {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 60px;
+      align-items: start;
+    }
+    @media (max-width: 960px) {
+      .post-inner { grid-template-columns: 1fr; }
+      .post-sidebar { order: -1; }
+    }
+
+    /* Article content */
+    .post-content {
+      background: var(--white);
+      border: 1px solid rgba(0,0,0,0.07);
+      border-radius: var(--radius-lg);
+      padding: 48px 52px;
+      box-shadow: var(--shadow);
+    }
+    @media (max-width: 640px) {
+      .post-content { padding: 28px 24px; }
+    }
+
+    .post-content h2 {
+      font-size: 1.5rem;
+      color: var(--navy);
+      margin: 40px 0 14px;
+    }
+    .post-content h2:first-child { margin-top: 0; }
+
+    .post-content h3 {
+      font-size: 1.15rem;
+      color: var(--navy);
+      margin: 28px 0 10px;
+    }
+
+    .post-content p {
+      color: var(--text-muted);
+      font-size: 0.97rem;
+      line-height: 1.85;
+      margin-bottom: 20px;
+    }
+
+    .post-content ul,
+    .post-content ol {
+      padding-left: 24px;
+      margin-bottom: 20px;
+    }
+    .post-content ul { list-style: disc; }
+    .post-content ol { list-style: decimal; }
+    .post-content li {
+      color: var(--text-muted);
+      font-size: 0.97rem;
+      line-height: 1.75;
+      margin-bottom: 8px;
+    }
+
+    .post-content blockquote {
+      border-left: 3px solid var(--gold);
+      padding: 18px 24px;
+      background: rgba(201,168,76,0.06);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      font-style: italic;
+      color: var(--text-muted);
+      font-size: 1rem;
+      line-height: 1.75;
+      margin: 28px 0;
+    }
+    .post-content blockquote cite {
+      display: block;
+      margin-top: 10px;
+      font-style: normal;
+      font-weight: 700;
+      font-size: 0.82rem;
+      color: var(--olive-dark);
+    }
+
+    .post-content strong { color: var(--navy); }
+    .post-content a { color: var(--olive-dark); text-decoration: underline; }
+    .post-content a:hover { color: var(--navy); }
+
+    /* Post image (inline) */
+    .post-img {
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin: 28px 0;
+    }
+    .post-img img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .post-img figcaption {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      text-align: center;
+      padding: 8px 0 4px;
+      font-style: italic;
+    }
+
+    /* Author bio */
+    .author-bio {
+      display: flex;
+      align-items: flex-start;
+      gap: 18px;
+      background: var(--bg-warm);
+      border: 1px solid rgba(0,0,0,0.07);
+      border-radius: var(--radius);
+      padding: 24px 26px;
+      margin-top: 48px;
+    }
+    .author-bio-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background-size: cover;
+      background-position: center;
+      flex-shrink: 0;
+      border: 3px solid var(--gold);
+    }
+    .author-bio-text strong {
+      display: block;
+      font-size: 0.93rem;
+      color: var(--navy);
+      margin-bottom: 4px;
+    }
+    .author-bio-text p {
+      font-size: 0.83rem;
+      color: var(--text-muted);
+      margin: 0;
+      line-height: 1.65;
+    }
+
+    /* Sidebar */
+    .post-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      position: sticky;
+      top: 88px;
+    }
+
+    /* CTA card */
+    .sidebar-cta {
+      background: var(--navy);
+      border-radius: var(--radius-lg);
+      padding: 32px 28px;
+      text-align: center;
+    }
+    .sidebar-cta h3 {
+      font-size: 1.2rem;
+      color: var(--white);
+      margin-bottom: 10px;
+    }
+    .sidebar-cta p {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 20px;
+      line-height: 1.65;
+    }
+    .sidebar-cta .btn { width: 100%; }
+    .sidebar-phone {
+      display: block;
+      margin-top: 14px;
+      color: var(--gold);
+      font-weight: 700;
+      font-size: 1.05rem;
+      transition: color var(--transition);
+    }
+    .sidebar-phone:hover { color: var(--gold-light); }
+
+    /* Related posts card */
+    .sidebar-related {
+      background: var(--white);
+      border: 1px solid rgba(0,0,0,0.07);
+      border-radius: var(--radius-lg);
+      padding: 24px 26px;
+      box-shadow: var(--shadow);
+    }
+    .sidebar-related h4 {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      margin-bottom: 18px;
+    }
+    .related-post {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+    .related-post:last-child { border-bottom: none; padding-bottom: 0; }
+    .related-post-img {
+      width: 52px;
+      height: 52px;
+      border-radius: 6px;
+      background-size: cover;
+      background-position: center;
+      flex-shrink: 0;
+    }
+    .related-post-text {
+      flex: 1;
+    }
+    .related-post-text a {
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: var(--navy);
+      line-height: 1.4;
+      transition: color var(--transition);
+    }
+    .related-post-text a:hover { color: var(--olive-dark); }
+    .related-post-text span {
+      display: block;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+
+    /* Back to blog link */
+    .back-to-blog {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 28px;
+      transition: color var(--transition), gap var(--transition);
+    }
+    .back-to-blog:hover { color: var(--navy); gap: 12px; }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header" id="top">
+    <div class="container nav-inner">
+      <a href="../../" class="logo" id="site-logo">
+        <span class="logo-main">Landscape Investments</span>
+        <span class="logo-sub">LLC</span>
+      </a>
+
+      <nav class="main-nav" id="main-nav" aria-label="Main navigation">
+        <ul class="nav-list">
+          <li><a href="../../">Home</a></li>
+          <li><a href="../../#promise">Our Promise</a></li>
+          <li class="has-dropdown">
+            <button class="dropdown-toggle" aria-expanded="false" aria-haspopup="true">
+              Our Services <span class="caret" aria-hidden="true">▾</span>
+            </button>
+            <ul class="dropdown" role="menu">
+              <li role="none"><a href="../../#fence-installation" role="menuitem">Fence Installation</a></li>
+              <li role="none"><a href="../../#gate-systems" role="menuitem">Gate Systems</a></li>
+              <li role="none"><a href="../../#decks-arbors" role="menuitem">Decks &amp; Arbors</a></li>
+            </ul>
+          </li>
+          <li><a href="../../#financing">Financing</a></li>
+          <li><a href="../../#testimonials">Reviews</a></li>
+          <li><a href="../../#about">About Us</a></li>
+          <li><a href="../index.html">Blog</a></li>
+        </ul>
+        <a href="../../#contact" class="btn btn-nav">Get Free Estimate</a>
+      </nav>
+
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="main-nav">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- POST HERO -->
+  <!-- Replace the background-image URL with the post's featured image -->
+  <div class="post-hero" style="background-image:url('[[HERO IMAGE URL — e.g. https://images.unsplash.com/photo-XXXX?w=1600&q=80]]')">
+    <div class="post-hero-overlay"></div>
+    <div class="post-hero-content">
+      <div class="container">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="../../">Home</a>
+          <span aria-hidden="true">›</span>
+          <a href="../index.html">Blog</a>
+          <span aria-hidden="true">›</span>
+          <span>[[POST TITLE SHORT]]</span>
+        </nav>
+        <h1>[[POST TITLE — Full Headline]]</h1>
+        <div class="post-hero-meta">
+          <span class="post-category-badge">[[CATEGORY — e.g. Fencing]]</span>
+          <span class="post-date-author">
+            <strong>Greg Davis</strong> &nbsp;·&nbsp; [[Month DD, YYYY]]
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ARTICLE LAYOUT -->
+  <section class="post-layout">
+    <div class="container">
+      <a href="../index.html" class="back-to-blog"><span aria-hidden="true">←</span> Back to Blog</a>
+      <div class="post-inner">
+
+        <!-- ARTICLE CONTENT -->
+        <article class="post-content">
+          <!--
+          ══════════════════════════════════════════
+          ARTICLE BODY — Replace everything below
+          with the generated post content.
+          Use h2 for major sections, h3 for
+          sub-sections. Keep paragraphs focused.
+          ══════════════════════════════════════════
+          -->
+
+          <h2>[[Section Heading 1]]</h2>
+          <p>[[Opening paragraph. Set the stage — why this topic matters to North Texas homeowners. Lead with the most important point.]]</p>
+
+          <p>[[Second paragraph expanding on the topic. Include local context — DFW weather, regulations, common situations Greg sees.]]</p>
+
+          <!-- Optional: inline image -->
+          <!--
+          <figure class="post-img">
+            <img src="[[IMAGE URL]]" alt="[[Descriptive alt text]]" loading="lazy" />
+            <figcaption>[[Optional caption]]</figcaption>
+          </figure>
+          -->
+
+          <h2>[[Section Heading 2]]</h2>
+          <p>[[Body paragraph. Use specific details, numbers, and Greg's experience where relevant.]]</p>
+
+          <ul>
+            <li>[[Key point 1]]</li>
+            <li>[[Key point 2]]</li>
+            <li>[[Key point 3]]</li>
+            <li>[[Key point 4]]</li>
+          </ul>
+
+          <h2>[[Section Heading 3]]</h2>
+          <p>[[Body paragraph.]]</p>
+
+          <blockquote>
+            "[[Greg's quote or professional tip — in his voice, practical and direct.]]"
+            <cite>— Greg Davis, Owner, Landscape Investments, LLC</cite>
+          </blockquote>
+
+          <h2>[[Section Heading 4]]</h2>
+          <p>[[Body paragraph.]]</p>
+
+          <h3>[[Sub-section heading]]</h3>
+          <p>[[More detail on a specific aspect.]]</p>
+
+          <h2>The Bottom Line</h2>
+          <p>[[Closing paragraph. Summarize the key takeaways and guide the reader toward next steps — getting an estimate, calling Greg, using the configurator.]]</p>
+
+          <p>If you're ready to get started, <a href="../../#contact">reach out for a free estimate</a> or call Greg directly at <a href="tel:9402314028">940-231-4028</a>. He personally reviews every project and will be on-site throughout your build.</p>
+
+          <!-- Author bio -->
+          <div class="author-bio">
+            <div class="author-bio-avatar" style="background-image:url('../../images/greg-davis.jpg')" role="img" aria-label="Greg Davis"></div>
+            <div class="author-bio-text">
+              <strong>Greg Davis — Owner, Landscape Investments, LLC</strong>
+              <p>Greg has been building fences, decks, and outdoor structures in North Texas since 1979. A Texas A&amp;M Landscape Horticulture graduate, he personally oversees every project from estimate to final walk-through.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- SIDEBAR -->
+        <aside class="post-sidebar">
+          <!-- CTA Card -->
+          <div class="sidebar-cta">
+            <h3>Ready for Your Project?</h3>
+            <p>Greg provides free on-site estimates throughout Denton, Dallas &amp; Fort Worth. No pressure, no obligation.</p>
+            <a href="../../#contact" class="btn btn-primary">Get a Free Estimate</a>
+            <a href="tel:9402314028" class="sidebar-phone">940-231-4028</a>
+          </div>
+
+          <!-- Related Posts -->
+          <div class="sidebar-related">
+            <h4>Related Articles</h4>
+
+            <div class="related-post">
+              <div class="related-post-img" style="background-image:url('https://images.unsplash.com/photo-1575517111839-3a3843ee7f5d?w=200&q=80')" role="img" aria-label="Privacy fence"></div>
+              <div class="related-post-text">
+                <a href="../posts/5-things-privacy-fence-north-texas.html">5 Things to Know Before Building a Privacy Fence in North Texas</a>
+                <span>June 15, 2025</span>
+              </div>
+            </div>
+
+            <div class="related-post">
+              <div class="related-post-img" style="background-image:url('https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=200&q=80')" role="img" aria-label="Cedar fence"></div>
+              <div class="related-post-text">
+                <a href="../posts/cedar-vs-vinyl-fence-dfw.html">Cedar vs. Vinyl: Which Fence Is Right for Your DFW Home?</a>
+                <span>May 22, 2025</span>
+              </div>
+            </div>
+
+            <div class="related-post">
+              <div class="related-post-img" style="background-image:url('https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=200&q=80')" role="img" aria-label="Outdoor deck"></div>
+              <div class="related-post-text">
+                <a href="../posts/how-to-plan-outdoor-deck.html">How to Plan Your Dream Outdoor Deck</a>
+                <span>April 30, 2025</span>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <a href="../../" class="logo">
+          <span class="logo-main">Landscape Investments</span>
+          <span class="logo-sub">LLC</span>
+        </a>
+        <p>Your trusted fence company in Denton, Dallas &amp; Fort Worth since 1986. BBB A+ rated.</p>
+        <a href="tel:9402314028" class="footer-phone">940-231-4028</a>
+      </div>
+      <div class="footer-links">
+        <h4>Services</h4>
+        <a href="../../#fence-installation">Fence Installation</a>
+        <a href="../../#gate-systems">Gate Systems</a>
+        <a href="../../#decks-arbors">Decks &amp; Arbors</a>
+        <a href="../../configurator/">Project Configurator</a>
+      </div>
+      <div class="footer-links">
+        <h4>Company</h4>
+        <a href="../../#promise">Our Promise</a>
+        <a href="../../#about">About Greg</a>
+        <a href="../../#financing">Financing</a>
+        <a href="../../#testimonials">Reviews</a>
+        <a href="../index.html">Blog</a>
+      </div>
+      <div class="footer-contact">
+        <h4>Contact</h4>
+        <a href="tel:9402314028">940-231-4028</a>
+        <p>3609 Leeds Ct<br>Corinth, TX 76210</p>
+        <p>Mon&ndash;Fri: 8am&ndash;6pm<br>Sat: 9am&ndash;5pm<br>Sun: Closed</p>
+        <a href="../../#contact" class="btn btn-nav" style="margin-top:14px;display:inline-block;">Free Estimate</a>
+      </div>
+    </div>
+    <div class="footer-seo">
+      <div class="container">
+        <p>A leading DFW Fence Company and One of the Top Fence Companies Denton TX. We design, build, or provide: cedar fences, wood fences, driveway gates, entry gates, wrought iron gates, wrought iron fence, swimming pool fences, privacy fences, chain link fences, vinyl fences, split rail fences, field fences, redwood decks, arbors, pergolas, patio covers, fence staining, fence repair, fence installation, fence replacement.</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container footer-bottom-inner">
+        <p>&copy; 2024 Landscape Investments, LLC. All rights reserved.</p>
+        <div class="footer-legal">
+          <a href="../../privacy.html">Privacy Policy</a>
+          <span>Serving Denton, Dallas, Fort Worth &amp; all of North Texas</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- FLOATING CALL BUTTON (mobile only) -->
+  <a href="tel:9402314028" class="float-call" aria-label="Call Greg Davis at 940-231-4028">
+    <span aria-hidden="true">&#128222;</span> Call Greg
+  </a>
+
+  <script src="../../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project Configurator | Landscape Investments, LLC</title>
+  <meta name="description" content="Design your fence, gate, deck, or pergola online and send Greg a detailed estimate request in minutes." />
+  <meta name="robots" content="noindex" />
+
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ═══════════════════════════════════════════
+       CONFIGURATOR — Full-page tool layout
+    ═══════════════════════════════════════════ */
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      background: var(--bg-light);
+      overflow-x: hidden;
+    }
+
+    /* ── Config Header ─────────────────────── */
+    .config-header {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      background: var(--navy);
+      border-bottom: 1px solid var(--navy-border);
+      padding: 0 28px;
+      height: 72px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      flex-shrink: 0;
+    }
+
+    .config-header .logo {
+      animation: none;
+      opacity: 1;
+      transform: none;
+      flex-shrink: 0;
+    }
+
+    /* Progress area */
+    .config-progress-wrap {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      min-width: 0;
+    }
+
+    .config-step-dots {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .step-dot {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      border: 2px solid rgba(255,255,255,0.18);
+      color: rgba(255,255,255,0.35);
+      font-size: 0.7rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .step-dot.active {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: var(--navy);
+    }
+
+    .step-dot.done {
+      background: var(--olive);
+      border-color: var(--olive);
+      color: var(--white);
+    }
+
+    .progress-track {
+      width: 100%;
+      max-width: 280px;
+      height: 3px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--olive) 0%, var(--gold) 100%);
+      border-radius: 3px;
+      transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      width: 0%;
+    }
+
+    .config-step-label {
+      font-size: 0.68rem;
+      color: rgba(255,255,255,0.35);
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    /* Exit button */
+    .config-exit {
+      color: rgba(255,255,255,0.45);
+      font-size: 0.82rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      border-radius: 6px;
+      transition: color var(--transition), background var(--transition);
+      flex-shrink: 0;
+      white-space: nowrap;
+      text-decoration: none;
+    }
+
+    .config-exit:hover {
+      color: var(--white);
+      background: rgba(255,255,255,0.07);
+    }
+
+    .config-exit-icon {
+      font-size: 0.95rem;
+      font-style: normal;
+      line-height: 1;
+    }
+
+    /* ── Main content area ─────────────────── */
+    .config-main {
+      flex: 1;
+      padding-bottom: 100px; /* room for sticky footer nav */
+    }
+
+    /* ── Individual Steps ──────────────────── */
+    .config-step {
+      display: none;
+    }
+
+    .config-step.active {
+      display: block;
+      animation: stepFadeIn 0.35s ease forwards;
+    }
+
+    @keyframes stepFadeIn {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    .config-step-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 64px 24px 48px;
+    }
+
+    .step-eyebrow {
+      font-size: 0.73rem;
+      font-weight: 700;
+      color: var(--gold-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      margin-bottom: 12px;
+    }
+
+    .config-step h1 {
+      font-size: clamp(1.75rem, 4vw, 2.6rem);
+      color: var(--navy);
+      margin-bottom: 10px;
+    }
+
+    .step-sub {
+      color: var(--text-muted);
+      font-size: 0.97rem;
+      margin-bottom: 44px;
+      max-width: 560px;
+    }
+
+    /* ── Step 1: Project Type Cards ─────────── */
+    .type-cards {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    @media (min-width: 640px) {
+      .type-cards { grid-template-columns: repeat(4, 1fr); }
+    }
+
+    .type-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      padding: 32px 20px 28px;
+      background: var(--white);
+      border: 2px solid rgba(0,0,0,0.07);
+      border-radius: var(--radius-lg);
+      cursor: pointer;
+      transition: all 0.22s ease;
+      text-align: center;
+      box-shadow: var(--shadow);
+      font-family: 'Inter', sans-serif;
+    }
+
+    .type-card:hover {
+      border-color: var(--gold);
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .type-card.selected {
+      border-color: var(--gold);
+      background: rgba(201,168,76,0.05);
+      box-shadow: 0 0 0 3px rgba(201,168,76,0.18), var(--shadow);
+    }
+
+    .type-icon {
+      font-size: 2.4rem;
+      line-height: 1;
+    }
+
+    .type-card strong {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      color: var(--navy);
+      display: block;
+    }
+
+    .type-card p {
+      font-size: 0.79rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    /* ── Option Grid (steps 2–4) ────────────── */
+    .option-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 14px;
+    }
+
+    .option-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 18px 20px;
+      background: var(--white);
+      border: 2px solid rgba(0,0,0,0.07);
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: var(--shadow);
+    }
+
+    .option-card input[type="radio"] {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(0,0,0,0.2);
+      border-radius: 50%;
+      flex-shrink: 0;
+      transition: all 0.2s ease;
+      background: var(--white);
+      position: relative;
+      cursor: pointer;
+    }
+
+    .option-card input[type="radio"]::after {
+      content: '';
+      position: absolute;
+      inset: 3px;
+      border-radius: 50%;
+      background: transparent;
+      transition: background 0.2s ease;
+    }
+
+    .option-card input[type="radio"]:checked {
+      border-color: var(--gold-dark);
+      background: var(--gold);
+    }
+
+    .option-card input[type="radio"]:checked::after {
+      background: var(--white);
+    }
+
+    .option-card:hover {
+      border-color: var(--gold-light);
+    }
+
+    .option-card.selected {
+      border-color: var(--gold);
+      background: rgba(201,168,76,0.04);
+    }
+
+    .option-label {
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--navy);
+      line-height: 1.35;
+    }
+
+    /* ── Addon Grid (step 5) ────────────────── */
+    .addon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 14px;
+    }
+
+    .addon-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 18px;
+      background: var(--white);
+      border: 2px solid rgba(0,0,0,0.07);
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: var(--shadow);
+      user-select: none;
+    }
+
+    .addon-card input[type="checkbox"] {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+      width: 0;
+      height: 0;
+    }
+
+    .addon-check {
+      width: 22px;
+      height: 22px;
+      border: 2px solid rgba(0,0,0,0.18);
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      color: transparent;
+      flex-shrink: 0;
+      transition: all 0.2s ease;
+      background: var(--white);
+    }
+
+    .addon-card.selected .addon-check {
+      background: var(--gold);
+      border-color: var(--gold-dark);
+      color: var(--navy);
+      font-weight: 900;
+    }
+
+    .addon-card:hover {
+      border-color: var(--gold-light);
+    }
+
+    .addon-card.selected {
+      border-color: var(--gold);
+      background: rgba(201,168,76,0.04);
+    }
+
+    .addon-label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--navy);
+    }
+
+    /* Skip add-ons note */
+    .addon-skip {
+      margin-top: 18px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    /* ── Step 6: Contact Form ───────────────── */
+    .config-form {
+      max-width: 640px;
+    }
+
+    .form-row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    @media (max-width: 560px) {
+      .form-row-2 { grid-template-columns: 1fr; }
+    }
+
+    .config-form .form-group {
+      margin-bottom: 18px;
+    }
+
+    .config-form .form-group label {
+      display: block;
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      margin-bottom: 7px;
+    }
+
+    .config-form .form-group input,
+    .config-form .form-group select,
+    .config-form .form-group textarea {
+      width: 100%;
+      background: var(--white);
+      border: 2px solid rgba(0,0,0,0.1);
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.93rem;
+      color: var(--text);
+      outline: none;
+      transition: border-color var(--transition), box-shadow var(--transition);
+    }
+
+    .config-form .form-group input::placeholder,
+    .config-form .form-group textarea::placeholder {
+      color: rgba(0,0,0,0.28);
+    }
+
+    .config-form .form-group input:focus,
+    .config-form .form-group textarea:focus,
+    .config-form .form-group select:focus {
+      border-color: var(--gold-dark);
+      box-shadow: 0 0 0 3px rgba(201,168,76,0.15);
+    }
+
+    /* Project summary box */
+    .config-summary {
+      background: var(--white);
+      border: 1px solid rgba(0,0,0,0.09);
+      border-radius: var(--radius);
+      padding: 22px 26px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .config-summary-title {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 14px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 6px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+      font-size: 0.88rem;
+      gap: 16px;
+    }
+
+    .summary-row:last-child { border-bottom: none; }
+
+    .summary-label {
+      color: var(--text-muted);
+      font-weight: 500;
+      flex-shrink: 0;
+    }
+
+    .summary-val {
+      color: var(--navy);
+      font-weight: 600;
+      text-align: right;
+    }
+
+    .config-submit {
+      width: 100%;
+      padding: 17px;
+      font-size: 1rem;
+      margin-top: 4px;
+    }
+
+    .form-note {
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 12px;
+    }
+
+    /* ── Thank You Step ─────────────────────── */
+    .thanks-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 80px 24px 100px;
+      max-width: 620px;
+      margin: 0 auto;
+    }
+
+    .thanks-check {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: var(--gold);
+      color: var(--navy);
+      font-size: 1.9rem;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 28px;
+      box-shadow: 0 0 0 10px rgba(201,168,76,0.12);
+    }
+
+    .thanks-wrap h1 {
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      color: var(--navy);
+      margin-bottom: 14px;
+    }
+
+    .thanks-wrap > p {
+      color: var(--text-muted);
+      font-size: 1rem;
+      line-height: 1.8;
+      margin-bottom: 32px;
+      max-width: 480px;
+    }
+
+    .thanks-summary {
+      background: var(--white);
+      border: 1px solid rgba(0,0,0,0.07);
+      border-radius: var(--radius);
+      padding: 22px 28px;
+      width: 100%;
+      text-align: left;
+      margin-bottom: 36px;
+      box-shadow: var(--shadow);
+    }
+
+    .thanks-summary-title {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 14px;
+    }
+
+    .thanks-actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    @media (max-width: 480px) {
+      .thanks-actions { flex-direction: column; width: 100%; }
+      .thanks-actions .btn { width: 100%; text-align: center; }
+    }
+
+    /* ── Config Footer Nav ──────────────────── */
+    .config-footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--white);
+      border-top: 1px solid rgba(0,0,0,0.08);
+      padding: 14px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 100;
+      box-shadow: 0 -4px 28px rgba(0,0,0,0.07);
+    }
+
+    .config-step-counter {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+    }
+
+    .cfg-btn-back {
+      min-width: 110px;
+    }
+
+    .cfg-btn-next {
+      min-width: 130px;
+    }
+
+    /* Error flash */
+    .field-error {
+      border-color: #c0392b !important;
+      box-shadow: 0 0 0 3px rgba(192,57,43,0.12) !important;
+    }
+
+    .error-msg {
+      font-size: 0.78rem;
+      color: #c0392b;
+      margin-top: 5px;
+      display: block;
+    }
+
+    /* Mobile tweaks */
+    @media (max-width: 640px) {
+      .config-header {
+        padding: 0 16px;
+        gap: 12px;
+        height: 64px;
+      }
+      .logo-main { font-size: 1.05rem !important; }
+      .config-step-dots { display: none; }
+      .config-step-label { display: none; }
+      .config-footer { padding: 12px 16px; }
+      .cfg-btn-back, .cfg-btn-next { min-width: 90px; padding: 11px 18px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── CONFIG HEADER ──────────────────────── -->
+  <header class="config-header">
+    <a href="../" class="logo" aria-label="Landscape Investments, LLC — Home">
+      <span class="logo-main">Landscape Investments</span>
+      <span class="logo-sub">LLC</span>
+    </a>
+
+    <div class="config-progress-wrap" aria-label="Progress" role="progressbar" aria-valuemin="1" aria-valuemax="6" aria-valuenow="1">
+      <div class="config-step-dots" aria-hidden="true">
+        <span class="step-dot active" data-dot="1">1</span>
+        <span class="step-dot" data-dot="2">2</span>
+        <span class="step-dot" data-dot="3">3</span>
+        <span class="step-dot" data-dot="4">4</span>
+        <span class="step-dot" data-dot="5">5</span>
+        <span class="step-dot" data-dot="6">6</span>
+      </div>
+      <div class="progress-track" aria-hidden="true">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+      <p class="config-step-label" id="step-label" aria-live="polite">Step 1 of 6</p>
+    </div>
+
+    <a href="../" class="config-exit" aria-label="Exit configurator and return to homepage">
+      <em class="config-exit-icon" aria-hidden="true">✕</em> Exit
+    </a>
+  </header>
+
+  <!-- ── CONFIG STEPS ───────────────────────── -->
+  <main class="config-main" id="config-main">
+
+    <!-- ▸ STEP 1: Project Type -->
+    <section class="config-step active" data-step="1" aria-labelledby="step1-heading">
+      <div class="config-step-inner">
+        <p class="step-eyebrow">Step 1 of 6</p>
+        <h1 id="step1-heading">What would you like to add?</h1>
+        <p class="step-sub">Select the type of project you're planning. Greg will use this to prepare your estimate.</p>
+
+        <div class="type-cards" role="group" aria-label="Project type">
+          <button class="type-card" data-type="fence" aria-pressed="false">
+            <span class="type-icon" aria-hidden="true">🏠</span>
+            <strong>Fence</strong>
+            <p>Wood, cedar, vinyl, aluminum, chain link &amp; more</p>
+          </button>
+          <button class="type-card" data-type="gate" aria-pressed="false">
+            <span class="type-icon" aria-hidden="true">🚪</span>
+            <strong>Gate</strong>
+            <p>Driveway, entry, security &amp; custom gates</p>
+          </button>
+          <button class="type-card" data-type="deck" aria-pressed="false">
+            <span class="type-icon" aria-hidden="true">🏡</span>
+            <strong>Deck</strong>
+            <p>Cedar, treated pine, composite &amp; pool decks</p>
+          </button>
+          <button class="type-card" data-type="pergola" aria-pressed="false">
+            <span class="type-icon" aria-hidden="true">⛱</span>
+            <strong>Pergola / Arbor</strong>
+            <p>Pergolas, arbors, patio covers &amp; shade structures</p>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ▸ STEP 2: Size -->
+    <section class="config-step" data-step="2" aria-labelledby="size-question">
+      <div class="config-step-inner">
+        <p class="step-eyebrow">Step 2 of 6</p>
+        <h1 id="size-question">How large is your project?</h1>
+        <p class="step-sub">This helps Greg estimate materials and cost. Don't worry if you're not sure — choose your best guess.</p>
+        <div class="option-grid" id="size-options" role="group" aria-label="Project size"></div>
+      </div>
+    </section>
+
+    <!-- ▸ STEP 3: Material -->
+    <section class="config-step" data-step="3" aria-labelledby="step3-heading">
+      <div class="config-step-inner">
+        <p class="step-eyebrow">Step 3 of 6</p>
+        <h1 id="step3-heading">Choose your material</h1>
+        <p class="step-sub">Each material has its own look, durability, and price point. Greg can walk you through the options when he calls.</p>
+        <div class="option-grid" id="material-options" role="group" aria-label="Material"></div>
+      </div>
+    </section>
+
+    <!-- ▸ STEP 4: Style -->
+    <section class="config-step" data-step="4" aria-labelledby="step4-heading">
+      <div class="config-step-inner">
+        <p class="step-eyebrow">Step 4 of 6</p>
+        <h1 id="step4-heading">Choose your style</h1>
+        <p class="step-sub">Select the design that best fits your property and vision.</p>
+        <div class="option-grid" id="style-options" role="group" aria-label="Style"></div>
+      </div>
+    </section>
+
+    <!-- ▸ STEP 5: Add-ons -->
+    <section class="config-step" data-step="5" aria-labelledby="step5-heading">
+      <div class="config-step-inner">
+        <p class="step-eyebrow">Step 5 of 6</p>
+        <h1 id="step5-heading">Any add-ons?</h1>
+        <p class="step-sub">Select everything that interests you — all optional. You can discuss details with Greg.</p>
+        <div class="addon-grid" id="addon-options" role="group" aria-label="Add-ons"></div>
+        <p class="addon-skip">Not sure? Skip this step — Greg will go over options during your consultation.</p>
+      </div>
+    </section>
+
+    <!-- ▸ STEP 6: Contact Info -->
+    <section class="config-step" data-step="6" aria-labelledby="step6-heading">
+      <div class="config-step-inner">
+        <p class="step-eyebrow">Step 6 of 6</p>
+        <h1 id="step6-heading">Almost done — how can Greg reach you?</h1>
+        <p class="step-sub">Greg personally reviews every estimate request and will follow up within one business day.</p>
+
+        <!-- Project summary preview -->
+        <div class="config-summary" id="config-summary" aria-label="Your project summary">
+          <p class="config-summary-title">Your Project Summary</p>
+          <div id="summary-rows"></div>
+        </div>
+
+        <form class="config-form" id="config-form" novalidate>
+          <!-- Hidden project data fields -->
+          <input type="hidden" name="_subject" id="form-subject" value="New Project Estimate Request" />
+          <input type="hidden" name="project_type" id="form-type" />
+          <input type="hidden" name="size" id="form-size" />
+          <input type="hidden" name="material" id="form-material" />
+          <input type="hidden" name="style" id="form-style" />
+          <input type="hidden" name="addons" id="form-addons" />
+          <input type="hidden" name="source" value="Project Configurator — fenceinvestments.com" />
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="cfg-name">Full Name <span class="req" aria-label="required">*</span></label>
+              <input type="text" id="cfg-name" name="name" required placeholder="John Smith" autocomplete="name" />
+            </div>
+            <div class="form-group">
+              <label for="cfg-phone">Phone Number <span class="req" aria-label="required">*</span></label>
+              <input type="tel" id="cfg-phone" name="phone" required placeholder="940-555-0100" autocomplete="tel" />
+            </div>
+          </div>
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="cfg-email">Email Address</label>
+              <input type="email" id="cfg-email" name="email" placeholder="you@example.com" autocomplete="email" />
+            </div>
+            <div class="form-group">
+              <label for="cfg-city">City / Area</label>
+              <input type="text" id="cfg-city" name="city" placeholder="Denton, TX" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="cfg-notes">Additional Notes</label>
+            <textarea id="cfg-notes" name="notes" rows="4" placeholder="Timeline, special requirements, anything else Greg should know…"></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-lg config-submit" id="config-submit">
+            Send My Estimate Request
+          </button>
+          <p class="form-note">Greg will respond within one business day. No obligation.</p>
+        </form>
+      </div>
+    </section>
+
+    <!-- ▸ THANK YOU -->
+    <section class="config-step" data-step="thanks" aria-labelledby="thanks-heading">
+      <div class="thanks-wrap">
+        <div class="thanks-check" aria-hidden="true">✓</div>
+        <h1 id="thanks-heading">Request Sent!</h1>
+        <p>Thanks for using our Project Configurator. Greg will review your project details and reach out within one business day with a personalized estimate.</p>
+
+        <div class="thanks-summary" id="thanks-summary" aria-label="Your submitted project details">
+          <p class="thanks-summary-title">What You Submitted</p>
+          <div id="thanks-rows"></div>
+        </div>
+
+        <div class="thanks-actions">
+          <a href="tel:9402314028" class="btn btn-primary btn-lg">Call Greg Now: 940-231-4028</a>
+          <a href="../" class="btn btn-outline-dark btn-lg">Return to Homepage</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── CONFIG FOOTER NAV ──────────────────── -->
+  <footer class="config-footer" id="config-footer">
+    <button class="btn btn-outline-dark cfg-btn-back" id="btn-back" style="visibility:hidden" aria-label="Go to previous step">
+      ← Back
+    </button>
+    <span class="config-step-counter" id="step-counter" aria-live="polite">Step 1 of 6</span>
+    <button class="btn btn-primary cfg-btn-next" id="btn-next" aria-label="Go to next step">
+      Next →
+    </button>
+  </footer>
+
+  <script>
+  (function () {
+    'use strict';
+
+    /* ════════════════════════════════════════
+       Configuration data
+    ════════════════════════════════════════ */
+    var DATA = {
+      fence: {
+        label: 'Fence',
+        sizeQ: 'How long is your fence run?',
+        sizes: [
+          'Small — up to 50 linear ft',
+          'Medium — 50 to 150 linear ft',
+          'Large — 150+ linear ft',
+          'Not sure / I\'ll describe in notes'
+        ],
+        materials: ['Cedar / Wood', 'Vinyl', 'Aluminum', 'Steel / Wrought Iron', 'Chain Link'],
+        styles: {
+          'Cedar / Wood':       ['Privacy — Board on Board', 'Picket', 'Split Rail', 'Shadow Box'],
+          'Vinyl':              ['Privacy', 'Picket', 'Ranch Rail'],
+          'Aluminum':           ['Flat Top', 'Spear Top', 'Estate'],
+          'Steel / Wrought Iron': ['Flat Top', 'Spear Top', 'Custom Design'],
+          'Chain Link':         ['Standard', 'Vinyl Coated', 'Privacy Slats']
+        },
+        addons: ['Staining / Painting', 'Gate Addition', 'Decorative Post Caps', 'Outdoor Lighting', 'Old Fence Removal', 'Fence Repair']
+      },
+      gate: {
+        label: 'Gate',
+        sizeQ: 'What opening width are you gating?',
+        sizes: [
+          'Small — single pedestrian gate',
+          'Medium — single car width (~12 ft)',
+          'Large — double / estate gate (18 ft+)',
+          'Not sure / Custom'
+        ],
+        materials: ['Cedar / Wood', 'Wrought Iron / Steel', 'Aluminum', 'Vinyl'],
+        styles: {
+          'Cedar / Wood':        ['Custom Wood Gate', 'Swing Gate', 'Sliding Gate'],
+          'Wrought Iron / Steel':['Estate / Driveway Gate', 'Swing Gate', 'Sliding Gate'],
+          'Aluminum':            ['Swing Gate', 'Sliding Gate', 'Ornamental'],
+          'Vinyl':               ['Single Swing Gate', 'Double Swing Gate']
+        },
+        addons: ['Automatic Gate Opener', 'Keypad / Code Entry', 'Remote Control', 'Security Camera Wiring', 'Decorative Lighting', 'Video Intercom']
+      },
+      deck: {
+        label: 'Deck',
+        sizeQ: 'How large is the deck area?',
+        sizes: [
+          'Small — under 150 sq ft',
+          'Medium — 150 to 400 sq ft',
+          'Large — 400+ sq ft',
+          'Not sure / I\'ll describe in notes'
+        ],
+        materials: ['Cedar', 'Treated Pine', 'Composite', 'Redwood'],
+        styles: {
+          'Cedar':        ['Traditional Attached Deck', 'Elevated / Raised Deck', 'Low Profile / Grade Level', 'Pool Deck'],
+          'Treated Pine': ['Traditional Attached Deck', 'Elevated / Raised Deck', 'Low Profile / Grade Level'],
+          'Composite':    ['Traditional Attached Deck', 'Elevated / Raised Deck', 'Pool Deck', 'Rooftop Deck'],
+          'Redwood':      ['Traditional Attached Deck', 'Elevated / Raised Deck']
+        },
+        addons: ['Built-in Railing', 'Outdoor Lighting', 'Built-in Seating / Benches', 'Pergola / Cover Addition', 'Stamped Concrete Walkway', 'Custom Landscaping']
+      },
+      pergola: {
+        label: 'Pergola / Arbor',
+        sizeQ: 'How large is the structure?',
+        sizes: [
+          'Small — under 100 sq ft',
+          'Medium — 100 to 250 sq ft',
+          'Large — 250+ sq ft',
+          'Not sure / I\'ll describe in notes'
+        ],
+        materials: ['Cedar', 'Treated Pine', 'Steel / Aluminum'],
+        styles: {
+          'Cedar':            ['Open Pergola', 'Louvered Pergola', 'Attached Patio Cover', 'Freestanding Arbor'],
+          'Treated Pine':     ['Open Pergola', 'Attached Patio Cover', 'Freestanding Arbor'],
+          'Steel / Aluminum': ['Modern Open Pergola', 'Attached Patio Cover', 'Custom Design']
+        },
+        addons: ['Ceiling Fan', 'Outdoor Lighting', 'Decorative Landscaping', 'Stamped Concrete', 'Screen / Shade Panels', 'Built-in Seating']
+      }
+    };
+
+    /* ════════════════════════════════════════
+       State
+    ════════════════════════════════════════ */
+    var state = {
+      step: 1,
+      projectType: null,
+      size: null,
+      material: null,
+      style: null,
+      addons: []
+    };
+
+    /* ════════════════════════════════════════
+       DOM refs
+    ════════════════════════════════════════ */
+    var steps       = document.querySelectorAll('.config-step');
+    var dots        = document.querySelectorAll('.step-dot');
+    var progressFill = document.getElementById('progress-fill');
+    var stepLabel   = document.getElementById('step-label');
+    var stepCounter = document.getElementById('step-counter');
+    var btnBack     = document.getElementById('btn-back');
+    var btnNext     = document.getElementById('btn-next');
+    var configFooter = document.getElementById('config-footer');
+
+    /* ════════════════════════════════════════
+       Core navigation
+    ════════════════════════════════════════ */
+    function goTo(newStep) {
+      // Activate step
+      steps.forEach(function(s) { s.classList.remove('active'); });
+      var el = document.querySelector('.config-step[data-step="' + newStep + '"]');
+      if (el) el.classList.add('active');
+
+      state.step = newStep;
+      updateProgress(newStep);
+      updateNav(newStep);
+
+      // Render dynamic content
+      if (newStep === 2) renderSizes();
+      if (newStep === 3) renderMaterials();
+      if (newStep === 4) renderStyles();
+      if (newStep === 5) renderAddons();
+      if (newStep === 6) renderSummary();
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function nextStep() {
+      if (!validate(state.step)) return;
+      if (state.step < 6) goTo(state.step + 1);
+    }
+
+    function prevStep() {
+      if (state.step > 1) goTo(state.step - 1);
+    }
+
+    /* ════════════════════════════════════════
+       Validation
+    ════════════════════════════════════════ */
+    function validate(step) {
+      if (step === 1 && !state.projectType) {
+        flashMessage('Please select a project type to continue.');
+        return false;
+      }
+      if (step === 2 && !state.size) {
+        flashMessage('Please select a size to continue.');
+        return false;
+      }
+      if (step === 3 && !state.material) {
+        flashMessage('Please select a material to continue.');
+        return false;
+      }
+      if (step === 4 && !state.style) {
+        flashMessage('Please select a style to continue.');
+        return false;
+      }
+      return true;
+    }
+
+    function flashMessage(msg) {
+      var existing = document.getElementById('flash-msg');
+      if (existing) existing.remove();
+      var el = document.createElement('p');
+      el.id = 'flash-msg';
+      el.setAttribute('role', 'alert');
+      el.style.cssText = 'color:#c0392b;font-size:0.85rem;font-weight:600;margin-top:12px;';
+      el.textContent = msg;
+      var active = document.querySelector('.config-step.active .config-step-inner');
+      if (active) active.appendChild(el);
+      setTimeout(function() { el.remove(); }, 4000);
+    }
+
+    /* ════════════════════════════════════════
+       Progress + Nav updates
+    ════════════════════════════════════════ */
+    function updateProgress(step) {
+      if (step === 'thanks') {
+        progressFill.style.width = '100%';
+        stepLabel.textContent = 'Complete!';
+        dots.forEach(function(d) {
+          d.classList.remove('active');
+          d.classList.add('done');
+        });
+        return;
+      }
+      var pct = ((step - 1) / 5) * 100;
+      progressFill.style.width = pct + '%';
+      stepLabel.textContent = 'Step ' + step + ' of 6';
+      stepCounter.textContent = 'Step ' + step + ' of 6';
+      dots.forEach(function(d) {
+        var n = parseInt(d.dataset.dot, 10);
+        d.classList.toggle('active', n === step);
+        d.classList.toggle('done', n < step);
+      });
+    }
+
+    function updateNav(step) {
+      if (step === 'thanks') {
+        configFooter.style.display = 'none';
+        return;
+      }
+      configFooter.style.display = '';
+      btnBack.style.visibility = (step === 1) ? 'hidden' : 'visible';
+
+      if (step === 6) {
+        btnNext.style.display = 'none';
+      } else {
+        btnNext.style.display = '';
+        btnNext.textContent = (step === 5) ? 'Continue →' : 'Next →';
+      }
+    }
+
+    /* ════════════════════════════════════════
+       Step 1: Project type cards
+    ════════════════════════════════════════ */
+    document.querySelectorAll('.type-card').forEach(function(card) {
+      card.addEventListener('click', function() {
+        var type = card.dataset.type;
+        state.projectType = type;
+        // Reset downstream
+        state.size = null;
+        state.material = null;
+        state.style = null;
+        state.addons = [];
+
+        document.querySelectorAll('.type-card').forEach(function(c) {
+          c.classList.remove('selected');
+          c.setAttribute('aria-pressed', 'false');
+        });
+        card.classList.add('selected');
+        card.setAttribute('aria-pressed', 'true');
+
+        // Auto-advance after brief visual feedback
+        setTimeout(function() { goTo(2); }, 280);
+      });
+    });
+
+    /* ════════════════════════════════════════
+       Step 2: Size options (dynamic)
+    ════════════════════════════════════════ */
+    function renderSizes() {
+      var d = DATA[state.projectType];
+      var el = document.getElementById('size-question');
+      if (el) el.textContent = d.sizeQ;
+
+      renderRadioOptions('size-options', d.sizes, 'size', function(val) {
+        state.size = val;
+      }, function() { return state.size; });
+    }
+
+    /* ════════════════════════════════════════
+       Step 3: Materials (dynamic)
+    ════════════════════════════════════════ */
+    function renderMaterials() {
+      var d = DATA[state.projectType];
+      renderRadioOptions('material-options', d.materials, 'material', function(val) {
+        state.material = val;
+        state.style = null; // reset style on material change
+      }, function() { return state.material; });
+    }
+
+    /* ════════════════════════════════════════
+       Step 4: Styles (dynamic)
+    ════════════════════════════════════════ */
+    function renderStyles() {
+      var d = DATA[state.projectType];
+      var styles = (d.styles[state.material] || []);
+      renderRadioOptions('style-options', styles, 'style', function(val) {
+        state.style = val;
+      }, function() { return state.style; });
+    }
+
+    /* ════════════════════════════════════════
+       Shared radio option renderer
+    ════════════════════════════════════════ */
+    function renderRadioOptions(containerId, options, groupName, onSelect, getCurrent) {
+      var container = document.getElementById(containerId);
+      if (!container) return;
+
+      container.innerHTML = options.map(function(opt, i) {
+        var id = groupName + '-opt-' + i;
+        var isSel = (getCurrent() === opt);
+        return '<label class="option-card' + (isSel ? ' selected' : '') + '" for="' + id + '">' +
+          '<input type="radio" id="' + id + '" name="' + groupName + '" value="' + esc(opt) + '"' + (isSel ? ' checked' : '') + ' />' +
+          '<span class="option-label">' + esc(opt) + '</span>' +
+          '</label>';
+      }).join('');
+
+      container.querySelectorAll('input[type="radio"]').forEach(function(radio) {
+        radio.addEventListener('change', function(e) {
+          onSelect(e.target.value);
+          container.querySelectorAll('.option-card').forEach(function(c) {
+            c.classList.remove('selected');
+          });
+          e.target.closest('.option-card').classList.add('selected');
+        });
+      });
+    }
+
+    /* ════════════════════════════════════════
+       Step 5: Add-ons (dynamic, checkboxes)
+    ════════════════════════════════════════ */
+    function renderAddons() {
+      var d = DATA[state.projectType];
+      var container = document.getElementById('addon-options');
+      if (!container) return;
+
+      container.innerHTML = d.addons.map(function(addon, i) {
+        var id = 'addon-' + i;
+        var isSel = state.addons.indexOf(addon) !== -1;
+        return '<label class="addon-card' + (isSel ? ' selected' : '') + '" for="' + id + '">' +
+          '<input type="checkbox" id="' + id + '" value="' + esc(addon) + '"' + (isSel ? ' checked' : '') + ' />' +
+          '<span class="addon-check" aria-hidden="true">✓</span>' +
+          '<span class="addon-label">' + esc(addon) + '</span>' +
+          '</label>';
+      }).join('');
+
+      container.querySelectorAll('input[type="checkbox"]').forEach(function(cb) {
+        cb.addEventListener('change', function(e) {
+          var val = e.target.value;
+          var card = e.target.closest('.addon-card');
+          if (e.target.checked) {
+            if (state.addons.indexOf(val) === -1) state.addons.push(val);
+            card.classList.add('selected');
+          } else {
+            state.addons = state.addons.filter(function(a) { return a !== val; });
+            card.classList.remove('selected');
+          }
+        });
+      });
+    }
+
+    /* ════════════════════════════════════════
+       Step 6: Summary + hidden fields
+    ════════════════════════════════════════ */
+    function renderSummary() {
+      var d = DATA[state.projectType];
+      var addonsText = state.addons.length ? state.addons.join(', ') : 'None selected';
+
+      // Populate hidden fields
+      document.getElementById('form-type').value     = d.label;
+      document.getElementById('form-size').value     = state.size || '';
+      document.getElementById('form-material').value = state.material || '';
+      document.getElementById('form-style').value    = state.style || '';
+      document.getElementById('form-addons').value   = addonsText;
+      document.getElementById('form-subject').value  = 'New Estimate Request — ' + d.label + ' (' + (state.material || '') + ')';
+
+      // Render summary rows
+      var rows = [
+        ['Project', d.label],
+        ['Size', state.size],
+        ['Material', state.material],
+        ['Style', state.style],
+        ['Add-ons', addonsText]
+      ];
+
+      var summaryEl = document.getElementById('summary-rows');
+      if (summaryEl) {
+        summaryEl.innerHTML = rows.map(function(r) {
+          return '<div class="summary-row">' +
+            '<span class="summary-label">' + r[0] + '</span>' +
+            '<span class="summary-val">' + (r[1] || '—') + '</span>' +
+            '</div>';
+        }).join('');
+      }
+    }
+
+    /* ════════════════════════════════════════
+       Form submission (Formspree via fetch)
+    ════════════════════════════════════════ */
+    var configForm = document.getElementById('config-form');
+    if (configForm) {
+      configForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // Validate required fields
+        var nameEl  = document.getElementById('cfg-name');
+        var phoneEl = document.getElementById('cfg-phone');
+        var valid = true;
+
+        [nameEl, phoneEl].forEach(function(el) {
+          el.classList.remove('field-error');
+          var err = el.nextElementSibling;
+          if (err && err.classList.contains('error-msg')) err.remove();
+          if (!el.value.trim()) {
+            el.classList.add('field-error');
+            var msg = document.createElement('span');
+            msg.className = 'error-msg';
+            msg.textContent = 'This field is required.';
+            el.insertAdjacentElement('afterend', msg);
+            valid = false;
+          }
+        });
+
+        if (!valid) { nameEl.focus(); return; }
+
+        var submitBtn = document.getElementById('config-submit');
+        submitBtn.textContent = 'Sending…';
+        submitBtn.disabled = true;
+
+        // Build form data object
+        var data = {};
+        new FormData(configForm).forEach(function(val, key) { data[key] = val; });
+        // Add textarea (not in FormData hidden fields auto-populate)
+        data.notes = document.getElementById('cfg-notes').value;
+
+        fetch('https://formspree.io/f/YOURFORMID', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify(data)
+        })
+        .then(function(res) {
+          if (res.ok) {
+            showThanks(data);
+          } else {
+            throw new Error('Server error');
+          }
+        })
+        .catch(function() {
+          submitBtn.textContent = 'Send My Estimate Request';
+          submitBtn.disabled = false;
+          flashMessage('There was an issue submitting your request. Please call Greg directly at 940-231-4028 or try again.');
+        });
+      });
+    }
+
+    function showThanks(data) {
+      // Populate thanks summary
+      var rows = [
+        ['Project', data.project_type],
+        ['Material', data.material],
+        ['Style', data.style],
+        ['Add-ons', data.addons],
+        ['Name', data.name],
+        ['Phone', data.phone]
+      ];
+
+      var thanksRows = document.getElementById('thanks-rows');
+      if (thanksRows) {
+        thanksRows.innerHTML = rows.map(function(r) {
+          if (!r[1] || r[1] === 'None selected') return '';
+          return '<div class="summary-row">' +
+            '<span class="summary-label">' + r[0] + '</span>' +
+            '<span class="summary-val">' + esc(r[1]) + '</span>' +
+            '</div>';
+        }).join('');
+      }
+
+      goTo('thanks');
+    }
+
+    /* ════════════════════════════════════════
+       Button events
+    ════════════════════════════════════════ */
+    btnBack.addEventListener('click', prevStep);
+    btnNext.addEventListener('click', nextStep);
+
+    /* ════════════════════════════════════════
+       Utility: HTML escape
+    ════════════════════════════════════════ */
+    function esc(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    /* ════════════════════════════════════════
+       Init
+    ════════════════════════════════════════ */
+    updateProgress(1);
+    updateNav(1);
+
+  })();
+  </script>
+</body>
+</html>

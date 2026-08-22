@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog | Landscape Investments, LLC — Fence &amp; Deck Tips for North Texas</title>
+  <meta name="description" content="Expert advice on fences, gates, decks, and pergolas from Greg Davis and the Landscape Investments team. Serving Denton, Dallas, and Fort Worth, TX." />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Blog | Landscape Investments, LLC" />
+  <meta property="og:description" content="Expert fence, deck &amp; arbor advice for North Texas homeowners." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://fenceinvestments.com/blog/" />
+
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── Blog-specific styles ── */
+    .blog-hero {
+      background: var(--navy);
+      padding: 80px 0 70px;
+      text-align: center;
+    }
+    .blog-hero-eyebrow {
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 14px;
+    }
+    .blog-hero h1 {
+      font-size: clamp(2rem, 4.5vw, 3rem);
+      color: var(--white);
+      margin-bottom: 14px;
+    }
+    .blog-hero p {
+      color: rgba(255,255,255,0.6);
+      font-size: 1rem;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    /* Post grid */
+    .blog-section {
+      background: var(--bg-light);
+      padding: 80px 0 100px;
+    }
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+      margin-bottom: 60px;
+    }
+    @media (max-width: 960px) {
+      .blog-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 640px) {
+      .blog-grid { grid-template-columns: 1fr; }
+    }
+
+    /* Post card */
+    .post-card {
+      background: var(--white);
+      border: 1px solid rgba(0,0,0,0.07);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+      display: flex;
+      flex-direction: column;
+    }
+    .post-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-lg);
+      border-color: rgba(201,168,76,0.3);
+    }
+    .post-card-img {
+      height: 200px;
+      background-size: cover;
+      background-position: center;
+      flex-shrink: 0;
+    }
+    .post-card-body {
+      padding: 24px 26px 28px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .post-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .post-category {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold-dark);
+      background: rgba(201,168,76,0.1);
+      border: 1px solid rgba(201,168,76,0.25);
+      padding: 3px 10px;
+      border-radius: 100px;
+    }
+    .post-date {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+    .post-card h2 {
+      font-size: 1.18rem;
+      color: var(--navy);
+      margin-bottom: 10px;
+      line-height: 1.35;
+    }
+    .post-card h2 a {
+      transition: color var(--transition);
+    }
+    .post-card h2 a:hover { color: var(--olive-dark); }
+    .post-card p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 20px;
+      flex: 1;
+    }
+    .post-read-more {
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: var(--olive-dark);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: gap var(--transition), color var(--transition);
+    }
+    .post-read-more:hover {
+      color: var(--navy);
+      gap: 10px;
+    }
+
+    /* Blog CTA */
+    .blog-cta {
+      background: var(--navy);
+      padding: 80px 0;
+    }
+    .blog-cta-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+    .blog-cta h2 {
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+    .blog-cta p {
+      color: rgba(255,255,255,0.6);
+      font-size: 0.95rem;
+      max-width: 500px;
+    }
+    @media (max-width: 640px) {
+      .blog-cta-inner { flex-direction: column; text-align: center; }
+      .blog-cta-inner .btn { width: 100%; }
+    }
+
+    /* Empty state (shown when posts/ folder is empty) */
+    .blog-empty {
+      text-align: center;
+      padding: 60px 0;
+      color: var(--text-muted);
+    }
+    .blog-empty p { font-size: 0.95rem; margin-top: 10px; }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header" id="top">
+    <div class="container nav-inner">
+      <a href="../" class="logo" id="site-logo">
+        <span class="logo-main">Landscape Investments</span>
+        <span class="logo-sub">LLC</span>
+      </a>
+
+      <nav class="main-nav" id="main-nav" aria-label="Main navigation">
+        <ul class="nav-list">
+          <li><a href="../">Home</a></li>
+          <li><a href="../#promise">Our Promise</a></li>
+          <li class="has-dropdown">
+            <button class="dropdown-toggle" aria-expanded="false" aria-haspopup="true">
+              Our Services <span class="caret" aria-hidden="true">▾</span>
+            </button>
+            <ul class="dropdown" role="menu">
+              <li role="none"><a href="../#fence-installation" role="menuitem">Fence Installation</a></li>
+              <li role="none"><a href="../#gate-systems" role="menuitem">Gate Systems</a></li>
+              <li role="none"><a href="../#decks-arbors" role="menuitem">Decks &amp; Arbors</a></li>
+            </ul>
+          </li>
+          <li><a href="../#financing">Financing</a></li>
+          <li><a href="../#testimonials">Reviews</a></li>
+          <li><a href="../#about">About Us</a></li>
+          <li><a href="index.html" aria-current="page">Blog</a></li>
+        </ul>
+        <a href="../#contact" class="btn btn-nav">Get Free Estimate</a>
+      </nav>
+
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="main-nav">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- BLOG HERO -->
+  <section class="blog-hero">
+    <div class="container">
+      <p class="blog-hero-eyebrow">Expert Advice from Greg Davis</p>
+      <h1>The Landscape Investments Blog</h1>
+      <p>Tips, guides, and inspiration for fences, gates, decks, and outdoor living in North Texas.</p>
+    </div>
+  </section>
+
+  <!-- POSTS -->
+  <section class="blog-section">
+    <div class="container">
+      <div class="blog-grid">
+
+        <!-- Post 1 -->
+        <article class="post-card" data-reveal>
+          <div class="post-card-img" style="background-image:url('https://images.unsplash.com/photo-1575517111839-3a3843ee7f5d?w=700&q=80')" role="img" aria-label="Wood privacy fence"></div>
+          <div class="post-card-body">
+            <div class="post-meta">
+              <span class="post-category">Fencing</span>
+              <span class="post-date">June 15, 2025</span>
+            </div>
+            <h2><a href="posts/5-things-privacy-fence-north-texas.html">5 Things to Know Before Building a Privacy Fence in North Texas</a></h2>
+            <p>North Texas weather is no joke — scorching summers, ice storms, and the occasional hailstorm can all take a toll on your fence. Here's what Greg says you need to know before you build.</p>
+            <a href="posts/5-things-privacy-fence-north-texas.html" class="post-read-more">Read Article <span aria-hidden="true">→</span></a>
+          </div>
+        </article>
+
+        <!-- Post 2 -->
+        <article class="post-card" data-reveal>
+          <div class="post-card-img" style="background-image:url('https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=700&q=80')" role="img" aria-label="Cedar fence close-up"></div>
+          <div class="post-card-body">
+            <div class="post-meta">
+              <span class="post-category">Fencing</span>
+              <span class="post-date">May 22, 2025</span>
+            </div>
+            <h2><a href="posts/cedar-vs-vinyl-fence-dfw.html">Cedar vs. Vinyl: Which Fence Is Right for Your DFW Home?</a></h2>
+            <p>Two of the most popular fence materials — and both have strong cases. Greg breaks down the pros, cons, cost differences, and long-term maintenance considerations for each.</p>
+            <a href="posts/cedar-vs-vinyl-fence-dfw.html" class="post-read-more">Read Article <span aria-hidden="true">→</span></a>
+          </div>
+        </article>
+
+        <!-- Post 3 -->
+        <article class="post-card" data-reveal>
+          <div class="post-card-img" style="background-image:url('https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=700&q=80')" role="img" aria-label="Outdoor cedar deck with pergola"></div>
+          <div class="post-card-body">
+            <div class="post-meta">
+              <span class="post-category">Decks &amp; Arbors</span>
+              <span class="post-date">April 30, 2025</span>
+            </div>
+            <h2><a href="posts/how-to-plan-outdoor-deck.html">How to Plan Your Dream Outdoor Deck: A Step-by-Step Guide</a></h2>
+            <p>A beautiful deck starts long before the first board is cut. From sizing and materials to permits and choosing the right contractor, here's how to plan a deck that lasts 20+ years.</p>
+            <a href="posts/how-to-plan-outdoor-deck.html" class="post-read-more">Read Article <span aria-hidden="true">→</span></a>
+          </div>
+        </article>
+
+      </div><!-- /.blog-grid -->
+    </div>
+  </section>
+
+  <!-- CTA BANNER -->
+  <section class="blog-cta">
+    <div class="container blog-cta-inner" data-reveal>
+      <div>
+        <h2>Ready to Start Your Project?</h2>
+        <p>Greg Davis personally reviews every estimate. Get a free, no-obligation quote for your fence, deck, or outdoor structure.</p>
+      </div>
+      <a href="../#contact" class="btn btn-primary btn-lg">Get a Free Estimate</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <a href="../" class="logo">
+          <span class="logo-main">Landscape Investments</span>
+          <span class="logo-sub">LLC</span>
+        </a>
+        <p>Your trusted fence company in Denton, Dallas &amp; Fort Worth since 1986. BBB A+ rated.</p>
+        <a href="tel:9402314028" class="footer-phone">940-231-4028</a>
+      </div>
+      <div class="footer-links">
+        <h4>Services</h4>
+        <a href="../#fence-installation">Fence Installation</a>
+        <a href="../#gate-systems">Gate Systems</a>
+        <a href="../#decks-arbors">Decks &amp; Arbors</a>
+        <a href="../configurator/">Project Configurator</a>
+      </div>
+      <div class="footer-links">
+        <h4>Company</h4>
+        <a href="../#promise">Our Promise</a>
+        <a href="../#about">About Greg</a>
+        <a href="../#financing">Financing</a>
+        <a href="../#testimonials">Reviews</a>
+        <a href="index.html">Blog</a>
+      </div>
+      <div class="footer-contact">
+        <h4>Contact</h4>
+        <a href="tel:9402314028">940-231-4028</a>
+        <p>3609 Leeds Ct<br>Corinth, TX 76210</p>
+        <p>Mon&ndash;Fri: 8am&ndash;6pm<br>Sat: 9am&ndash;5pm<br>Sun: Closed</p>
+        <a href="../#contact" class="btn btn-nav" style="margin-top:14px;display:inline-block;">Free Estimate</a>
+      </div>
+    </div>
+    <div class="footer-seo">
+      <div class="container">
+        <p>A leading DFW Fence Company and One of the Top Fence Companies Denton TX. We design, build, or provide: cedar fences, wood fences, driveway gates, entry gates, wrought iron gates, wrought iron fence, swimming pool fences, privacy fences, chain link fences, vinyl fences, split rail fences, field fences, redwood decks, arbors, pergolas, patio covers, fence staining, fence repair, fence installation, fence replacement.</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container footer-bottom-inner">
+        <p>&copy; 2024 Landscape Investments, LLC. All rights reserved.</p>
+        <div class="footer-legal">
+          <a href="../privacy.html">Privacy Policy</a>
+          <span>Serving Denton, Dallas, Fort Worth &amp; all of North Texas</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- FLOATING CALL BUTTON (mobile only) -->
+  <a href="tel:9402314028" class="float-call" aria-label="Call Greg Davis at 940-231-4028">
+    <span aria-hidden="true">&#128222;</span> Call Greg
+  </a>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
