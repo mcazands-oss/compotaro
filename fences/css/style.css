@@ -178,6 +178,7 @@ ul { list-style: none; }
   height: 42px;
   width: auto;
   display: block;
+  filter: brightness(0) invert(1);
 }
 
 @keyframes logoFadeIn {
